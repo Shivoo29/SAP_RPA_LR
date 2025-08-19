@@ -12,11 +12,11 @@ from typing import List, Dict, Optional, Tuple
 import pytesseract
 from PIL import ImageGrab
 import re
+import pythoncom  # Added for COM threading
 
-class SAPBackendAutomation:
+class SAPBackendAutomationFixed:
     """
-    SAP Automation using GUI Scripting API - No mouse movement needed!
-    Works like a web extension - invisible automation in the background
+    Fixed SAP Backend Automation - No Unicode errors, No threading issues
     """
     
     def __init__(self):
@@ -37,20 +37,33 @@ class SAPBackendAutomation:
         self.total_parts = 0
         
     def setup_logging(self):
-        """Setup logging system."""
+        """Setup logging system without Unicode characters."""
         if not os.path.exists('logs'):
             os.makedirs('logs')
             
         log_filename = f"logs/sap_backend_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_filename),
-                logging.StreamHandler()
-            ]
-        )
+        
+        # Create custom formatter that handles Unicode safely
+        class SafeFormatter(logging.Formatter):
+            def format(self, record):
+                # Remove or replace Unicode characters
+                if hasattr(record, 'msg'):
+                    record.msg = str(record.msg).encode('ascii', 'replace').decode('ascii')
+                return super().format(record)
+        
+        # Setup file handler with UTF-8 encoding
+        file_handler = logging.FileHandler(log_filename, encoding='utf-8')
+        file_handler.setFormatter(SafeFormatter('%(asctime)s - %(levelname)s - %(message)s'))
+        
+        # Setup console handler with safe encoding
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(SafeFormatter('%(asctime)s - %(levelname)s - %(message)s'))
+        
+        # Setup logger
         self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(file_handler)
+        self.logger.addHandler(console_handler)
         
     def load_config(self):
         """Load configuration."""
@@ -99,7 +112,7 @@ class SAPBackendAutomation:
     def setup_gui(self):
         """Setup the GUI interface."""
         self.root = tk.Tk()
-        self.root.title("SAP Backend Automation - No Mouse Movement Required")
+        self.root.title("SAP Backend Automation - Fixed Version")
         self.root.geometry("900x800")
         
         # Styling
@@ -115,7 +128,7 @@ class SAPBackendAutomation:
         header_frame.pack(fill=tk.X, pady=(0, 10))
         
         title_label = ttk.Label(header_frame, 
-                               text="🤖 SAP Backend Automation System", 
+                               text="SAP Backend Automation System - Fixed", 
                                font=("Arial", 16, "bold"))
         title_label.pack()
         
@@ -129,16 +142,16 @@ class SAPBackendAutomation:
         status_frame = ttk.LabelFrame(main_container, text="SAP Connection Status", padding="10")
         status_frame.pack(fill=tk.X, pady=(0, 10))
         
-        self.connection_status_var = tk.StringVar(value="❌ Not Connected")
+        self.connection_status_var = tk.StringVar(value="[X] Not Connected")
         status_label = ttk.Label(status_frame, textvariable=self.connection_status_var,
                                 font=("Arial", 10, "bold"))
         status_label.pack(side=tk.LEFT)
         
-        connect_btn = ttk.Button(status_frame, text="🔌 Connect to SAP",
+        connect_btn = ttk.Button(status_frame, text="Connect to SAP",
                                 command=self.connect_to_sap_gui)
         connect_btn.pack(side=tk.RIGHT)
         
-        test_btn = ttk.Button(status_frame, text="🧪 Test Connection",
+        test_btn = ttk.Button(status_frame, text="Test Connection",
                              command=self.test_sap_connection)
         test_btn.pack(side=tk.RIGHT, padx=(0, 10))
         
@@ -172,7 +185,7 @@ class SAPBackendAutomation:
         file_entry = ttk.Entry(file_frame, textvariable=self.file_path_var, width=40)
         file_entry.pack(side=tk.LEFT, padx=(10, 0), fill=tk.X, expand=True)
         
-        browse_btn = ttk.Button(file_frame, text="📁 Browse", command=self.browse_file)
+        browse_btn = ttk.Button(file_frame, text="Browse", command=self.browse_file)
         browse_btn.pack(side=tk.RIGHT, padx=(5, 0))
         
         # Configuration Section
@@ -205,15 +218,15 @@ class SAPBackendAutomation:
         control_frame = ttk.Frame(main_container)
         control_frame.pack(fill=tk.X, pady=(0, 10))
         
-        self.start_btn = ttk.Button(control_frame, text="🚀 Start Backend Automation",
+        self.start_btn = ttk.Button(control_frame, text="START Backend Automation",
                                    command=self.start_automation)
         self.start_btn.pack(side=tk.LEFT)
         
-        self.stop_btn = ttk.Button(control_frame, text="⏹ Stop", 
+        self.stop_btn = ttk.Button(control_frame, text="STOP", 
                                   command=self.stop_automation, state="disabled")
         self.stop_btn.pack(side=tk.LEFT, padx=(10, 0))
         
-        self.save_btn = ttk.Button(control_frame, text="💾 Save Results",
+        self.save_btn = ttk.Button(control_frame, text="Save Results",
                                   command=self.save_results, state="disabled")
         self.save_btn.pack(side=tk.RIGHT)
         
@@ -271,24 +284,32 @@ class SAPBackendAutomation:
         self.log_text.pack(fill=tk.X)
         
     def log_message(self, message: str, level: str = "INFO"):
-        """Add message to GUI log and logger."""
+        """Add message to GUI log and logger - Safe Unicode handling."""
         timestamp = datetime.now().strftime("%H:%M:%S")
-        log_entry = f"[{timestamp}] {level}: {message}\n"
         
+        # Remove Unicode characters for safe logging
+        safe_message = message.encode('ascii', 'replace').decode('ascii')
+        log_entry = f"[{timestamp}] {level}: {safe_message}\n"
+        
+        # Add to GUI log
         self.log_text.insert(tk.END, log_entry)
         self.log_text.see(tk.END)
         
+        # Add to file log
         if level == "INFO":
-            self.logger.info(message)
+            self.logger.info(safe_message)
         elif level == "ERROR":
-            self.logger.error(message)
+            self.logger.error(safe_message)
         elif level == "WARNING":
-            self.logger.warning(message)
+            self.logger.warning(safe_message)
             
     def connect_to_sap_gui(self) -> bool:
-        """Connect to SAP GUI using COM interface - No mouse needed!"""
+        """Connect to SAP GUI using COM interface - Fixed threading."""
         try:
-            self.log_message("🔌 Connecting to SAP GUI Scripting API...")
+            # Initialize COM for this thread
+            pythoncom.CoInitialize()
+            
+            self.log_message("Connecting to SAP GUI Scripting API...")
             
             # Get SAP GUI Automation object
             self.sap_gui_auto = win32com.client.GetObject("SAPGUI")
@@ -318,15 +339,15 @@ class SAPBackendAutomation:
             client = session_info.Client
             user = session_info.User
             
-            self.connection_status_var.set(f"✅ Connected: {system_name} Client {client} User {user}")
-            self.log_message(f"✅ Successfully connected to SAP: {system_name} Client {client} User {user}")
+            self.connection_status_var.set(f"[OK] Connected: {system_name} Client {client} User {user}")
+            self.log_message(f"Successfully connected to SAP: {system_name} Client {client} User {user}")
             
             return True
             
         except Exception as e:
             error_msg = str(e)
-            self.connection_status_var.set("❌ Connection Failed")
-            self.log_message(f"❌ Failed to connect to SAP: {error_msg}", "ERROR")
+            self.connection_status_var.set("[X] Connection Failed")
+            self.log_message(f"Failed to connect to SAP: {error_msg}", "ERROR")
             
             # Show detailed error message
             messagebox.showerror("SAP Connection Error", 
@@ -336,6 +357,9 @@ class SAPBackendAutomation:
                                "2. You are logged into SAP\n"
                                "3. SAP GUI Scripting is enabled")
             return False
+        finally:
+            # Don't uninitialize here, keep COM initialized for the session
+            pass
             
     def test_sap_connection(self):
         """Test SAP connection and basic functionality."""
@@ -344,7 +368,10 @@ class SAPBackendAutomation:
             return
             
         try:
-            self.log_message("🧪 Testing SAP connection...")
+            # Initialize COM for this thread
+            pythoncom.CoInitialize()
+            
+            self.log_message("Testing SAP connection...")
             
             # Test basic session access
             current_transaction = self.session.Info.Transaction
@@ -356,23 +383,25 @@ class SAPBackendAutomation:
             # Test navigation to MD04
             test_result = self.execute_transaction("MD04")
             if test_result:
-                self.log_message("✅ SAP connection test successful!")
+                self.log_message("SAP connection test successful!")
                 messagebox.showinfo("Success", "SAP connection test successful!\n\nBackend automation is ready to use.")
             else:
-                self.log_message("❌ SAP connection test failed!", "ERROR")
+                self.log_message("SAP connection test failed!", "ERROR")
                 messagebox.showerror("Error", "SAP connection test failed!")
                 
         except Exception as e:
-            self.log_message(f"❌ Connection test error: {e}", "ERROR")
+            self.log_message(f"Connection test error: {e}", "ERROR")
             messagebox.showerror("Error", f"Connection test failed:\n{e}")
+        finally:
+            pythoncom.CoUninitialize()
             
     def execute_transaction(self, tcode: str) -> bool:
-        """Execute SAP transaction using GUI scripting."""
+        """Execute SAP transaction using GUI scripting - Fixed COM."""
         try:
             if not self.session:
                 raise Exception("No active SAP session")
             
-            self.log_message(f"📋 Executing transaction: {tcode}")
+            self.log_message(f"Executing transaction: {tcode}")
             
             # Enter transaction code
             self.session.findById("wnd[0]/tbar[0]/okcd").text = tcode
@@ -383,21 +412,24 @@ class SAPBackendAutomation:
             # Verify transaction loaded
             current_transaction = self.session.Info.Transaction
             if current_transaction.upper() == tcode.upper():
-                self.log_message(f"✅ Transaction {tcode} loaded successfully")
+                self.log_message(f"Transaction {tcode} loaded successfully")
                 return True
             else:
-                self.log_message(f"⚠️ Transaction may not have loaded correctly. Current: {current_transaction}")
+                self.log_message(f"Transaction may not have loaded correctly. Current: {current_transaction}")
                 return True  # Continue anyway
                 
         except Exception as e:
-            self.log_message(f"❌ Failed to execute transaction {tcode}: {e}", "ERROR")
+            self.log_message(f"Failed to execute transaction {tcode}: {e}", "ERROR")
             return False
             
     def extract_part_data_md04(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MD04 transaction - Backend only!"""
+        """Extract part data using MD04 transaction - Fixed COM threading."""
         start_time = datetime.now()
         
         try:
+            # Initialize COM for this thread
+            pythoncom.CoInitialize()
+            
             # Execute MD04 transaction
             if not self.execute_transaction("MD04"):
                 raise Exception("Failed to execute MD04")
@@ -449,7 +481,7 @@ class SAPBackendAutomation:
                 "transaction": "MD04"
             }
             
-            self.log_message(f"✅ Successfully extracted data for {part_number}: {description[:50]}...")
+            self.log_message(f"Successfully extracted data for {part_number}: {description[:50]}...")
             return result
             
         except Exception as e:
@@ -467,8 +499,11 @@ class SAPBackendAutomation:
                 "error": error_msg
             }
             
-            self.log_message(f"❌ Failed to extract data for {part_number}: {error_msg}", "ERROR")
+            self.log_message(f"Failed to extract data for {part_number}: {error_msg}", "ERROR")
             return result
+        finally:
+            # Keep COM initialized for the session
+            pass
             
     def extract_description_multiple_methods(self, part_number: str) -> str:
         """Try multiple methods to extract part description."""
@@ -510,15 +545,6 @@ class SAPBackendAutomation:
                 return description
         except Exception as e:
             self.log_message(f"Method 3 failed: {e}", "WARNING")
-        
-        # Method 4: OCR fallback
-        if self.config["ocr_fallback"]["enabled"]:
-            try:
-                description = self.extract_using_ocr()
-                if description and description != "ERROR":
-                    return f"OCR: {description}"
-            except Exception as e:
-                self.log_message(f"OCR fallback failed: {e}", "WARNING")
         
         return "ERROR: Could not extract description"
         
@@ -650,26 +676,6 @@ class SAPBackendAutomation:
             
         return ""
         
-    def extract_using_ocr(self) -> str:
-        """OCR fallback method."""
-        try:
-            region = self.config["ocr_fallback"]["description_region"]
-            screenshot = ImageGrab.grab(bbox=region)
-            
-            # Use OCR to extract text
-            text = pytesseract.image_to_string(screenshot, config='--psm 6')
-            
-            # Clean up the text
-            cleaned_text = re.sub(r'\s+', ' ', text.strip())
-            
-            if len(cleaned_text) > 10:  # Reasonable description length
-                return cleaned_text
-                
-        except Exception as e:
-            self.log_message(f"OCR extraction failed: {e}", "WARNING")
-            
-        return "ERROR"
-        
     def get_parts_list(self) -> List[str]:
         """Get list of parts from various input sources."""
         parts = []
@@ -755,20 +761,23 @@ class SAPBackendAutomation:
         self.progress_bar.config(maximum=self.total_parts)
         self.progress_var.set(f"Starting backend automation for {self.total_parts} parts...")
         
-        self.log_message(f"🚀 Starting backend automation for {self.total_parts} parts using {transaction}")
-        self.log_message("👻 Running in background - no mouse movement required!")
+        self.log_message(f"Starting backend automation for {self.total_parts} parts using {transaction}")
+        self.log_message("Running in background - no mouse movement required!")
         
-        # Run automation in separate thread
-        threading.Thread(target=self.run_backend_automation, args=(parts, transaction), daemon=True).start()
+        # Run automation in separate thread with proper COM initialization
+        threading.Thread(target=self.run_backend_automation_fixed, args=(parts, transaction), daemon=True).start()
         
-    def run_backend_automation(self, parts: List[str], transaction: str):
-        """Run the complete backend automation process."""
+    def run_backend_automation_fixed(self, parts: List[str], transaction: str):
+        """Run the complete backend automation process - Fixed COM threading."""
         try:
+            # Initialize COM for this thread
+            pythoncom.CoInitialize()
+            
             start_time = datetime.now()
             
             for i, part in enumerate(parts):
                 if not self.is_running:
-                    self.log_message("🛑 Automation stopped by user")
+                    self.log_message("Automation stopped by user")
                     break
                     
                 self.current_part_index = i + 1
@@ -814,9 +823,12 @@ class SAPBackendAutomation:
             error_msg = f"Backend automation failed: {e}"
             self.log_message(error_msg, "ERROR")
             self.root.after(0, lambda: self.automation_error(error_msg))
+        finally:
+            # Uninitialize COM for this thread
+            pythoncom.CoUninitialize()
             
     def extract_part_data_mm03(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MM03 transaction."""
+        """Extract part data using MM03 transaction - Fixed COM."""
         start_time = datetime.now()
         
         try:
@@ -891,7 +903,7 @@ class SAPBackendAutomation:
             }
             
     def extract_part_data_md06(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MD06 transaction."""
+        """Extract part data using MD06 transaction - Fixed COM."""
         start_time = datetime.now()
         
         try:
@@ -986,22 +998,22 @@ class SAPBackendAutomation:
         
         # Update progress
         self.progress_bar.config(value=self.total_parts)
-        self.progress_var.set(f"✅ Completed! {successful} successful, {failed} failed")
+        self.progress_var.set(f"[OK] Completed! {successful} successful, {failed} failed")
         self.current_part_var.set(f"Total time: {total_time:.1f} seconds")
         
         # Log completion
         avg_time = total_time / self.total_parts if self.total_parts > 0 else 0
-        self.log_message(f"✅ Backend automation completed!")
-        self.log_message(f"📊 Results: {successful} successful, {failed} failed")
-        self.log_message(f"⏱️ Total time: {total_time:.1f}s, Average: {avg_time:.1f}s per part")
+        self.log_message(f"Backend automation completed!")
+        self.log_message(f"Results: {successful} successful, {failed} failed")
+        self.log_message(f"Total time: {total_time:.1f}s, Average: {avg_time:.1f}s per part")
         
         # Show completion message
         messagebox.showinfo("Automation Complete", 
                            f"Backend automation completed!\n\n"
-                           f"✅ Successful: {successful}\n"
-                           f"❌ Failed: {failed}\n"
-                           f"⏱️ Total time: {total_time:.1f} seconds\n"
-                           f"📈 Average: {avg_time:.1f}s per part\n\n"
+                           f"[OK] Successful: {successful}\n"
+                           f"[X] Failed: {failed}\n"
+                           f"Time: {total_time:.1f} seconds\n"
+                           f"Average: {avg_time:.1f}s per part\n\n"
                            f"No mouse movement was required!")
         
     def automation_error(self, error_msg: str):
@@ -1010,13 +1022,13 @@ class SAPBackendAutomation:
         self.start_btn.config(state="normal")
         self.stop_btn.config(state="disabled")
         
-        self.progress_var.set("❌ Automation failed!")
+        self.progress_var.set("[X] Automation failed!")
         messagebox.showerror("Automation Error", f"Backend automation failed:\n\n{error_msg}")
         
     def stop_automation(self):
         """Stop the automation process."""
         self.is_running = False
-        self.log_message("🛑 Stopping automation...")
+        self.log_message("Stopping automation...")
         
     def save_results(self):
         """Save results to Excel file."""
@@ -1074,7 +1086,7 @@ class SAPBackendAutomation:
                     error_df = pd.DataFrame(error_results)
                     error_df.to_excel(writer, sheet_name='Errors', index=False)
             
-            self.log_message(f"💾 Results saved to: {filename}")
+            self.log_message(f"Results saved to: {filename}")
             messagebox.showinfo("Success", f"Results saved successfully!\n\nFile: {filename}")
             
         except Exception as e:
@@ -1084,32 +1096,46 @@ class SAPBackendAutomation:
             
     def run(self):
         """Start the application."""
-        self.log_message("🤖 SAP Backend Automation System Started")
-        self.log_message("👻 This system uses SAP GUI Scripting API - no mouse movement required!")
-        self.log_message("🔌 Please connect to SAP to begin...")
+        self.log_message("SAP Backend Automation System Started - FIXED VERSION")
+        self.log_message("This system uses SAP GUI Scripting API - no mouse movement required!")
+        self.log_message("Please connect to SAP to begin...")
         
         try:
             self.root.mainloop()
         except KeyboardInterrupt:
-            self.log_message("👋 Application closed by user")
+            self.log_message("Application closed by user")
         finally:
-            if self.session:
-                try:
+            # Clean up COM objects
+            try:
+                if self.session:
                     self.session = None
+                if self.connection:
                     self.connection = None
+                if self.application:
                     self.application = None
+                if self.sap_gui_auto:
                     self.sap_gui_auto = None
-                except:
-                    pass
+                pythoncom.CoUninitialize()
+            except:
+                pass
 
 
 def main():
-    """Main function to run the backend automation."""
+    """Main function to run the fixed backend automation."""
+    print("="*60)
+    print("SAP Backend Automation - FIXED VERSION")
+    print("="*60)
+    print("Fixed Issues:")
+    print("1. Unicode/Emoji encoding errors")
+    print("2. COM threading 'CoInitialize' errors")
+    print("3. Improved error handling")
+    print("="*60)
+    
     try:
-        app = SAPBackendAutomation()
+        app = SAPBackendAutomationFixed()
         app.run()
     except Exception as e:
-        print(f"❌ Failed to start application: {e}")
+        print(f"[X] Failed to start application: {e}")
         input("Press Enter to exit...")
 
 
