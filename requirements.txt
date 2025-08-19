@@ -1,1 +1,10 @@
-pyautogui
+tkinter
+pandas>=1.3.0
+pyautogui>=0.9.54
+opencv-python>=4.5.0
+Pillow>=8.0.0
+pytesseract>=0.3.8
+pywin32>=227
+openpyxl>=3.0.7
+keyboard>=0.13.5
+pyinstaller>=4.5.1
