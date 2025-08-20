@@ -1,0 +1,24 @@
+2025-08-20 18:02:24,042 - INFO - SAP Backend Automation - Single Thread Version Started
+2025-08-20 18:02:24,120 - INFO - This version runs in main thread - NO THREADING ISSUES!
+2025-08-20 18:02:24,135 - INFO - Please connect to SAP to begin...
+2025-08-20 18:05:47,996 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 18:05:50,823 - ERROR - Failed to connect to SAP: No SAP connections available. Please connect to SAP.
+2025-08-20 18:06:23,478 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 18:06:26,051 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-20 18:06:31,884 - INFO - Testing SAP connection...
+2025-08-20 18:06:31,916 - INFO - Current Transaction: SESSION_MANAGER
+2025-08-20 18:06:31,921 - INFO - Screen Number: 100
+2025-08-20 18:06:31,927 - INFO - Executing transaction: MD04
+2025-08-20 18:06:35,204 - INFO - Transaction MD04 loaded successfully
+2025-08-20 18:06:35,215 - INFO - SAP connection test successful!
+2025-08-20 18:07:01,216 - INFO - Starting single-thread automation for 1 parts
+2025-08-20 18:07:01,229 - INFO - Running in main thread - no threading issues!
+2025-08-20 18:07:01,245 - INFO - Processing part: 857-A65473-106
+2025-08-20 18:07:01,253 - INFO - Executing transaction: MD04
+2025-08-20 18:07:03,758 - INFO - Transaction MD04 loaded successfully
+2025-08-20 18:07:03,786 - ERROR - Could not enter material number: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 18:07:03,816 - ERROR - [X] Failed to extract data for 857-A65473-106: Could not enter material number: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 18:07:04,327 - INFO - [OK] Single-thread automation completed!
+2025-08-20 18:07:04,346 - INFO - Results: 0 successful, 1 failed
+2025-08-20 18:07:04,351 - INFO - Total time: 3.1s
+2025-08-20 18:12:04,047 - INFO - Application closed by user

@@ -1,0 +1,2 @@
+Requirement already satisfied: opencv-python in c:\program files\python313\lib\site-packages (4.11.0.86)
+Requirement already satisfied: numpy>=1.21.2 in c:\program files\python313\lib\site-packages (from opencv-python) (2.3.1)

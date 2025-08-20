@@ -1,0 +1,50 @@
+{
+    "sap_connection_details": {
+        "name": "001. SAP ECC Production (PRD)",
+        "system_description": "SAP ERP",
+        "sid": "PRD",
+        "group_server": "Production PRD",
+        "message_server": "pdtcprd01.fermont.lamrc.net"
+    },
+    "coordinates": {
+        "sap_taskbar_icon": [
+            1177,
+            610
+        ],
+        "maximize_button": [
+            948,
+            739
+        ],
+        "sap_connection": [
+            1067,
+            610
+        ],
+        "transaction_field": [
+            151,
+            78
+        ],
+        "part_number_field": [
+            410,
+            368
+        ],
+        "mrp_area_field": [
+            300,
+            408
+        ],
+        "matres_number": [
+            378,
+            601
+        ],
+        "maximize_detail": [
+            500,
+            50
+        ]
+    },
+    "mrp_area": "1000",
+    "wait_times": {
+        "sap_launch": 5,
+        "connection": 10,
+        "transaction_load": 3,
+        "data_extraction": 2
+    }
+}

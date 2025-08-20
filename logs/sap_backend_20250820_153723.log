@@ -1,0 +1,38 @@
+2025-08-20 15:37:25,012 - INFO - SAP Backend Automation System Started - FIXED VERSION
+2025-08-20 15:37:25,022 - INFO - This system uses SAP GUI Scripting API - no mouse movement required!
+2025-08-20 15:37:25,028 - INFO - Please connect to SAP to begin...
+2025-08-20 15:37:34,990 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:37:35,004 - ERROR - Failed to connect to SAP: (-2147221020, 'Invalid syntax', None, None)
+2025-08-20 15:37:46,645 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:37:46,657 - ERROR - Failed to connect to SAP: (-2147221020, 'Invalid syntax', None, None)
+2025-08-20 15:37:57,679 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:38:00,212 - ERROR - Failed to connect to SAP: No SAP connections available. Please connect to SAP.
+2025-08-20 15:39:32,952 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:39:35,517 - ERROR - Failed to connect to SAP: No SAP connections available. Please connect to SAP.
+2025-08-20 15:41:34,162 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:41:35,873 - ERROR - Failed to connect to SAP: No SAP connections available. Please connect to SAP.
+2025-08-20 15:42:01,838 - INFO - Connecting to SAP GUI Scripting API...
+2025-08-20 15:42:03,752 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-20 15:42:08,251 - INFO - Testing SAP connection...
+2025-08-20 15:42:08,278 - INFO - Current Transaction: SESSION_MANAGER
+2025-08-20 15:42:08,284 - INFO - Screen Number: 100
+2025-08-20 15:42:08,297 - INFO - Executing transaction: MD04
+2025-08-20 15:42:12,088 - INFO - Transaction MD04 loaded successfully
+2025-08-20 15:42:12,095 - INFO - SAP connection test successful!
+2025-08-20 15:42:39,976 - INFO - Starting backend automation for 1 parts using MD04
+2025-08-20 15:42:39,990 - INFO - Running in background - no mouse movement required!
+2025-08-20 15:42:40,004 - INFO - Executing transaction: MD04
+2025-08-20 15:42:40,037 - ERROR - Failed to execute transaction MD04: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-20 15:42:40,050 - ERROR - Failed to extract data for 857-A65473-106: Failed to execute MD04
+2025-08-20 15:42:40,584 - INFO - Backend automation completed!
+2025-08-20 15:42:40,591 - INFO - Results: 0 successful, 1 failed
+2025-08-20 15:42:40,602 - INFO - Total time: 0.6s, Average: 0.6s per part
+2025-08-20 15:43:17,344 - INFO - Starting backend automation for 1 parts using MD04
+2025-08-20 15:43:17,353 - INFO - Running in background - no mouse movement required!
+2025-08-20 15:43:17,361 - INFO - Executing transaction: MD04
+2025-08-20 15:43:17,391 - ERROR - Failed to execute transaction MD04: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-20 15:43:17,401 - ERROR - Failed to extract data for 857-A65473-106: Failed to execute MD04
+2025-08-20 15:43:17,912 - INFO - Backend automation completed!
+2025-08-20 15:43:17,918 - INFO - Results: 0 successful, 1 failed
+2025-08-20 15:43:17,925 - INFO - Total time: 0.6s, Average: 0.6s per part
+2025-08-20 16:20:05,878 - INFO - Application closed by user
