@@ -17,20 +17,21 @@ class SAPFinalWorkingVersion:
     """
     
     def __init__(self):
-        self.setup_logging()
-        self.setup_gui()
-        
-        # SAP Connection objects
-        self.session = None
-        self.results = []
-        
-        # YOUR EXACT FIELD IDs from the scan
+        # Initialize field IDs FIRST (before GUI setup)
         self.field_ids = {
             "material_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR",
             "mrp_area_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID",
             "plant_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS",
             "description_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/txtMT61D-MAKTX"
         }
+        
+        # SAP Connection objects
+        self.session = None
+        self.results = []
+        
+        # Setup logging and GUI
+        self.setup_logging()
+        self.setup_gui()
         
     def setup_logging(self):
         """Setup logging system."""
