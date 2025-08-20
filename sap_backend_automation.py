@@ -6,17 +6,13 @@ import time
 import logging
 import os
 import json
-import threading
 from datetime import datetime
-from typing import List, Dict, Optional, Tuple
-import pytesseract
-from PIL import ImageGrab
-import re
-import pythoncom  # Added for COM threading
+from typing import List, Dict, Optional
+import pythoncom
 
-class SAPBackendAutomationFixed:
+class SAPBackendSingleThread:
     """
-    Fixed SAP Backend Automation - No Unicode errors, No threading issues
+    SAP Backend Automation - Single Thread Version (No Threading Issues!)
     """
     
     def __init__(self):
@@ -31,33 +27,22 @@ class SAPBackendAutomationFixed:
         self.session = None
         
         # Processing state
-        self.is_running = False
         self.results = []
-        self.current_part_index = 0
-        self.total_parts = 0
         
     def setup_logging(self):
         """Setup logging system without Unicode characters."""
         if not os.path.exists('logs'):
             os.makedirs('logs')
             
-        log_filename = f"logs/sap_backend_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-        
-        # Create custom formatter that handles Unicode safely
-        class SafeFormatter(logging.Formatter):
-            def format(self, record):
-                # Remove or replace Unicode characters
-                if hasattr(record, 'msg'):
-                    record.msg = str(record.msg).encode('ascii', 'replace').decode('ascii')
-                return super().format(record)
+        log_filename = f"logs/sap_single_thread_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         
         # Setup file handler with UTF-8 encoding
         file_handler = logging.FileHandler(log_filename, encoding='utf-8')
-        file_handler.setFormatter(SafeFormatter('%(asctime)s - %(levelname)s - %(message)s'))
+        file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         
         # Setup console handler with safe encoding
         console_handler = logging.StreamHandler()
-        console_handler.setFormatter(SafeFormatter('%(asctime)s - %(levelname)s - %(message)s'))
+        console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
         
         # Setup logger
         self.logger = logging.getLogger(__name__)
@@ -68,39 +53,13 @@ class SAPBackendAutomationFixed:
     def load_config(self):
         """Load configuration."""
         default_config = {
-            "sap_connection": {
-                "system_name": "001. SAP ECC Production (PRD)",
-                "client": "100",
-                "language": "EN"
-            },
-            "transactions": {
-                "material_display": "MM03",
-                "stock_requirements": "MD04",
-                "mrp_list": "MD06"
-            },
-            "field_mappings": {
-                "md04": {
-                    "material_field": "wnd[0]/usr/ctxtRM61E-MATNR",
-                    "mrp_area_field": "wnd[0]/usr/ctxtRM61E-BERID",
-                    "plant_field": "wnd[0]/usr/ctxtRM61E-WERKS",
-                    "execute_button": "wnd[0]/tbar[1]/btn[8]",
-                    "result_grid": "wnd[0]/usr/cntlGRID1/shellcont/shell",
-                    "detail_window": "wnd[1]",
-                    "description_field": "wnd[1]/usr/subSUB0:SAPLMGMM:2001/subSUB0:SAPLMGMM:2003/txtRMMG1-MAKTX"
-                }
-            },
             "default_values": {
                 "mrp_area": "1000",
                 "plant": ""
-            },
-            "ocr_fallback": {
-                "enabled": True,
-                "description_region": [100, 400, 700, 500],
-                "confidence_threshold": 60
             }
         }
         
-        config_file = "sap_backend_config.json"
+        config_file = "sap_single_thread_config.json"
         try:
             with open(config_file, 'r') as f:
                 self.config = json.load(f)
@@ -112,12 +71,8 @@ class SAPBackendAutomationFixed:
     def setup_gui(self):
         """Setup the GUI interface."""
         self.root = tk.Tk()
-        self.root.title("SAP Backend Automation - Fixed Version")
-        self.root.geometry("900x800")
-        
-        # Styling
-        style = ttk.Style()
-        style.theme_use('clam')
+        self.root.title("SAP Backend Automation - Single Thread (FIXED)")
+        self.root.geometry("900x700")
         
         # Main container
         main_container = ttk.Frame(self.root)
@@ -128,12 +83,12 @@ class SAPBackendAutomationFixed:
         header_frame.pack(fill=tk.X, pady=(0, 10))
         
         title_label = ttk.Label(header_frame, 
-                               text="SAP Backend Automation System - Fixed", 
+                               text="SAP Backend Automation - Single Thread Fix", 
                                font=("Arial", 16, "bold"))
         title_label.pack()
         
         subtitle_label = ttk.Label(header_frame,
-                                  text="Invisible automation using SAP GUI Scripting API - No mouse movement!",
+                                  text="No threading issues - Direct COM automation!",
                                   font=("Arial", 10),
                                   foreground="green")
         subtitle_label.pack()
@@ -176,18 +131,6 @@ class SAPBackendAutomationFixed:
         self.parts_text = scrolledtext.ScrolledText(multi_frame, height=4, width=50)
         self.parts_text.pack(fill=tk.X, pady=(5, 0))
         
-        # File input
-        file_frame = ttk.Frame(input_frame)
-        file_frame.pack(fill=tk.X, pady=(5, 0))
-        
-        ttk.Label(file_frame, text="Excel File:").pack(side=tk.LEFT)
-        self.file_path_var = tk.StringVar()
-        file_entry = ttk.Entry(file_frame, textvariable=self.file_path_var, width=40)
-        file_entry.pack(side=tk.LEFT, padx=(10, 0), fill=tk.X, expand=True)
-        
-        browse_btn = ttk.Button(file_frame, text="Browse", command=self.browse_file)
-        browse_btn.pack(side=tk.RIGHT, padx=(5, 0))
-        
         # Configuration Section
         config_frame = ttk.LabelFrame(main_container, text="Configuration", padding="10")
         config_frame.pack(fill=tk.X, pady=(0, 10))
@@ -208,23 +151,13 @@ class SAPBackendAutomationFixed:
         mrp_entry = ttk.Entry(config_grid, textvariable=self.mrp_area_var, width=10)
         mrp_entry.grid(row=0, column=3, padx=(10, 20), sticky=tk.W)
         
-        # Plant
-        ttk.Label(config_grid, text="Plant:").grid(row=0, column=4, sticky=tk.W)
-        self.plant_var = tk.StringVar(value=self.config["default_values"]["plant"])
-        plant_entry = ttk.Entry(config_grid, textvariable=self.plant_var, width=10)
-        plant_entry.grid(row=0, column=5, padx=(10, 0), sticky=tk.W)
-        
         # Control Buttons
         control_frame = ttk.Frame(main_container)
         control_frame.pack(fill=tk.X, pady=(0, 10))
         
-        self.start_btn = ttk.Button(control_frame, text="START Backend Automation",
-                                   command=self.start_automation)
+        self.start_btn = ttk.Button(control_frame, text="START Automation (Single Thread)",
+                                   command=self.start_automation_single_thread)
         self.start_btn.pack(side=tk.LEFT)
-        
-        self.stop_btn = ttk.Button(control_frame, text="STOP", 
-                                  command=self.stop_automation, state="disabled")
-        self.stop_btn.pack(side=tk.LEFT, padx=(10, 0))
         
         self.save_btn = ttk.Button(control_frame, text="Save Results",
                                   command=self.save_results, state="disabled")
@@ -234,7 +167,7 @@ class SAPBackendAutomationFixed:
         progress_frame = ttk.LabelFrame(main_container, text="Progress", padding="10")
         progress_frame.pack(fill=tk.X, pady=(0, 10))
         
-        self.progress_var = tk.StringVar(value="Ready to start backend automation...")
+        self.progress_var = tk.StringVar(value="Ready to start automation...")
         progress_label = ttk.Label(progress_frame, textvariable=self.progress_var)
         progress_label.pack(anchor=tk.W)
         
@@ -252,29 +185,24 @@ class SAPBackendAutomationFixed:
         results_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
         
         # Results tree
-        columns = ("Part Number", "Description", "Material Type", "Status", "Processing Time", "Timestamp")
-        self.results_tree = ttk.Treeview(results_frame, columns=columns, show="headings", height=10)
+        columns = ("Part Number", "Description", "Status", "Processing Time", "Timestamp")
+        self.results_tree = ttk.Treeview(results_frame, columns=columns, show="headings", height=8)
         
         for col in columns:
             self.results_tree.heading(col, text=col)
             if col == "Description":
-                self.results_tree.column(col, width=300)
+                self.results_tree.column(col, width=400)
             elif col == "Part Number":
-                self.results_tree.column(col, width=120)
+                self.results_tree.column(col, width=150)
             else:
-                self.results_tree.column(col, width=100)
+                self.results_tree.column(col, width=120)
         
         # Scrollbars for results
         v_scrollbar = ttk.Scrollbar(results_frame, orient="vertical", command=self.results_tree.yview)
-        h_scrollbar = ttk.Scrollbar(results_frame, orient="horizontal", command=self.results_tree.xview)
-        self.results_tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
+        self.results_tree.configure(yscrollcommand=v_scrollbar.set)
         
-        self.results_tree.grid(row=0, column=0, sticky="nsew")
-        v_scrollbar.grid(row=0, column=1, sticky="ns")
-        h_scrollbar.grid(row=1, column=0, sticky="ew")
-        
-        results_frame.grid_columnconfigure(0, weight=1)
-        results_frame.grid_rowconfigure(0, weight=1)
+        self.results_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
         # Log Section
         log_frame = ttk.LabelFrame(main_container, text="System Log", padding="10")
@@ -284,7 +212,7 @@ class SAPBackendAutomationFixed:
         self.log_text.pack(fill=tk.X)
         
     def log_message(self, message: str, level: str = "INFO"):
-        """Add message to GUI log and logger - Safe Unicode handling."""
+        """Add message to GUI log and logger."""
         timestamp = datetime.now().strftime("%H:%M:%S")
         
         # Remove Unicode characters for safe logging
@@ -303,10 +231,13 @@ class SAPBackendAutomationFixed:
         elif level == "WARNING":
             self.logger.warning(safe_message)
             
+        # Update GUI immediately
+        self.root.update_idletasks()
+            
     def connect_to_sap_gui(self) -> bool:
-        """Connect to SAP GUI using COM interface - Fixed threading."""
+        """Connect to SAP GUI using COM interface - Main thread only."""
         try:
-            # Initialize COM for this thread
+            # Initialize COM for main thread
             pythoncom.CoInitialize()
             
             self.log_message("Connecting to SAP GUI Scripting API...")
@@ -349,7 +280,6 @@ class SAPBackendAutomationFixed:
             self.connection_status_var.set("[X] Connection Failed")
             self.log_message(f"Failed to connect to SAP: {error_msg}", "ERROR")
             
-            # Show detailed error message
             messagebox.showerror("SAP Connection Error", 
                                f"Failed to connect to SAP GUI:\n\n{error_msg}\n\n"
                                "Please ensure:\n"
@@ -357,9 +287,6 @@ class SAPBackendAutomationFixed:
                                "2. You are logged into SAP\n"
                                "3. SAP GUI Scripting is enabled")
             return False
-        finally:
-            # Don't uninitialize here, keep COM initialized for the session
-            pass
             
     def test_sap_connection(self):
         """Test SAP connection and basic functionality."""
@@ -368,9 +295,6 @@ class SAPBackendAutomationFixed:
             return
             
         try:
-            # Initialize COM for this thread
-            pythoncom.CoInitialize()
-            
             self.log_message("Testing SAP connection...")
             
             # Test basic session access
@@ -384,7 +308,7 @@ class SAPBackendAutomationFixed:
             test_result = self.execute_transaction("MD04")
             if test_result:
                 self.log_message("SAP connection test successful!")
-                messagebox.showinfo("Success", "SAP connection test successful!\n\nBackend automation is ready to use.")
+                messagebox.showinfo("Success", "SAP connection test successful!\n\nSingle-thread automation is ready!")
             else:
                 self.log_message("SAP connection test failed!", "ERROR")
                 messagebox.showerror("Error", "SAP connection test failed!")
@@ -392,11 +316,9 @@ class SAPBackendAutomationFixed:
         except Exception as e:
             self.log_message(f"Connection test error: {e}", "ERROR")
             messagebox.showerror("Error", f"Connection test failed:\n{e}")
-        finally:
-            pythoncom.CoUninitialize()
             
     def execute_transaction(self, tcode: str) -> bool:
-        """Execute SAP transaction using GUI scripting - Fixed COM."""
+        """Execute SAP transaction using GUI scripting - Main thread."""
         try:
             if not self.session:
                 raise Exception("No active SAP session")
@@ -423,65 +345,61 @@ class SAPBackendAutomationFixed:
             return False
             
     def extract_part_data_md04(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MD04 transaction - Fixed COM threading."""
+        """Extract part data using MD04 transaction - Main thread only."""
         start_time = datetime.now()
         
         try:
-            # Initialize COM for this thread
-            pythoncom.CoInitialize()
+            self.log_message(f"Processing part: {part_number}")
             
             # Execute MD04 transaction
             if not self.execute_transaction("MD04"):
                 raise Exception("Failed to execute MD04")
             
             # Enter material number
-            material_field = self.config["field_mappings"]["md04"]["material_field"]
             try:
-                self.session.findById(material_field).text = part_number
-            except:
-                # Fallback field mapping
                 self.session.findById("wnd[0]/usr/ctxtRM61E-MATNR").text = part_number
+                self.log_message(f"Entered material number: {part_number}")
+            except Exception as e:
+                self.log_message(f"Could not enter material number: {e}", "ERROR")
+                raise Exception(f"Could not enter material number: {e}")
             
             # Enter MRP Area if specified
             if self.mrp_area_var.get():
                 try:
-                    mrp_field = self.config["field_mappings"]["md04"]["mrp_area_field"]
-                    self.session.findById(mrp_field).text = self.mrp_area_var.get()
-                except:
-                    # Fallback
                     self.session.findById("wnd[0]/usr/ctxtRM61E-BERID").text = self.mrp_area_var.get()
-            
-            # Enter Plant if specified
-            if self.plant_var.get():
-                try:
-                    plant_field = self.config["field_mappings"]["md04"]["plant_field"]
-                    self.session.findById(plant_field).text = self.plant_var.get()
+                    self.log_message(f"Entered MRP area: {self.mrp_area_var.get()}")
                 except:
-                    pass
+                    self.log_message("Could not enter MRP area (may not be required)", "WARNING")
             
             # Execute the query
+            self.log_message("Executing query...")
             self.session.findById("wnd[0]").sendVKey(0)  # Press Enter
             time.sleep(3)  # Wait for results
             
-            # Extract description - multiple methods
-            description = self.extract_description_multiple_methods(part_number)
+            # Check for error messages first
+            error_msg = self.check_for_errors()
+            if error_msg:
+                raise Exception(f"SAP Error: {error_msg}")
             
-            # Get additional information if available
-            material_type = self.extract_material_type()
+            # Extract description using multiple methods
+            description = self.extract_description_all_methods(part_number)
             
             processing_time = (datetime.now() - start_time).total_seconds()
             
             result = {
                 "part_number": part_number,
                 "description": description,
-                "material_type": material_type,
-                "status": "SUCCESS" if description != "ERROR" else "ERROR",
+                "status": "SUCCESS" if description and "ERROR" not in description else "ERROR",
                 "processing_time": round(processing_time, 2),
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "transaction": "MD04"
             }
             
-            self.log_message(f"Successfully extracted data for {part_number}: {description[:50]}...")
+            if result["status"] == "SUCCESS":
+                self.log_message(f"[OK] Successfully extracted: {description[:50]}...")
+            else:
+                self.log_message(f"[X] Failed to extract description for {part_number}")
+            
             return result
             
         except Exception as e:
@@ -491,7 +409,6 @@ class SAPBackendAutomationFixed:
             result = {
                 "part_number": part_number,
                 "description": f"ERROR: {error_msg}",
-                "material_type": "ERROR",
                 "status": "ERROR",
                 "processing_time": round(processing_time, 2),
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -499,30 +416,66 @@ class SAPBackendAutomationFixed:
                 "error": error_msg
             }
             
-            self.log_message(f"Failed to extract data for {part_number}: {error_msg}", "ERROR")
+            self.log_message(f"[X] Failed to extract data for {part_number}: {error_msg}", "ERROR")
             return result
-        finally:
-            # Keep COM initialized for the session
-            pass
             
-    def extract_description_multiple_methods(self, part_number: str) -> str:
-        """Try multiple methods to extract part description."""
-        
-        # Method 1: Try to find and double-click on result row
+    def check_for_errors(self) -> str:
+        """Check for SAP error messages."""
         try:
-            # Look for the results grid
+            # Check for error popup windows
+            error_windows = ["wnd[1]", "wnd[2]"]
+            
+            for window_id in error_windows:
+                try:
+                    window = self.session.findById(window_id)
+                    if window and window.text:
+                        window_text = window.text
+                        if any(keyword in window_text.lower() for keyword in ['error', 'fehler', 'warning']):
+                            self.log_message(f"Error window detected: {window_text}")
+                            # Try to close the error window
+                            try:
+                                window.sendVKey(0)  # Press Enter to close
+                            except:
+                                pass
+                            return window_text
+                except:
+                    continue
+                    
+            # Check status bar for errors
+            try:
+                status_bar = self.session.findById("wnd[0]/sbar")
+                if status_bar and status_bar.text:
+                    status_text = status_bar.text
+                    if any(keyword in status_text.lower() for keyword in ['error', 'not found', 'does not exist']):
+                        self.log_message(f"Status bar error: {status_text}")
+                        return status_text
+            except:
+                pass
+                
+        except Exception as e:
+            self.log_message(f"Error checking for SAP errors: {e}", "WARNING")
+            
+        return ""
+        
+    def extract_description_all_methods(self, part_number: str) -> str:
+        """Try all methods to extract part description."""
+        
+        # Method 1: Look for results grid and double-click
+        try:
+            self.log_message("Method 1: Checking results grid...")
             grid = self.session.findById("wnd[0]/usr/cntlGRID1/shellcont/shell")
             if grid:
-                # Get row count
                 row_count = grid.RowCount
-                self.log_message(f"Found {row_count} rows in results grid")
+                self.log_message(f"Found results grid with {row_count} rows")
                 
                 if row_count > 0:
-                    # Double-click on first row to open details
+                    # Select and double-click first row
+                    grid.currentCellRow = 0
+                    grid.selectedRows = "0"
                     grid.doubleClickCurrentCell()
                     time.sleep(2)
                     
-                    # Try to extract description from detail window
+                    # Check detail window
                     description = self.extract_from_detail_window()
                     if description and description != "ERROR":
                         return description
@@ -530,40 +483,43 @@ class SAPBackendAutomationFixed:
         except Exception as e:
             self.log_message(f"Method 1 failed: {e}", "WARNING")
         
-        # Method 2: Try to extract directly from main screen
+        # Method 2: Look on main screen
         try:
+            self.log_message("Method 2: Checking main screen...")
             description = self.extract_from_main_screen()
             if description and description != "ERROR":
                 return description
         except Exception as e:
             self.log_message(f"Method 2 failed: {e}", "WARNING")
         
-        # Method 3: Try MM03 transaction for description
+        # Method 3: Try MM03 for description
         try:
+            self.log_message("Method 3: Trying MM03...")
             description = self.extract_using_mm03(part_number)
             if description and description != "ERROR":
                 return description
         except Exception as e:
             self.log_message(f"Method 3 failed: {e}", "WARNING")
         
-        return "ERROR: Could not extract description"
+        return "ERROR: Could not extract description using any method"
         
     def extract_from_detail_window(self) -> str:
         """Extract description from detail window."""
         try:
-            # Check if detail window opened
             detail_windows = ["wnd[1]", "wnd[2]"]
             
             for window_id in detail_windows:
                 try:
                     window = self.session.findById(window_id)
                     if window:
-                        # Look for common description fields
+                        self.log_message(f"Found detail window: {window_id}")
+                        
+                        # Common description field locations
                         description_fields = [
                             f"{window_id}/usr/subSUB0:SAPLMGMM:2001/subSUB0:SAPLMGMM:2003/txtRMMG1-MAKTX",
                             f"{window_id}/usr/txtMAKTX",
                             f"{window_id}/usr/ctxtMAKTX",
-                            f"{window_id}/usr/subSUB1:SAPLMGMM:2003/txtRMMG1-MAKTX"
+                            f"{window_id}/usr/txtRMMG1-MAKTX"
                         ]
                         
                         for field_id in description_fields:
@@ -571,10 +527,10 @@ class SAPBackendAutomationFixed:
                                 field = self.session.findById(field_id)
                                 if field and field.text.strip():
                                     description = field.text.strip()
-                                    self.log_message(f"Found description in detail window: {description}")
+                                    self.log_message(f"Found description: {description}")
                                     
                                     # Close detail window
-                                    self.session.findById(window_id).close()
+                                    window.close()
                                     return description
                             except:
                                 continue
@@ -593,13 +549,10 @@ class SAPBackendAutomationFixed:
     def extract_from_main_screen(self) -> str:
         """Extract description from main MD04 screen."""
         try:
-            # Common description field locations in MD04
             description_fields = [
                 "wnd[0]/usr/txtMAKTX",
                 "wnd[0]/usr/ctxtMAKTX", 
-                "wnd[0]/usr/subSUB1:SAPLMD04:0300/txtMAKTX",
-                "wnd[0]/usr/lbl[1,5]",
-                "wnd[0]/usr/lbl[2,5]"
+                "wnd[0]/usr/subSUB1:SAPLMD04:0300/txtMAKTX"
             ]
             
             for field_id in description_fields:
@@ -623,20 +576,23 @@ class SAPBackendAutomationFixed:
             self.log_message(f"Trying MM03 for {part_number}")
             
             # Execute MM03
-            self.session.findById("wnd[0]/tbar[0]/okcd").text = "MM03"
-            self.session.findById("wnd[0]").sendVKey(0)
-            time.sleep(2)
+            if not self.execute_transaction("MM03"):
+                return "ERROR"
             
             # Enter material number
             self.session.findById("wnd[0]/usr/ctxtRMMG1-MATNR").text = part_number
             self.session.findById("wnd[0]").sendVKey(0)
             time.sleep(3)
             
+            # Check for errors
+            error_msg = self.check_for_errors()
+            if error_msg:
+                return f"ERROR: {error_msg}"
+            
             # Extract description
             description_fields = [
                 "wnd[0]/usr/tabsTABSTRIP_TABBLOCK/tabpTAB01/ssubTABFRAME1:SAPLMGMM:2001/subSUB1:SAPLMGMM:2003/txtRMMG1-MAKTX",
-                "wnd[0]/usr/txtRMMG1-MAKTX",
-                "wnd[0]/usr/ctxtRMMG1-MAKTX"
+                "wnd[0]/usr/txtRMMG1-MAKTX"
             ]
             
             for field_id in description_fields:
@@ -654,30 +610,8 @@ class SAPBackendAutomationFixed:
             
         return "ERROR"
         
-    def extract_material_type(self) -> str:
-        """Extract material type if available."""
-        try:
-            material_type_fields = [
-                "wnd[0]/usr/ctxtRMMG1-MTART",
-                "wnd[0]/usr/txtMTART",
-                "wnd[0]/usr/ctxtMTART"
-            ]
-            
-            for field_id in material_type_fields:
-                try:
-                    field = self.session.findById(field_id)
-                    if field and field.text.strip():
-                        return field.text.strip()
-                except:
-                    continue
-                    
-        except Exception as e:
-            self.log_message(f"Material type extraction failed: {e}", "WARNING")
-            
-        return ""
-        
     def get_parts_list(self) -> List[str]:
-        """Get list of parts from various input sources."""
+        """Get list of parts from input sources."""
         parts = []
         
         # Single part
@@ -690,19 +624,6 @@ class SAPBackendAutomationFixed:
         if text_content:
             text_parts = [part.strip() for part in text_content.split('\n') if part.strip()]
             parts.extend(text_parts)
-            
-        # Parts from Excel file
-        file_path = self.file_path_var.get().strip()
-        if file_path and os.path.exists(file_path):
-            try:
-                df = pd.read_excel(file_path)
-                # Assume first column contains part numbers
-                file_parts = df.iloc[:, 0].astype(str).tolist()
-                file_parts = [part.strip() for part in file_parts if part.strip() and part.strip().lower() != 'nan']
-                parts.extend(file_parts)
-                self.log_message(f"Loaded {len(file_parts)} parts from Excel file")
-            except Exception as e:
-                self.log_message(f"Error reading Excel file: {e}", "ERROR")
                 
         # Remove duplicates while preserving order
         unique_parts = []
@@ -714,17 +635,8 @@ class SAPBackendAutomationFixed:
                 
         return unique_parts
         
-    def browse_file(self):
-        """Browse for Excel file."""
-        file_path = filedialog.askopenfilename(
-            title="Select Excel file with part numbers",
-            filetypes=[("Excel files", "*.xlsx *.xls"), ("All files", "*.*")]
-        )
-        if file_path:
-            self.file_path_var.set(file_path)
-            
-    def start_automation(self):
-        """Start the backend automation process."""
+    def start_automation_single_thread(self):
+        """Start automation in single thread - NO THREADING ISSUES!"""
         # Validate connection
         if not self.session:
             messagebox.showerror("Error", "Please connect to SAP first!")
@@ -736,67 +648,42 @@ class SAPBackendAutomationFixed:
             messagebox.showerror("Error", "Please enter at least one part number!")
             return
             
-        # Validate transaction
-        transaction = self.transaction_var.get()
-        if transaction not in ["MD04", "MD06", "MM03"]:
-            messagebox.showerror("Error", "Please select a valid transaction!")
-            return
-            
-        # Start automation
-        self.is_running = True
-        self.total_parts = len(parts)
-        self.current_part_index = 0
+        # Clear previous results
         self.results.clear()
-        
-        # Update UI
-        self.start_btn.config(state="disabled")
-        self.stop_btn.config(state="normal")
-        self.save_btn.config(state="disabled")
-        
-        # Clear results tree
         for item in self.results_tree.get_children():
             self.results_tree.delete(item)
             
-        # Setup progress bar
-        self.progress_bar.config(maximum=self.total_parts)
-        self.progress_var.set(f"Starting backend automation for {self.total_parts} parts...")
+        # Setup progress
+        total_parts = len(parts)
+        self.progress_bar.config(maximum=total_parts)
+        self.progress_var.set(f"Starting single-thread automation for {total_parts} parts...")
         
-        self.log_message(f"Starting backend automation for {self.total_parts} parts using {transaction}")
-        self.log_message("Running in background - no mouse movement required!")
+        # Disable start button
+        self.start_btn.config(state="disabled")
+        self.save_btn.config(state="disabled")
         
-        # Run automation in separate thread with proper COM initialization
-        threading.Thread(target=self.run_backend_automation_fixed, args=(parts, transaction), daemon=True).start()
+        self.log_message(f"Starting single-thread automation for {total_parts} parts")
+        self.log_message("Running in main thread - no threading issues!")
         
-    def run_backend_automation_fixed(self, parts: List[str], transaction: str):
-        """Run the complete backend automation process - Fixed COM threading."""
+        start_time = datetime.now()
+        
         try:
-            # Initialize COM for this thread
-            pythoncom.CoInitialize()
-            
-            start_time = datetime.now()
-            
+            # Process each part in main thread
             for i, part in enumerate(parts):
-                if not self.is_running:
-                    self.log_message("Automation stopped by user")
-                    break
-                    
-                self.current_part_index = i + 1
-                
-                # Update progress on GUI thread
-                self.root.after(0, lambda: self.update_progress(part, i + 1))
+                # Update progress
+                self.progress_bar.config(value=i + 1)
+                self.progress_var.set(f"Processing part {i+1}/{total_parts}...")
+                self.current_part_var.set(f"Current: {part}")
+                self.root.update_idletasks()  # Update GUI
                 
                 # Process the part
+                transaction = self.transaction_var.get()
                 if transaction == "MD04":
                     result = self.extract_part_data_md04(part)
-                elif transaction == "MM03":
-                    result = self.extract_part_data_mm03(part)
-                elif transaction == "MD06":
-                    result = self.extract_part_data_md06(part)
                 else:
                     result = {
                         "part_number": part,
-                        "description": f"ERROR: Unsupported transaction {transaction}",
-                        "material_type": "ERROR",
+                        "description": f"ERROR: Transaction {transaction} not implemented yet",
                         "status": "ERROR",
                         "processing_time": 0,
                         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -805,166 +692,47 @@ class SAPBackendAutomationFixed:
                 
                 self.results.append(result)
                 
-                # Update results tree on GUI thread
-                self.root.after(0, lambda r=result: self.update_results_tree(r))
+                # Update results tree
+                self.update_results_tree(result)
                 
-                # Brief pause between parts to avoid overwhelming SAP
+                # Small delay between parts
                 time.sleep(0.5)
                 
-            # Calculate final statistics
+            # Calculate statistics
             total_time = (datetime.now() - start_time).total_seconds()
             successful = len([r for r in self.results if r["status"] == "SUCCESS"])
             failed = len([r for r in self.results if r["status"] == "ERROR"])
             
-            # Update UI on completion
-            self.root.after(0, lambda: self.automation_completed(successful, failed, total_time))
+            # Update final status
+            self.progress_var.set(f"[OK] Completed! {successful} successful, {failed} failed")
+            self.current_part_var.set(f"Total time: {total_time:.1f} seconds")
+            
+            self.log_message(f"[OK] Single-thread automation completed!")
+            self.log_message(f"Results: {successful} successful, {failed} failed")
+            self.log_message(f"Total time: {total_time:.1f}s")
+            
+            # Show completion message
+            messagebox.showinfo("Automation Complete", 
+                               f"Single-thread automation completed!\n\n"
+                               f"[OK] Successful: {successful}\n"
+                               f"[X] Failed: {failed}\n"
+                               f"Time: {total_time:.1f} seconds\n"
+                               f"No threading issues!")
             
         except Exception as e:
-            error_msg = f"Backend automation failed: {e}"
-            self.log_message(error_msg, "ERROR")
-            self.root.after(0, lambda: self.automation_error(error_msg))
+            self.log_message(f"Automation error: {e}", "ERROR")
+            messagebox.showerror("Automation Error", f"Automation failed:\n\n{e}")
         finally:
-            # Uninitialize COM for this thread
-            pythoncom.CoUninitialize()
+            # Re-enable buttons
+            self.start_btn.config(state="normal")
+            self.save_btn.config(state="normal")
             
-    def extract_part_data_mm03(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MM03 transaction - Fixed COM."""
-        start_time = datetime.now()
-        
-        try:
-            # Execute MM03 transaction
-            if not self.execute_transaction("MM03"):
-                raise Exception("Failed to execute MM03")
-            
-            # Enter material number
-            self.session.findById("wnd[0]/usr/ctxtRMMG1-MATNR").text = part_number
-            self.session.findById("wnd[0]").sendVKey(0)
-            time.sleep(3)
-            
-            # Extract basic data
-            description = ""
-            material_type = ""
-            
-            # Try to get description
-            desc_fields = [
-                "wnd[0]/usr/tabsTABSTRIP_TABBLOCK/tabpTAB01/ssubTABFRAME1:SAPLMGMM:2001/subSUB1:SAPLMGMM:2003/txtRMMG1-MAKTX",
-                "wnd[0]/usr/txtRMMG1-MAKTX"
-            ]
-            
-            for field_id in desc_fields:
-                try:
-                    field = self.session.findById(field_id)
-                    if field and field.text.strip():
-                        description = field.text.strip()
-                        break
-                except:
-                    continue
-                    
-            # Try to get material type
-            type_fields = [
-                "wnd[0]/usr/tabsTABSTRIP_TABBLOCK/tabpTAB01/ssubTABFRAME1:SAPLMGMM:2001/subSUB1:SAPLMGMM:2003/ctxtRMMG1-MTART",
-                "wnd[0]/usr/ctxtRMMG1-MTART"
-            ]
-            
-            for field_id in type_fields:
-                try:
-                    field = self.session.findById(field_id)
-                    if field and field.text.strip():
-                        material_type = field.text.strip()
-                        break
-                except:
-                    continue
-            
-            processing_time = (datetime.now() - start_time).total_seconds()
-            
-            result = {
-                "part_number": part_number,
-                "description": description if description else "No description found",
-                "material_type": material_type,
-                "status": "SUCCESS" if description else "PARTIAL",
-                "processing_time": round(processing_time, 2),
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "transaction": "MM03"
-            }
-            
-            return result
-            
-        except Exception as e:
-            processing_time = (datetime.now() - start_time).total_seconds()
-            return {
-                "part_number": part_number,
-                "description": f"ERROR: {str(e)}",
-                "material_type": "ERROR",
-                "status": "ERROR",
-                "processing_time": round(processing_time, 2),
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "transaction": "MM03",
-                "error": str(e)
-            }
-            
-    def extract_part_data_md06(self, part_number: str) -> Dict[str, str]:
-        """Extract part data using MD06 transaction - Fixed COM."""
-        start_time = datetime.now()
-        
-        try:
-            # Execute MD06 transaction
-            if not self.execute_transaction("MD06"):
-                raise Exception("Failed to execute MD06")
-            
-            # Enter material number (MD06 has similar structure to MD04)
-            self.session.findById("wnd[0]/usr/ctxtRM61E-MATNR").text = part_number
-            
-            # Enter MRP Area if specified
-            if self.mrp_area_var.get():
-                self.session.findById("wnd[0]/usr/ctxtRM61E-BERID").text = self.mrp_area_var.get()
-            
-            # Execute
-            self.session.findById("wnd[0]").sendVKey(0)
-            time.sleep(3)
-            
-            # Extract description using similar methods as MD04
-            description = self.extract_description_multiple_methods(part_number)
-            material_type = self.extract_material_type()
-            
-            processing_time = (datetime.now() - start_time).total_seconds()
-            
-            result = {
-                "part_number": part_number,
-                "description": description,
-                "material_type": material_type,
-                "status": "SUCCESS" if description != "ERROR" else "ERROR",
-                "processing_time": round(processing_time, 2),
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "transaction": "MD06"
-            }
-            
-            return result
-            
-        except Exception as e:
-            processing_time = (datetime.now() - start_time).total_seconds()
-            return {
-                "part_number": part_number,
-                "description": f"ERROR: {str(e)}",
-                "material_type": "ERROR",
-                "status": "ERROR",
-                "processing_time": round(processing_time, 2),
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "transaction": "MD06",
-                "error": str(e)
-            }
-            
-    def update_progress(self, current_part: str, part_index: int):
-        """Update progress display."""
-        self.progress_bar.config(value=part_index)
-        self.progress_var.set(f"Processing part {part_index}/{self.total_parts}...")
-        self.current_part_var.set(f"Current: {current_part}")
-        
     def update_results_tree(self, result: Dict[str, str]):
         """Update the results tree with new result."""
         # Truncate long descriptions for display
         display_desc = result["description"]
-        if len(display_desc) > 80:
-            display_desc = display_desc[:77] + "..."
+        if len(display_desc) > 100:
+            display_desc = display_desc[:97] + "..."
             
         # Color coding based on status
         tags = []
@@ -978,7 +746,6 @@ class SAPBackendAutomationFixed:
         self.results_tree.insert("", "end", values=(
             result["part_number"],
             display_desc,
-            result["material_type"],
             result["status"],
             f"{result['processing_time']}s",
             result["timestamp"]
@@ -989,46 +756,10 @@ class SAPBackendAutomationFixed:
         self.results_tree.tag_configure("error", foreground="red")
         self.results_tree.tag_configure("warning", foreground="orange")
         
-    def automation_completed(self, successful: int, failed: int, total_time: float):
-        """Handle automation completion."""
-        self.is_running = False
-        self.start_btn.config(state="normal")
-        self.stop_btn.config(state="disabled")
-        self.save_btn.config(state="normal")
-        
-        # Update progress
-        self.progress_bar.config(value=self.total_parts)
-        self.progress_var.set(f"[OK] Completed! {successful} successful, {failed} failed")
-        self.current_part_var.set(f"Total time: {total_time:.1f} seconds")
-        
-        # Log completion
-        avg_time = total_time / self.total_parts if self.total_parts > 0 else 0
-        self.log_message(f"Backend automation completed!")
-        self.log_message(f"Results: {successful} successful, {failed} failed")
-        self.log_message(f"Total time: {total_time:.1f}s, Average: {avg_time:.1f}s per part")
-        
-        # Show completion message
-        messagebox.showinfo("Automation Complete", 
-                           f"Backend automation completed!\n\n"
-                           f"[OK] Successful: {successful}\n"
-                           f"[X] Failed: {failed}\n"
-                           f"Time: {total_time:.1f} seconds\n"
-                           f"Average: {avg_time:.1f}s per part\n\n"
-                           f"No mouse movement was required!")
-        
-    def automation_error(self, error_msg: str):
-        """Handle automation errors."""
-        self.is_running = False
-        self.start_btn.config(state="normal")
-        self.stop_btn.config(state="disabled")
-        
-        self.progress_var.set("[X] Automation failed!")
-        messagebox.showerror("Automation Error", f"Backend automation failed:\n\n{error_msg}")
-        
-    def stop_automation(self):
-        """Stop the automation process."""
-        self.is_running = False
-        self.log_message("Stopping automation...")
+        # Scroll to show new item
+        children = self.results_tree.get_children()
+        if children:
+            self.results_tree.see(children[-1])
         
     def save_results(self):
         """Save results to Excel file."""
@@ -1038,7 +769,7 @@ class SAPBackendAutomationFixed:
             
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"SAP_Backend_Results_{timestamp}.xlsx"
+            filename = f"SAP_SingleThread_Results_{timestamp}.xlsx"
             
             # Create DataFrame
             df = pd.DataFrame(self.results)
@@ -1052,7 +783,7 @@ class SAPBackendAutomationFixed:
                 total_parts = len(self.results)
                 successful = len([r for r in self.results if r["status"] == "SUCCESS"])
                 failed = len([r for r in self.results if r["status"] == "ERROR"])
-                avg_time = sum([r["processing_time"] for r in self.results]) / total_parts
+                avg_time = sum([r["processing_time"] for r in self.results]) / total_parts if total_parts > 0 else 0
                 
                 summary_data = {
                     'Metric': [
@@ -1069,10 +800,10 @@ class SAPBackendAutomationFixed:
                         total_parts,
                         successful,
                         failed,
-                        round((successful / total_parts) * 100, 1),
+                        round((successful / total_parts) * 100, 1) if total_parts > 0 else 0,
                         round(avg_time, 2),
                         round(sum([r["processing_time"] for r in self.results]), 2),
-                        'Backend (No Mouse Movement)',
+                        'Single Thread (No Threading Issues)',
                         self.transaction_var.get()
                     ]
                 }
@@ -1096,8 +827,8 @@ class SAPBackendAutomationFixed:
             
     def run(self):
         """Start the application."""
-        self.log_message("SAP Backend Automation System Started - FIXED VERSION")
-        self.log_message("This system uses SAP GUI Scripting API - no mouse movement required!")
+        self.log_message("SAP Backend Automation - Single Thread Version Started")
+        self.log_message("This version runs in main thread - NO THREADING ISSUES!")
         self.log_message("Please connect to SAP to begin...")
         
         try:
@@ -1121,18 +852,17 @@ class SAPBackendAutomationFixed:
 
 
 def main():
-    """Main function to run the fixed backend automation."""
+    """Main function to run the single-thread automation."""
     print("="*60)
-    print("SAP Backend Automation - FIXED VERSION")
+    print("SAP Backend Automation - SINGLE THREAD FIX")
     print("="*60)
-    print("Fixed Issues:")
-    print("1. Unicode/Emoji encoding errors")
-    print("2. COM threading 'CoInitialize' errors")
-    print("3. Improved error handling")
+    print("This version solves the threading marshalling issue!")
+    print("All automation runs in the main thread.")
+    print("No more 'marshalled for a different thread' errors!")
     print("="*60)
     
     try:
-        app = SAPBackendAutomationFixed()
+        app = SAPBackendSingleThread()
         app.run()
     except Exception as e:
         print(f"[X] Failed to start application: {e}")
