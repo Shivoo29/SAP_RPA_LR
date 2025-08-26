@@ -1,0 +1,26 @@
+2025-08-21 08:54:09,475 - INFO - ? Endgame SAP Automation Started!
+2025-08-21 08:54:09,577 - INFO - ? Complete workflow automation:
+2025-08-21 08:54:09,585 - INFO -    1. Connect to SAP Dashboard
+2025-08-21 08:54:09,589 - INFO -    2. Navigate to Transaction
+2025-08-21 08:54:09,600 - INFO -    3. Fill Fields & Execute
+2025-08-21 08:54:09,603 - INFO -    4. Find & Click MatRes
+2025-08-21 08:54:09,606 - INFO -    5. Maximize Popup (F7)
+2025-08-21 08:54:09,610 - INFO -    6. Extract Description
+2025-08-21 08:54:09,613 - INFO -    7. Save to Excel
+2025-08-21 08:54:09,615 - INFO - 
+2025-08-21 08:54:09,620 - INFO - ? Ready for complete automation!
+2025-08-21 08:54:11,355 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 08:54:13,203 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 08:54:16,979 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 08:54:16,999 - INFO - 
+============================================================
+2025-08-21 08:54:17,006 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 08:54:17,026 - INFO - ============================================================
+2025-08-21 08:54:17,036 - INFO - ? Starting workflow for part: 857-A65473-106
+2025-08-21 08:54:17,094 - WARNING - ?? Could not ensure MD04 input screen: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 08:54:17,101 - WARNING - ?? Could not ensure MD04 input screen, continuing...
+2025-08-21 08:54:17,126 - INFO - ? STEP 2: Filling material field with: 857-A65473-106
+2025-08-21 08:54:17,136 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 08:54:17,148 - ERROR - ? Error entering material number: <unknown>.findById
+2025-08-21 08:54:17,156 - ERROR - ? WORKFLOW FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 08:54:17,244 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors

@@ -1,0 +1,60 @@
+2025-08-20 19:10:40,918 - INFO - SAP Final Working Version Started
+2025-08-20 19:10:41,027 - INFO - Using YOUR exact field IDs from the scan!
+2025-08-20 19:10:41,031 - INFO - Field IDs configured:
+2025-08-20 19:10:41,087 - INFO -   material_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR
+2025-08-20 19:10:41,102 - INFO -   mrp_area_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID
+2025-08-20 19:10:41,114 - INFO -   plant_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS
+2025-08-20 19:10:41,136 - INFO -   description_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/txtMT61D-MAKTX
+2025-08-20 19:10:41,141 - INFO - Please connect to SAP to begin...
+2025-08-20 19:10:44,694 - INFO - Connecting to SAP GUI...
+2025-08-20 19:10:46,403 - ERROR - Failed to connect to SAP: No SAP sessions found
+2025-08-20 19:11:01,242 - INFO - Connecting to SAP GUI...
+2025-08-20 19:11:02,846 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-20 19:11:04,376 - INFO - === TESTING ALL FIELDS FROM YOUR SCAN ===
+2025-08-20 19:11:04,430 - ERROR - [X] material_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:04,455 - ERROR - [X] mrp_area_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:04,478 - ERROR - [X] plant_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:04,500 - ERROR - [X] description_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:04,505 - INFO - === FIELD TEST COMPLETE ===
+2025-08-20 19:11:17,881 - INFO - === TESTING ALL FIELDS FROM YOUR SCAN ===
+2025-08-20 19:11:17,913 - ERROR - [X] material_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:17,940 - ERROR - [X] mrp_area_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:17,963 - ERROR - [X] plant_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:17,987 - ERROR - [X] description_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:18,001 - INFO - === FIELD TEST COMPLETE ===
+2025-08-20 19:11:33,364 - INFO - === PROCESSING PART: 857-A65473-106 ===
+2025-08-20 19:11:33,372 - INFO - Navigating to MD04...
+2025-08-20 19:11:38,201 - INFO - Current transaction: MD04
+2025-08-20 19:11:38,224 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-20 19:11:39,254 - INFO - [OK] Individual access tab selected
+2025-08-20 19:11:39,268 - INFO - Entering material number: 857-A65473-106
+2025-08-20 19:11:39,822 - ERROR - Error making field editable: (-2147352567, 'Exception occurred.', (617, 'SAP Frontend Server', 'The virtual key is not enabled.', None, 0, 0), None)
+2025-08-20 19:11:39,835 - INFO - Trying method 1 to enter material number...
+2025-08-20 19:11:40,395 - INFO - [OK] Material number entered successfully: 857-A65473-106
+2025-08-20 19:11:41,110 - ERROR - Error making field editable: (-2147352567, 'Exception occurred.', (617, 'SAP Frontend Server', 'The virtual key is not enabled.', None, 0, 0), None)
+2025-08-20 19:11:41,184 - INFO - [OK] MRP area entered: 1000
+2025-08-20 19:11:41,191 - INFO - Executing query...
+2025-08-20 19:11:45,082 - ERROR - Error extracting description: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:11:45,089 - INFO - [OK] Processing completed for 857-A65473-106
+2025-08-20 19:53:19,271 - INFO - Connecting to SAP GUI...
+2025-08-20 19:53:20,422 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-20 19:53:34,730 - INFO - === TESTING ALL FIELDS FROM YOUR SCAN ===
+2025-08-20 19:53:34,742 - ERROR - [X] material_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:53:34,752 - ERROR - [X] mrp_area_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:53:34,761 - ERROR - [X] plant_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:53:34,770 - ERROR - [X] description_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:53:34,772 - INFO - === FIELD TEST COMPLETE ===
+2025-08-20 19:53:42,041 - INFO - === PROCESSING PART: 857-A65473-106 ===
+2025-08-20 19:53:42,044 - INFO - Navigating to MD04...
+2025-08-20 19:53:46,526 - INFO - Current transaction: MD04
+2025-08-20 19:53:46,529 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-20 19:53:47,546 - INFO - [OK] Individual access tab selected
+2025-08-20 19:53:47,549 - INFO - Entering material number: 857-A65473-106
+2025-08-20 19:53:48,138 - ERROR - Error making field editable: (-2147352567, 'Exception occurred.', (617, 'SAP Frontend Server', 'The virtual key is not enabled.', None, 0, 0), None)
+2025-08-20 19:53:48,145 - INFO - Trying method 1 to enter material number...
+2025-08-20 19:53:48,660 - INFO - [OK] Material number entered successfully: 857-A65473-106
+2025-08-20 19:53:49,211 - ERROR - Error making field editable: (-2147352567, 'Exception occurred.', (617, 'SAP Frontend Server', 'The virtual key is not enabled.', None, 0, 0), None)
+2025-08-20 19:53:49,229 - INFO - [OK] MRP area entered: 1000
+2025-08-20 19:53:49,230 - INFO - Executing query...
+2025-08-20 19:53:52,785 - ERROR - Error extracting description: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-20 19:53:52,788 - INFO - [OK] Processing completed for 857-A65473-106

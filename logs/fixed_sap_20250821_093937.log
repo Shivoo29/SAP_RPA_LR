@@ -1,0 +1,62 @@
+2025-08-21 09:39:37,891 - INFO - ? Fixed SAP Automation Started!
+2025-08-21 09:39:38,058 - INFO - ? Key fixes applied:
+2025-08-21 09:39:38,061 - INFO -    ? Added missing MRP Area field ID
+2025-08-21 09:39:38,063 - INFO -    ? Enhanced field detection methods
+2025-08-21 09:39:38,069 - INFO -    ? Improved error handling
+2025-08-21 09:39:38,070 - INFO -    ? Added field validation tools
+2025-08-21 09:39:38,071 - INFO - 
+2025-08-21 09:39:38,073 - INFO - ? Ready to test and run automation!
+2025-08-21 09:39:50,725 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 09:39:52,244 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 09:39:55,587 - INFO - ? Testing field access...
+2025-08-21 09:39:55,589 - INFO - ============================================================
+2025-08-21 09:39:55,594 - INFO - ? Navigating to MD04...
+2025-08-21 09:40:00,759 - INFO - ? Individual access tab selected
+2025-08-21 09:40:00,761 - INFO - ? Testing material_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR
+2025-08-21 09:40:00,788 - INFO -    ? Field found!
+2025-08-21 09:40:00,788 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:40:00,789 - INFO -    ? Current text: '857-A65473-106'
+2025-08-21 09:40:00,789 - INFO -    ? Modifiable: False
+2025-08-21 09:40:00,790 - INFO -    ? Changeable: True
+2025-08-21 09:40:00,790 - INFO - ? Testing mrp_area_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID
+2025-08-21 09:40:00,809 - INFO -    ? Field found!
+2025-08-21 09:40:00,810 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:40:00,810 - INFO -    ? Current text: '1000'
+2025-08-21 09:40:00,811 - INFO -    ? Modifiable: False
+2025-08-21 09:40:00,812 - INFO -    ? Changeable: True
+2025-08-21 09:40:00,812 - INFO - ? Testing plant_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS
+2025-08-21 09:40:00,844 - INFO -    ? Field found!
+2025-08-21 09:40:00,845 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:40:00,845 - INFO -    ? Current text: '1000'
+2025-08-21 09:40:00,846 - INFO -    ? Modifiable: False
+2025-08-21 09:40:00,847 - INFO -    ? Changeable: True
+2025-08-21 09:40:00,847 - INFO - ? Testing matres_field: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ/txtMDEZ-DELB0
+2025-08-21 09:40:00,849 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 09:40:00,850 - INFO - ? Testing description_field: /app/con[0]/ses[0]/wnd[0]/usr/subBLOCK:SAPLKACB:1002/txtTEXT_AUFNR
+2025-08-21 09:40:00,852 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 09:40:00,853 - INFO - ============================================================
+2025-08-21 09:40:00,853 - INFO - ? Field Test Summary:
+2025-08-21 09:40:00,854 - INFO -    material_field: ? ACCESSIBLE
+2025-08-21 09:40:00,854 - INFO -    mrp_area_field: ? ACCESSIBLE
+2025-08-21 09:40:00,854 - INFO -    plant_field: ? ACCESSIBLE
+2025-08-21 09:40:00,855 - ERROR -    matres_field: ? NOT ACCESSIBLE
+2025-08-21 09:40:00,855 - ERROR -    description_field: ? NOT ACCESSIBLE
+2025-08-21 09:40:03,300 - INFO - ? Testing field filling...
+2025-08-21 09:40:04,368 - INFO - ? Individual access tab selected
+2025-08-21 09:40:04,371 - INFO - ? Filling material_field with: '857-A65473-106'
+2025-08-21 09:40:04,384 - INFO -    ? Trying method 1...
+2025-08-21 09:40:04,891 - INFO -    ? Method 1 successful! Value: '857-A65473-106'
+2025-08-21 09:40:05,895 - INFO - ? Filling mrp_area_field with: '1000'
+2025-08-21 09:40:05,907 - INFO -    ? Trying method 1...
+2025-08-21 09:40:06,416 - INFO -    ? Method 1 successful! Value: '1000'
+2025-08-21 09:40:06,419 - INFO - ? Auto-pressing Enter to execute query...
+2025-08-21 09:40:06,420 - INFO - ? Executing query automatically by pressing Enter...
+2025-08-21 09:40:07,789 - INFO - ? Enter key pressed successfully!
+2025-08-21 09:40:11,824 - INFO - ? Query executed - Current Transaction: MD04
+2025-08-21 09:40:11,825 - INFO - ? Current Window: Stock/Requirements List as of 21:10 hrs
+2025-08-21 09:40:16,829 - INFO - ? Testing MatRes detection and clicking...
+2025-08-21 09:40:16,833 - INFO - ? Scanning for MatRes in column 2...
+2025-08-21 09:40:16,944 - INFO - ?? MatRes not found in column 2, doing broader scan...
+2025-08-21 09:40:17,053 - INFO - ? Found MatRes at row 2, column 3
+2025-08-21 09:40:18,471 - INFO - ? MatRes not found in any table position
+2025-08-21 09:40:18,472 - ERROR - ? MatRes test FAILED!

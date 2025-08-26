@@ -1,0 +1,63 @@
+2025-08-21 07:22:02,217 - INFO - ? Enhanced SAP MD04 Workflow with OCR Integration Started
+2025-08-21 07:22:02,384 - INFO - ? Following YOUR exact workflow from the images:
+2025-08-21 07:22:02,415 - INFO -    Image 1: Stock/Requirements List
+2025-08-21 07:22:02,437 - INFO -    Image 2: Click on MatRes number
+2025-08-21 07:22:02,442 - INFO -    Image 3: Popup with maximize button
+2025-08-21 07:22:02,448 - INFO -    Image 4-5: Detail screen with description
+2025-08-21 07:22:02,452 - INFO - ? OCR Status: Available
+2025-08-21 07:22:02,455 - INFO - ? Full OCR integration ready!
+2025-08-21 07:22:06,585 - INFO - ? Connecting to SAP GUI...
+2025-08-21 07:22:08,370 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 07:22:10,685 - INFO - ? Testing all fields from your configuration...
+2025-08-21 07:22:10,728 - ERROR - ? material_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:22:10,760 - ERROR - ? mrp_area_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:22:10,783 - ERROR - ? plant_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:22:10,808 - ERROR - ? description_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:22:13,501 - INFO - ?? Testing OCR functionality...
+2025-08-21 07:22:13,771 - ERROR - ? OCR test failed: tesseract is not installed or it's not in your PATH. See README file for more information.
+2025-08-21 07:28:17,412 - INFO - ? Starting enhanced workflow automation for 1 parts
+2025-08-21 07:28:17,439 - INFO - 
+============================================================
+2025-08-21 07:28:17,455 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 07:28:17,463 - INFO - ============================================================
+2025-08-21 07:28:17,520 - INFO - ? STEP 1: Navigating to MD04 and entering part details...
+2025-08-21 07:28:17,543 - ERROR - ? STEP 1 FAILED: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 07:28:17,556 - ERROR - ? ENHANCED WORKFLOW FAILED for 857-A65473-106: STEP 1 failed: Could not enter part details
+2025-08-21 07:28:17,631 - INFO - ? Enhanced automation completed! 0/1 successful, 1 errors
+2025-08-21 07:29:02,732 - INFO - ? Starting enhanced workflow automation for 1 parts
+2025-08-21 07:29:02,761 - INFO - 
+============================================================
+2025-08-21 07:29:02,772 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 07:29:02,788 - INFO - ============================================================
+2025-08-21 07:29:02,803 - INFO - ? STEP 1: Navigating to MD04 and entering part details...
+2025-08-21 07:29:02,815 - ERROR - ? STEP 1 FAILED: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 07:29:02,826 - ERROR - ? ENHANCED WORKFLOW FAILED for 857-A65473-106: STEP 1 failed: Could not enter part details
+2025-08-21 07:29:02,834 - INFO - ? Enhanced automation completed! 0/1 successful, 1 errors
+2025-08-21 07:29:15,217 - INFO - ? Starting enhanced workflow automation for 1 parts
+2025-08-21 07:29:15,260 - INFO - 
+============================================================
+2025-08-21 07:29:15,273 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 07:29:15,281 - INFO - ============================================================
+2025-08-21 07:29:15,289 - INFO - ? STEP 1: Navigating to MD04 and entering part details...
+2025-08-21 07:29:15,303 - ERROR - ? STEP 1 FAILED: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 07:29:15,320 - ERROR - ? ENHANCED WORKFLOW FAILED for 857-A65473-106: STEP 1 failed: Could not enter part details
+2025-08-21 07:29:15,334 - INFO - ? Enhanced automation completed! 0/1 successful, 1 errors
+2025-08-21 07:29:45,701 - INFO - ? Starting enhanced workflow automation for 1 parts
+2025-08-21 07:29:45,753 - INFO - 
+============================================================
+2025-08-21 07:29:45,768 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 07:29:45,777 - INFO - ============================================================
+2025-08-21 07:29:45,789 - INFO - ? STEP 1: Navigating to MD04 and entering part details...
+2025-08-21 07:29:45,800 - ERROR - ? STEP 1 FAILED: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 07:29:45,816 - ERROR - ? ENHANCED WORKFLOW FAILED for 857-A65473-106: STEP 1 failed: Could not enter part details
+2025-08-21 07:29:45,824 - INFO - ? Enhanced automation completed! 0/1 successful, 1 errors
+2025-08-21 07:30:07,802 - ERROR - Failed to save enhanced results: bad option "-initialname": must be -confirmoverwrite, -defaultextension, -filetypes, -initialdir, -initialfile, -parent, -title, or -typevariable
+2025-08-21 07:31:55,272 - INFO - ? Connecting to SAP GUI...
+2025-08-21 07:31:56,797 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 07:31:57,892 - INFO - ? Testing all fields from your configuration...
+2025-08-21 07:31:57,939 - ERROR - ? material_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:31:57,964 - ERROR - ? mrp_area_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:31:57,986 - ERROR - ? plant_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:31:58,009 - ERROR - ? description_field: NOT FOUND - (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 07:32:00,083 - INFO - ?? Testing OCR functionality...
+2025-08-21 07:32:00,355 - ERROR - ? OCR test failed: tesseract is not installed or it's not in your PATH. See README file for more information.

@@ -1,0 +1,12 @@
+2025-08-21 11:56:43,558 - INFO - ? Modern interface with Lam Research colors loaded
+2025-08-21 11:56:43,560 - INFO - ? Streamlined workflow ready
+2025-08-21 11:56:43,563 - INFO - ? Multi-part processing enabled
+2025-08-21 11:56:43,566 - INFO - ? Transaction code input available
+2025-08-21 11:56:43,567 - INFO - 
+2025-08-21 11:56:43,570 - INFO - ? Ready to automate SAP workflows!
+2025-08-21 11:56:46,732 - INFO - ? Initializing SAP connection...
+2025-08-21 11:56:49,787 - ERROR - ? SAP connection failed: 'ModernSAPAutomation' object has no attribute 'update_connection_status_color'
+2025-08-21 11:57:01,774 - INFO - ? Initializing SAP connection...
+2025-08-21 11:57:03,265 - ERROR - ? SAP connection failed: No SAP sessions found
+2025-08-21 11:57:20,572 - INFO - ? Initializing SAP connection...
+2025-08-21 11:57:22,163 - ERROR - ? SAP connection failed: 'ModernSAPAutomation' object has no attribute 'update_connection_status_color'

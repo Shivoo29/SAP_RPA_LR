@@ -1,123 +1,183 @@
 import tkinter as tk
-from tkinter import ttk, scrolledtext
+from tkinter import ttk, scrolledtext, filedialog, messagebox
 import win32com.client
 import pythoncom
 import time
+import json
+from datetime import datetime
 
-class SAPFieldFinder:
+class EnhancedSAPFieldFinder:
     """
-    SAP Field Finder - Discovers field IDs for any SAP screen
-    This will help us find the correct field IDs for your MD04 screen
+    Enhanced SAP Field Finder - Complete Field Discovery
+    This will extract EVERY field ID from the current SAP window
+    so you can tell me exactly which fields to use step by step
     """
     
     def __init__(self):
         self.setup_gui()
         self.session = None
+        self.all_fields = []
+        self.clickable_elements = []
         
     def setup_gui(self):
-        """Setup the field finder GUI."""
+        """Setup the enhanced field finder GUI."""
         self.root = tk.Tk()
-        self.root.title("SAP Field Finder - Find Correct Field IDs")
-        self.root.geometry("1000x700")
+        self.root.title("Enhanced SAP Field Finder - Complete Discovery Tool")
+        self.root.geometry("1400x900")
+        self.root.state('zoomed')  # Maximize window
         
         # Header
         header_frame = ttk.Frame(self.root)
         header_frame.pack(fill=tk.X, padx=10, pady=10)
         
-        title_label = ttk.Label(header_frame, text="SAP Field Finder Tool", 
-                               font=("Arial", 16, "bold"))
+        title_label = ttk.Label(header_frame, text="🔍 Enhanced SAP Field Finder - Complete Discovery Tool", 
+                               font=("Arial", 18, "bold"))
         title_label.pack()
         
-        subtitle_label = ttk.Label(header_frame, text="Discover the correct field IDs for your SAP screen", 
-                                  font=("Arial", 10), foreground="blue")
+        subtitle_label = ttk.Label(header_frame, text="Extract ALL field IDs so you can guide me step-by-step!", 
+                                  font=("Arial", 12), foreground="blue")
         subtitle_label.pack()
         
         # Connection Status
-        self.status_var = tk.StringVar(value="Not Connected")
-        status_label = ttk.Label(header_frame, textvariable=self.status_var, 
+        status_frame = ttk.Frame(header_frame)
+        status_frame.pack(fill=tk.X, pady=5)
+        
+        self.status_var = tk.StringVar(value="❌ Not Connected")
+        status_label = ttk.Label(status_frame, textvariable=self.status_var, 
                                 font=("Arial", 12, "bold"))
-        status_label.pack(pady=5)
+        status_label.pack(side=tk.LEFT)
         
-        # Control Buttons
-        button_frame = ttk.Frame(self.root)
-        button_frame.pack(fill=tk.X, padx=10, pady=5)
+        ttk.Button(status_frame, text="🔌 Connect SAP", 
+                  command=self.connect_sap).pack(side=tk.RIGHT)
         
-        ttk.Button(button_frame, text="1. Connect to SAP", 
-                  command=self.connect_sap).pack(side=tk.LEFT, padx=5)
+        # Main Control Panel
+        control_frame = ttk.LabelFrame(self.root, text="🎮 Discovery Controls", padding="10")
+        control_frame.pack(fill=tk.X, padx=10, pady=5)
         
-        ttk.Button(button_frame, text="2. Go to MD04", 
-                  command=self.go_to_md04).pack(side=tk.LEFT, padx=5)
+        # Row 1 - Navigation
+        nav_frame = ttk.Frame(control_frame)
+        nav_frame.pack(fill=tk.X, pady=2)
         
-        ttk.Button(button_frame, text="3. Find All Fields", 
-                  command=self.find_all_fields).pack(side=tk.LEFT, padx=5)
+        ttk.Button(nav_frame, text="📍 Go to MD04", 
+                  command=self.go_to_md04).pack(side=tk.LEFT, padx=2)
         
-        ttk.Button(button_frame, text="4. Find Input Fields", 
-                  command=self.find_input_fields).pack(side=tk.LEFT, padx=5)
+        ttk.Button(nav_frame, text="🔍 SCAN ALL FIELDS", 
+                  command=self.complete_field_scan, 
+                  style="Accent.TButton").pack(side=tk.LEFT, padx=2)
         
-        ttk.Button(button_frame, text="5. Test Field", 
-                  command=self.test_field).pack(side=tk.LEFT, padx=5)
+        ttk.Button(nav_frame, text="🖱️ Find Clickable Elements", 
+                  command=self.find_clickable_elements).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(nav_frame, text="📝 Find Input Fields Only", 
+                  command=self.find_input_fields_only).pack(side=tk.LEFT, padx=2)
+        
+        # Row 2 - Analysis
+        analysis_frame = ttk.Frame(control_frame)
+        analysis_frame.pack(fill=tk.X, pady=2)
+        
+        ttk.Button(analysis_frame, text="🎯 Find Material Fields", 
+                  command=self.find_material_fields).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(analysis_frame, text="🔢 Find Number Fields", 
+                  command=self.find_number_fields).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(analysis_frame, text="📋 Find All Tables/Grids", 
+                  command=self.find_tables_and_grids).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(analysis_frame, text="🔲 Find Buttons", 
+                  command=self.find_buttons).pack(side=tk.LEFT, padx=2)
+        
+        # Row 3 - Export/Clear
+        export_frame = ttk.Frame(control_frame)
+        export_frame.pack(fill=tk.X, pady=2)
+        
+        ttk.Button(export_frame, text="🗑️ Clear Results", 
+                  command=self.clear_results).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(export_frame, text="💾 Export to JSON", 
+                  command=self.export_to_json).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(export_frame, text="📄 Export to Text", 
+                  command=self.export_to_text).pack(side=tk.LEFT, padx=2)
+        
+        ttk.Button(export_frame, text="🎯 Generate Step-by-Step Guide", 
+                  command=self.generate_step_guide).pack(side=tk.LEFT, padx=2)
         
         # Test Field Section
-        test_frame = ttk.LabelFrame(self.root, text="Test Specific Field", padding="10")
+        test_frame = ttk.LabelFrame(self.root, text="🧪 Field Testing", padding="10")
         test_frame.pack(fill=tk.X, padx=10, pady=5)
         
-        ttk.Label(test_frame, text="Field ID to test:").pack(side=tk.LEFT)
+        test_row1 = ttk.Frame(test_frame)
+        test_row1.pack(fill=tk.X, pady=2)
+        
+        ttk.Label(test_row1, text="Field ID:").pack(side=tk.LEFT)
         self.test_field_var = tk.StringVar()
-        test_entry = ttk.Entry(test_frame, textvariable=self.test_field_var, width=40)
+        test_entry = ttk.Entry(test_row1, textvariable=self.test_field_var, width=50)
         test_entry.pack(side=tk.LEFT, padx=5)
         
-        ttk.Label(test_frame, text="Test Value:").pack(side=tk.LEFT, padx=(10, 0))
+        ttk.Label(test_row1, text="Test Value:").pack(side=tk.LEFT, padx=(10, 0))
         self.test_value_var = tk.StringVar(value="857-A65473-106")
-        value_entry = ttk.Entry(test_frame, textvariable=self.test_value_var, width=20)
+        value_entry = ttk.Entry(test_row1, textvariable=self.test_value_var, width=20)
         value_entry.pack(side=tk.LEFT, padx=5)
         
-        ttk.Button(test_frame, text="Test This Field", 
-                  command=self.test_specific_field).pack(side=tk.LEFT, padx=5)
+        ttk.Button(test_row1, text="🧪 Test Field", 
+                  command=self.test_field).pack(side=tk.LEFT, padx=5)
         
-        # Quick Field Buttons
-        quick_frame = ttk.LabelFrame(self.root, text="Quick Field Tests", padding="10")
-        quick_frame.pack(fill=tk.X, padx=10, pady=5)
+        ttk.Button(test_row1, text="👆 Click Element", 
+                  command=self.click_element).pack(side=tk.LEFT, padx=5)
         
-        # Common material field IDs to test
-        common_fields = [
-            ("Material Field 1", "wnd[0]/usr/ctxtRM61E-MATNR"),
-            ("Material Field 2", "wnd[0]/usr/ctxtMANTR"),
-            ("Material Field 3", "wnd[0]/usr/txtMANTR"),
-            ("Material Field 4", "wnd[0]/usr/ctxtMATNR"),
-            ("Material Field 5", "wnd[0]/usr/ctxtRMMG1-MATNR")
-        ]
+        # Statistics Panel
+        stats_frame = ttk.LabelFrame(self.root, text="📊 Discovery Statistics", padding="10")
+        stats_frame.pack(fill=tk.X, padx=10, pady=5)
         
-        for name, field_id in common_fields:
-            ttk.Button(quick_frame, text=name, 
-                      command=lambda f=field_id: self.quick_test_field(f)).pack(side=tk.LEFT, padx=2)
+        self.stats_text = ttk.Label(stats_frame, text="Ready to scan...", font=("Arial", 10))
+        self.stats_text.pack()
         
-        # Results Display
-        results_frame = ttk.LabelFrame(self.root, text="Field Discovery Results", padding="10")
-        results_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        # Results Display with Notebook (Tabs)
+        notebook = ttk.Notebook(self.root)
+        notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
         
-        # Create text widget with scrollbar
-        self.results_text = scrolledtext.ScrolledText(results_frame, height=25, width=120, font=("Consolas", 9))
-        self.results_text.pack(fill=tk.BOTH, expand=True)
+        # Tab 1: All Fields
+        all_fields_frame = ttk.Frame(notebook)
+        notebook.add(all_fields_frame, text="🔍 All Fields")
         
-        # Bottom buttons
-        bottom_frame = ttk.Frame(self.root)
-        bottom_frame.pack(fill=tk.X, padx=10, pady=5)
+        self.all_fields_text = scrolledtext.ScrolledText(all_fields_frame, font=("Consolas", 9))
+        self.all_fields_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
-        ttk.Button(bottom_frame, text="Clear Results", 
-                  command=self.clear_results).pack(side=tk.LEFT)
+        # Tab 2: Input Fields Only
+        input_fields_frame = ttk.Frame(notebook)
+        notebook.add(input_fields_frame, text="📝 Input Fields")
         
-        ttk.Button(bottom_frame, text="Generate Code", 
-                  command=self.generate_code).pack(side=tk.LEFT, padx=5)
+        self.input_fields_text = scrolledtext.ScrolledText(input_fields_frame, font=("Consolas", 9))
+        self.input_fields_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
-        ttk.Button(bottom_frame, text="Export Results", 
-                  command=self.export_results).pack(side=tk.RIGHT)
+        # Tab 3: Clickable Elements
+        clickable_frame = ttk.Frame(notebook)
+        notebook.add(clickable_frame, text="🖱️ Clickable Elements")
         
-    def log(self, message):
-        """Add message to results."""
+        self.clickable_text = scrolledtext.ScrolledText(clickable_frame, font=("Consolas", 9))
+        self.clickable_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # Tab 4: Material-Related Fields
+        material_frame = ttk.Frame(notebook)
+        notebook.add(material_frame, text="🎯 Material Fields")
+        
+        self.material_text = scrolledtext.ScrolledText(material_frame, font=("Consolas", 9))
+        self.material_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+        # Tab 5: Step-by-Step Guide
+        guide_frame = ttk.Frame(notebook)
+        notebook.add(guide_frame, text="📋 Step Guide")
+        
+        self.guide_text = scrolledtext.ScrolledText(guide_frame, font=("Consolas", 10))
+        self.guide_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
+    def log_to_tab(self, tab_widget, message):
+        """Add message to specific tab."""
         timestamp = time.strftime("%H:%M:%S")
         log_entry = f"[{timestamp}] {message}\n"
-        self.results_text.insert(tk.END, log_entry)
-        self.results_text.see(tk.END)
+        tab_widget.insert(tk.END, log_entry)
+        tab_widget.see(tk.END)
         self.root.update_idletasks()
         
     def connect_sap(self):
@@ -125,7 +185,7 @@ class SAPFieldFinder:
         try:
             pythoncom.CoInitialize()
             
-            self.log("Connecting to SAP GUI...")
+            self.log_to_tab(self.all_fields_text, "🔌 Connecting to SAP GUI...")
             sap_gui_auto = win32com.client.GetObject("SAPGUI")
             application = sap_gui_auto.GetScriptingEngine
             
@@ -135,28 +195,28 @@ class SAPFieldFinder:
                     self.session = connection.Children(0)
                     
                     info = self.session.Info
-                    self.log(f"[OK] Connected to SAP!")
-                    self.log(f"System: {info.SystemName}, Client: {info.Client}, User: {info.User}")
-                    self.log(f"Current Transaction: {info.Transaction}")
+                    self.log_to_tab(self.all_fields_text, f"✅ Connected to SAP!")
+                    self.log_to_tab(self.all_fields_text, f"System: {info.SystemName}, Client: {info.Client}, User: {info.User}")
+                    self.log_to_tab(self.all_fields_text, f"Current Transaction: {info.Transaction}")
                     
-                    self.status_var.set(f"Connected: {info.SystemName}")
+                    self.status_var.set(f"✅ Connected: {info.SystemName}")
                     return True
             
             raise Exception("No SAP sessions found")
             
         except Exception as e:
-            self.log(f"[X] Connection failed: {e}")
-            self.status_var.set("Connection Failed")
+            self.log_to_tab(self.all_fields_text, f"❌ Connection failed: {e}")
+            self.status_var.set("❌ Connection Failed")
             return False
     
     def go_to_md04(self):
         """Navigate to MD04 transaction."""
         if not self.session:
-            self.log("[X] Not connected to SAP")
+            messagebox.showerror("Error", "Connect to SAP first!")
             return
             
         try:
-            self.log("Navigating to MD04...")
+            self.log_to_tab(self.all_fields_text, "📍 Navigating to MD04...")
             
             # Clear transaction field
             self.session.findById("wnd[0]/tbar[0]/okcd").text = ""
@@ -168,350 +228,610 @@ class SAPFieldFinder:
             time.sleep(3)
             
             current_transaction = self.session.Info.Transaction
-            self.log(f"[OK] Current transaction: {current_transaction}")
+            self.log_to_tab(self.all_fields_text, f"✅ Current transaction: {current_transaction}")
             
             # Get screen info
             main_window = self.session.findById("wnd[0]")
             window_title = main_window.text
-            self.log(f"Window title: {window_title}")
+            self.log_to_tab(self.all_fields_text, f"Window title: {window_title}")
+            
+            self.log_to_tab(self.all_fields_text, "✅ Ready for complete field scan!")
             
         except Exception as e:
-            self.log(f"[X] Error navigating to MD04: {e}")
+            self.log_to_tab(self.all_fields_text, f"❌ Error navigating to MD04: {e}")
     
-    def find_all_fields(self):
-        """Find all available fields on the current screen."""
+    def complete_field_scan(self):
+        """Complete comprehensive field scan."""
         if not self.session:
-            self.log("[X] Not connected to SAP")
+            messagebox.showerror("Error", "Connect to SAP first!")
             return
             
         try:
-            self.log("=== SCANNING ALL FIELDS ON CURRENT SCREEN ===")
+            self.all_fields = []
+            
+            self.log_to_tab(self.all_fields_text, "🔍 STARTING COMPLETE FIELD SCAN...")
+            self.log_to_tab(self.all_fields_text, "=" * 80)
             
             # Get the main window
             main_window = self.session.findById("wnd[0]")
-            self.log(f"Window: {main_window.text}")
+            window_title = main_window.text
             
-            # Recursively scan for fields
-            self.scan_container(main_window, "wnd[0]", 0)
+            self.log_to_tab(self.all_fields_text, f"📋 Scanning Window: {window_title}")
+            self.log_to_tab(self.all_fields_text, f"📋 Transaction: {self.session.Info.Transaction}")
+            self.log_to_tab(self.all_fields_text, "")
+            
+            # Start recursive scan
+            self.deep_scan_element(main_window, "wnd[0]", 0)
+            
+            # Update statistics
+            total_fields = len(self.all_fields)
+            input_fields = len([f for f in self.all_fields if f.get('is_input', False)])
+            clickable_fields = len([f for f in self.all_fields if f.get('is_clickable', False)])
+            
+            stats_text = f"📊 Total Elements: {total_fields} | Input Fields: {input_fields} | Clickable: {clickable_fields}"
+            self.stats_text.config(text=stats_text)
+            
+            self.log_to_tab(self.all_fields_text, "=" * 80)
+            self.log_to_tab(self.all_fields_text, f"✅ SCAN COMPLETE! Found {total_fields} elements")
+            self.log_to_tab(self.all_fields_text, f"📝 Input fields: {input_fields}")
+            self.log_to_tab(self.all_fields_text, f"🖱️ Clickable elements: {clickable_fields}")
             
         except Exception as e:
-            self.log(f"[X] Error scanning fields: {e}")
+            self.log_to_tab(self.all_fields_text, f"❌ Error during field scan: {e}")
     
-    def scan_container(self, container, path, depth):
-        """Recursively scan a container for fields."""
-        if depth > 5:  # Prevent infinite recursion
+    def deep_scan_element(self, element, path, depth):
+        """Deep recursive scan of SAP element."""
+        if depth > 10:  # Prevent infinite recursion
             return
             
         try:
-            # Get children count
+            # Get element properties
+            element_info = self.get_element_info(element, path, depth)
+            
+            if element_info:
+                self.all_fields.append(element_info)
+                
+                # Log interesting elements
+                if (element_info['is_input'] or 
+                    element_info['is_clickable'] or 
+                    element_info['has_text'] or
+                    'material' in element_info['id'].lower() or
+                    'matnr' in element_info['id'].lower()):
+                    
+                    indent = "  " * depth
+                    self.log_to_tab(self.all_fields_text, f"{indent}🔍 ELEMENT: {path}")
+                    self.log_to_tab(self.all_fields_text, f"{indent}   Type: {element_info['type']}")
+                    self.log_to_tab(self.all_fields_text, f"{indent}   ID: {element_info['id']}")
+                    
+                    if element_info['text']:
+                        self.log_to_tab(self.all_fields_text, f"{indent}   Text: '{element_info['text'][:50]}'")
+                    
+                    if element_info['is_input']:
+                        self.log_to_tab(self.all_fields_text, f"{indent}   🔥 INPUT FIELD (Modifiable: {element_info['modifiable']})")
+                    
+                    if element_info['is_clickable']:
+                        self.log_to_tab(self.all_fields_text, f"{indent}   👆 CLICKABLE")
+                    
+                    self.log_to_tab(self.all_fields_text, "")
+            
+            # Scan children
             try:
-                children_count = container.Children.Count
-            except:
-                return
-            
-            for i in range(children_count):
-                try:
-                    child = container.Children(i)
-                    child_path = f"{path}/{child.Name}" if hasattr(child, 'Name') else f"{path}/child[{i}]"
-                    
-                    # Get element type and properties
-                    element_type = getattr(child, 'Type', 'Unknown')
-                    element_text = getattr(child, 'Text', '')
-                    element_id = getattr(child, 'Id', '')
-                    
-                    # Check if it's an input field
-                    is_input = False
-                    field_info = ""
-                    
-                    if element_type in ['GuiTextField', 'GuiCTextField', 'GuiPasswordField']:
-                        is_input = True
-                        try:
-                            modifiable = getattr(child, 'Modifiable', False)
-                            field_info = f"(Modifiable: {modifiable})"
-                        except:
-                            field_info = "(Input field)"
-                    
-                    # Log interesting fields
-                    if is_input or element_text or 'matnr' in element_id.lower() or 'material' in element_text.lower():
-                        indent = "  " * depth
-                        self.log(f"{indent}[FIELD] {child_path}")
-                        self.log(f"{indent}  Type: {element_type} {field_info}")
-                        self.log(f"{indent}  ID: {element_id}")
-                        if element_text:
-                            self.log(f"{indent}  Text: '{element_text[:50]}'")
-                        self.log("")
-                    
-                    # Recursively scan children
-                    self.scan_container(child, child_path, depth + 1)
-                    
-                except Exception as e:
-                    continue
-                    
-        except Exception as e:
-            pass
-    
-    def find_input_fields(self):
-        """Find only input fields that could be material number fields."""
-        if not self.session:
-            self.log("[X] Not connected to SAP")
-            return
-            
-        try:
-            self.log("=== SCANNING FOR INPUT FIELDS ===")
-            
-            # Common patterns for material number fields
-            material_patterns = [
-                "wnd[0]/usr/ctxtRM61E-MATNR",
-                "wnd[0]/usr/ctxtMANTR", 
-                "wnd[0]/usr/txtMANTR",
-                "wnd[0]/usr/ctxtMATNR",
-                "wnd[0]/usr/ctxtRMMG1-MATNR",
-                "wnd[0]/usr/ctxtMaterial",
-                "wnd[0]/usr/txtMaterial",
-                "wnd[0]/usr/subSUB0:SAPL*/usr/ctxtRM61E-MATNR",
-                "wnd[0]/usr/subSUB1:SAPL*/usr/ctxtRM61E-MATNR"
-            ]
-            
-            # Test each pattern
-            for pattern in material_patterns:
-                try:
-                    if '*' in pattern:
-                        # Skip wildcard patterns for now
+                children_count = element.Children.Count
+                for i in range(children_count):
+                    try:
+                        child = element.Children(i)
+                        child_name = getattr(child, 'Name', f'child[{i}]')
+                        child_path = f"{path}/{child_name}"
+                        
+                        self.deep_scan_element(child, child_path, depth + 1)
+                        
+                    except Exception:
                         continue
                         
-                    field = self.session.findById(pattern)
-                    if field:
-                        field_type = getattr(field, 'Type', 'Unknown')
-                        modifiable = getattr(field, 'Modifiable', False)
-                        text = getattr(field, 'Text', '')
-                        
-                        self.log(f"[FOUND] {pattern}")
-                        self.log(f"  Type: {field_type}")
-                        self.log(f"  Modifiable: {modifiable}")
-                        self.log(f"  Current text: '{text}'")
-                        self.log("")
-                        
-                except:
-                    continue
-            
-            # Also scan for any text fields
-            self.log("=== SCANNING FOR ANY TEXT FIELDS ===")
-            self.scan_for_text_fields()
-            
-        except Exception as e:
-            self.log(f"[X] Error finding input fields: {e}")
-    
-    def scan_for_text_fields(self):
-        """Scan for any text input fields."""
-        try:
-            # Try different usr containers
-            containers = [
-                "wnd[0]/usr",
-                "wnd[0]/usr/subSUB0:SAPLMD04:0300",
-                "wnd[0]/usr/subSUB1:SAPLMD04:0300", 
-                "wnd[0]/usr/tabsTS_MD04/tabpTAB01/ssubTS_MD04:SAPLMD04:0300"
-            ]
-            
-            for container_path in containers:
-                try:
-                    container = self.session.findById(container_path)
-                    if container:
-                        self.log(f"Scanning container: {container_path}")
-                        self.find_text_fields_in_container(container, container_path)
-                        
-                except:
-                    continue
-                    
-        except Exception as e:
-            self.log(f"Error scanning for text fields: {e}")
-    
-    def find_text_fields_in_container(self, container, base_path):
-        """Find text fields in a specific container."""
-        try:
-            children_count = container.Children.Count
-            for i in range(children_count):
-                try:
-                    child = container.Children(i)
-                    child_type = getattr(child, 'Type', 'Unknown')
-                    
-                    if child_type in ['GuiTextField', 'GuiCTextField']:
-                        child_id = getattr(child, 'Id', '')
-                        modifiable = getattr(child, 'Modifiable', False)
-                        text = getattr(child, 'Text', '')
-                        
-                        if modifiable:  # Only show modifiable fields
-                            full_path = f"{base_path}/{child_id}" if child_id else f"{base_path}/field[{i}]"
-                            self.log(f"[TEXT FIELD] {full_path}")
-                            self.log(f"  Type: {child_type}")
-                            self.log(f"  Current text: '{text}'")
-                            self.log("")
-                            
-                except:
-                    continue
-                    
-        except:
+            except Exception:
+                pass
+                
+        except Exception:
             pass
     
-    def test_field(self):
-        """Test the field ID entered in the text box."""
-        field_id = self.test_field_var.get().strip()
-        if not field_id:
-            self.log("[X] Please enter a field ID to test")
-            return
+    def get_element_info(self, element, path, depth):
+        """Get comprehensive information about an element."""
+        try:
+            info = {
+                'path': path,
+                'depth': depth,
+                'type': getattr(element, 'Type', 'Unknown'),
+                'id': getattr(element, 'Id', ''),
+                'name': getattr(element, 'Name', ''),
+                'text': getattr(element, 'Text', ''),
+                'modifiable': getattr(element, 'Modifiable', False),
+                'changeable': getattr(element, 'Changeable', False),
+                'visible': getattr(element, 'Visible', False),
+                'is_input': False,
+                'is_clickable': False,
+                'has_text': False
+            }
             
-        self.test_specific_field_id(field_id)
+            # Determine if it's an input field
+            input_types = ['GuiTextField', 'GuiCTextField', 'GuiPasswordField', 'GuiComboBox']
+            info['is_input'] = info['type'] in input_types and info['modifiable']
+            
+            # Determine if it's clickable
+            clickable_types = ['GuiButton', 'GuiMenubar', 'GuiMenuItem', 'GuiTab', 'GuiCheckBox', 'GuiRadioButton']
+            info['is_clickable'] = info['type'] in clickable_types or 'btn' in info['id'].lower()
+            
+            # Check if it has meaningful text
+            info['has_text'] = len(info['text'].strip()) > 0
+            
+            # Add more specific properties for certain types
+            if info['type'] in input_types:
+                try:
+                    info['max_length'] = getattr(element, 'MaxLength', 0)
+                except:
+                    info['max_length'] = 0
+            
+            if info['type'] == 'GuiButton':
+                try:
+                    info['tooltip'] = getattr(element, 'Tooltip', '')
+                except:
+                    info['tooltip'] = ''
+            
+            return info
+            
+        except Exception as e:
+            return None
     
-    def quick_test_field(self, field_id):
-        """Quick test for common field IDs."""
-        self.test_field_var.set(field_id)
-        self.test_specific_field_id(field_id)
+    def find_input_fields_only(self):
+        """Show only input fields."""
+        self.input_fields_text.delete(1.0, tk.END)
+        
+        if not self.all_fields:
+            self.log_to_tab(self.input_fields_text, "❌ No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        self.log_to_tab(self.input_fields_text, "📝 INPUT FIELDS ONLY:")
+        self.log_to_tab(self.input_fields_text, "=" * 60)
+        
+        input_fields = [f for f in self.all_fields if f['is_input']]
+        
+        for i, field in enumerate(input_fields, 1):
+            self.log_to_tab(self.input_fields_text, f"#{i:02d}. {field['path']}")
+            self.log_to_tab(self.input_fields_text, f"     Type: {field['type']}")
+            self.log_to_tab(self.input_fields_text, f"     ID: {field['id']}")
+            self.log_to_tab(self.input_fields_text, f"     Modifiable: {field['modifiable']}")
+            self.log_to_tab(self.input_fields_text, f"     Current Text: '{field['text']}'")
+            if field.get('max_length', 0) > 0:
+                self.log_to_tab(self.input_fields_text, f"     Max Length: {field['max_length']}")
+            self.log_to_tab(self.input_fields_text, "")
+        
+        self.log_to_tab(self.input_fields_text, f"✅ Found {len(input_fields)} input fields")
     
-    def test_specific_field(self):
-        """Test the specific field with a value."""
+    def find_clickable_elements(self):
+        """Show only clickable elements."""
+        self.clickable_text.delete(1.0, tk.END)
+        
+        if not self.all_fields:
+            self.log_to_tab(self.clickable_text, "❌ No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        self.log_to_tab(self.clickable_text, "🖱️ CLICKABLE ELEMENTS:")
+        self.log_to_tab(self.clickable_text, "=" * 60)
+        
+        clickable_fields = [f for f in self.all_fields if f['is_clickable']]
+        
+        for i, field in enumerate(clickable_fields, 1):
+            self.log_to_tab(self.clickable_text, f"#{i:02d}. {field['path']}")
+            self.log_to_tab(self.clickable_text, f"     Type: {field['type']}")
+            self.log_to_tab(self.clickable_text, f"     ID: {field['id']}")
+            self.log_to_tab(self.clickable_text, f"     Text: '{field['text']}'")
+            if field.get('tooltip'):
+                self.log_to_tab(self.clickable_text, f"     Tooltip: '{field['tooltip']}'")
+            self.log_to_tab(self.clickable_text, "")
+        
+        self.log_to_tab(self.clickable_text, f"✅ Found {len(clickable_fields)} clickable elements")
+    
+    def find_material_fields(self):
+        """Find fields that might be material-related."""
+        self.material_text.delete(1.0, tk.END)
+        
+        if not self.all_fields:
+            self.log_to_tab(self.material_text, "❌ No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        self.log_to_tab(self.material_text, "🎯 MATERIAL-RELATED FIELDS:")
+        self.log_to_tab(self.material_text, "=" * 60)
+        
+        material_keywords = ['matnr', 'material', 'part', 'item', 'product']
+        
+        material_fields = []
+        for field in self.all_fields:
+            field_text = f"{field['id']} {field['text']} {field['path']}".lower()
+            if any(keyword in field_text for keyword in material_keywords):
+                material_fields.append(field)
+        
+        for i, field in enumerate(material_fields, 1):
+            self.log_to_tab(self.material_text, f"#{i:02d}. {field['path']}")
+            self.log_to_tab(self.material_text, f"     Type: {field['type']}")
+            self.log_to_tab(self.material_text, f"     ID: {field['id']}")
+            self.log_to_tab(self.material_text, f"     Text: '{field['text']}'")
+            self.log_to_tab(self.material_text, f"     Input Field: {field['is_input']}")
+            self.log_to_tab(self.material_text, f"     Clickable: {field['is_clickable']}")
+            self.log_to_tab(self.material_text, "")
+        
+        self.log_to_tab(self.material_text, f"✅ Found {len(material_fields)} material-related fields")
+    
+    def find_number_fields(self):
+        """Find numeric input fields."""
+        if not self.all_fields:
+            messagebox.showwarning("Warning", "No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        number_fields = []
+        for field in self.all_fields:
+            if field['is_input'] and ('number' in field['id'].lower() or 
+                                    'qty' in field['id'].lower() or
+                                    'amount' in field['id'].lower() or
+                                    field['text'].isdigit()):
+                number_fields.append(field)
+        
+        self.log_to_tab(self.all_fields_text, f"🔢 Found {len(number_fields)} numeric fields")
+        for field in number_fields:
+            self.log_to_tab(self.all_fields_text, f"   {field['path']} - {field['text']}")
+    
+    def find_tables_and_grids(self):
+        """Find table and grid elements."""
+        if not self.all_fields:
+            messagebox.showwarning("Warning", "No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        table_types = ['GuiTableControl', 'GuiGridView', 'GuiContainerShell']
+        table_fields = [f for f in self.all_fields if f['type'] in table_types]
+        
+        self.log_to_tab(self.all_fields_text, f"📋 Found {len(table_fields)} tables/grids")
+        for field in table_fields:
+            self.log_to_tab(self.all_fields_text, f"   {field['path']} - Type: {field['type']}")
+    
+    def find_buttons(self):
+        """Find all button elements."""
+        if not self.all_fields:
+            messagebox.showwarning("Warning", "No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        button_fields = [f for f in self.all_fields if f['type'] == 'GuiButton']
+        
+        self.log_to_tab(self.all_fields_text, f"🔲 Found {len(button_fields)} buttons")
+        for field in button_fields:
+            self.log_to_tab(self.all_fields_text, f"   {field['path']} - '{field['text']}'")
+    
+    def test_field(self):
+        """Test a specific field."""
         field_id = self.test_field_var.get().strip()
         test_value = self.test_value_var.get().strip()
         
         if not field_id:
-            self.log("[X] Please enter a field ID to test")
+            messagebox.showwarning("Warning", "Enter a field ID to test!")
             return
-            
+        
         if not self.session:
-            self.log("[X] Not connected to SAP")
+            messagebox.showerror("Error", "Connect to SAP first!")
             return
-            
+        
         try:
-            self.log(f"=== TESTING FIELD: {field_id} ===")
+            self.log_to_tab(self.all_fields_text, f"🧪 TESTING FIELD: {field_id}")
             
-            # Try to find the field
             field = self.session.findById(field_id)
             
-            # Get field properties
             field_type = getattr(field, 'Type', 'Unknown')
             modifiable = getattr(field, 'Modifiable', False)
             current_text = getattr(field, 'Text', '')
             
-            self.log(f"[OK] Field found!")
-            self.log(f"  Type: {field_type}")
-            self.log(f"  Modifiable: {modifiable}")
-            self.log(f"  Current text: '{current_text}'")
+            self.log_to_tab(self.all_fields_text, f"   ✅ Field found!")
+            self.log_to_tab(self.all_fields_text, f"   Type: {field_type}")
+            self.log_to_tab(self.all_fields_text, f"   Modifiable: {modifiable}")
+            self.log_to_tab(self.all_fields_text, f"   Current text: '{current_text}'")
             
             if modifiable and test_value:
-                # Try to set the value
                 original_text = field.text
                 field.text = test_value
                 time.sleep(0.5)
                 
-                # Check if it was set
                 new_text = field.text
                 if new_text == test_value:
-                    self.log(f"[OK] Successfully set value to: '{test_value}'")
-                    
-                    # Restore original value
+                    self.log_to_tab(self.all_fields_text, f"   ✅ Successfully set value to: '{test_value}'")
                     field.text = original_text
-                    self.log(f"[OK] Restored original value: '{original_text}'")
+                    self.log_to_tab(self.all_fields_text, f"   ✅ Restored original value")
                 else:
-                    self.log(f"[!] Value not set correctly. Expected: '{test_value}', Got: '{new_text}'")
-            
-            self.log("")
+                    self.log_to_tab(self.all_fields_text, f"   ❌ Value not set correctly")
             
         except Exception as e:
-            self.log(f"[X] Field test failed: {e}")
-            self.log("")
+            self.log_to_tab(self.all_fields_text, f"   ❌ Test failed: {e}")
     
-    def test_specific_field_id(self, field_id):
-        """Test if a specific field ID exists."""
-        if not self.session:
-            self.log("[X] Not connected to SAP")
+    def click_element(self):
+        """Click/activate an element."""
+        field_id = self.test_field_var.get().strip()
+        
+        if not field_id:
+            messagebox.showwarning("Warning", "Enter a field ID to click!")
             return
-            
+        
+        if not self.session:
+            messagebox.showerror("Error", "Connect to SAP first!")
+            return
+        
         try:
-            self.log(f"Testing field: {field_id}")
-            field = self.session.findById(field_id)
+            self.log_to_tab(self.all_fields_text, f"👆 CLICKING ELEMENT: {field_id}")
             
-            field_type = getattr(field, 'Type', 'Unknown')
-            modifiable = getattr(field, 'Modifiable', False)
-            text = getattr(field, 'Text', '')
+            element = self.session.findById(field_id)
+            element_type = getattr(element, 'Type', 'Unknown')
             
-            self.log(f"  [OK] FOUND - Type: {field_type}, Modifiable: {modifiable}, Text: '{text}'")
+            # Try different click methods
+            if element_type == 'GuiButton':
+                element.press()
+                self.log_to_tab(self.all_fields_text, f"   ✅ Button pressed")
+            else:
+                element.setFocus()
+                time.sleep(0.2)
+                try:
+                    element.doubleClick()
+                    self.log_to_tab(self.all_fields_text, f"   ✅ Double-clicked element")
+                except:
+                    self.log_to_tab(self.all_fields_text, f"   ✅ Focused element")
             
         except Exception as e:
-            self.log(f"  [X] NOT FOUND - {e}")
+            self.log_to_tab(self.all_fields_text, f"   ❌ Click failed: {e}")
+
+    def generate_step_guide(self):
+        """Generate a step-by-step guide template for the user."""
+        self.guide_text.delete(1.0, tk.END)
+        
+        if not self.all_fields:
+            self.log_to_tab(self.guide_text, "❌ No fields scanned yet. Run 'SCAN ALL FIELDS' first!")
+            return
+        
+        # Generate comprehensive step-by-step guide
+        self.log_to_tab(self.guide_text, "📋 STEP-BY-STEP WORKFLOW GUIDE")
+        self.log_to_tab(self.guide_text, "=" * 80)
+        self.log_to_tab(self.guide_text, "")
+        self.log_to_tab(self.guide_text, "🎯 INSTRUCTIONS FOR USER:")
+        self.log_to_tab(self.guide_text, "Look at the fields below and tell me exactly which ones to use!")
+        self.log_to_tab(self.guide_text, "")
+        self.log_to_tab(self.guide_text, "FORMAT: Tell me like this:")
+        self.log_to_tab(self.guide_text, "STEP 1: Click on field #05 (the material input field)")
+        self.log_to_tab(self.guide_text, "STEP 2: Enter part number in field #05")
+        self.log_to_tab(self.guide_text, "STEP 3: Click on field #12 (MRP area)")
+        self.log_to_tab(self.guide_text, "STEP 4: Enter '1000' in field #12")
+        self.log_to_tab(self.guide_text, "STEP 5: Press Enter or click button #23")
+        self.log_to_tab(self.guide_text, "etc...")
+        self.log_to_tab(self.guide_text, "")
+        self.log_to_tab(self.guide_text, "🔍 AVAILABLE INPUT FIELDS:")
+        self.log_to_tab(self.guide_text, "-" * 50)
+        
+        # List all input fields with numbers
+        input_fields = [f for f in self.all_fields if f['is_input']]
+        for i, field in enumerate(input_fields, 1):
+            self.log_to_tab(self.guide_text, f"FIELD #{i:02d}: {field['path']}")
+            self.log_to_tab(self.guide_text, f"          Type: {field['type']}")
+            self.log_to_tab(self.guide_text, f"          Current: '{field['text']}'")
+            if 'matnr' in field['id'].lower() or 'material' in field['text'].lower():
+                self.log_to_tab(self.guide_text, f"          🎯 LIKELY MATERIAL FIELD!")
+            self.log_to_tab(self.guide_text, "")
+        
+        self.log_to_tab(self.guide_text, "🖱️ AVAILABLE CLICKABLE ELEMENTS:")
+        self.log_to_tab(self.guide_text, "-" * 50)
+        
+        # List all clickable elements with numbers
+        clickable_fields = [f for f in self.all_fields if f['is_clickable']]
+        for i, field in enumerate(clickable_fields, 1):
+            self.log_to_tab(self.guide_text, f"BUTTON #{i:02d}: {field['path']}")
+            self.log_to_tab(self.guide_text, f"            Type: {field['type']}")
+            self.log_to_tab(self.guide_text, f"            Text: '{field['text']}'")
+            if 'execute' in field['text'].lower() or 'enter' in field['text'].lower():
+                self.log_to_tab(self.guide_text, f"            🎯 LIKELY EXECUTE BUTTON!")
+            self.log_to_tab(self.guide_text, "")
+        
+        self.log_to_tab(self.guide_text, "📋 TABLES AND GRIDS:")
+        self.log_to_tab(self.guide_text, "-" * 50)
+        
+        # List tables/grids
+        table_types = ['GuiTableControl', 'GuiGridView', 'GuiContainerShell']
+        table_fields = [f for f in self.all_fields if f['type'] in table_types]
+        for i, field in enumerate(table_fields, 1):
+            self.log_to_tab(self.guide_text, f"TABLE #{i:02d}: {field['path']}")
+            self.log_to_tab(self.guide_text, f"           Type: {field['type']}")
+            self.log_to_tab(self.guide_text, "")
+        
+        self.log_to_tab(self.guide_text, "🎯 MATERIAL-RELATED FIELDS:")
+        self.log_to_tab(self.guide_text, "-" * 50)
+        
+        # Highlight material-related fields
+        material_keywords = ['matnr', 'material', 'part', 'item']
+        material_fields = []
+        for field in self.all_fields:
+            field_text = f"{field['id']} {field['text']}".lower()
+            if any(keyword in field_text for keyword in material_keywords):
+                material_fields.append(field)
+        
+        for i, field in enumerate(material_fields, 1):
+            self.log_to_tab(self.guide_text, f"MATERIAL #{i:02d}: {field['path']}")
+            self.log_to_tab(self.guide_text, f"              Type: {field['type']}")
+            self.log_to_tab(self.guide_text, f"              Input: {field['is_input']}")
+            self.log_to_tab(self.guide_text, f"              Text: '{field['text']}'")
+            self.log_to_tab(self.guide_text, "")
+        
+        self.log_to_tab(self.guide_text, "=" * 80)
+        self.log_to_tab(self.guide_text, "🎯 NOW TELL ME THE EXACT STEPS!")
+        self.log_to_tab(self.guide_text, "Copy the field paths and tell me:")
+        self.log_to_tab(self.guide_text, "1. Which field to enter the part number")
+        self.log_to_tab(self.guide_text, "2. Which field to enter MRP area")
+        self.log_to_tab(self.guide_text, "3. Which button to click to execute")
+        self.log_to_tab(self.guide_text, "4. Which table/grid will show results")
+        self.log_to_tab(self.guide_text, "5. Which field will contain the description")
+        self.log_to_tab(self.guide_text, "=" * 80)
+        
+    def export_to_json(self):
+        """Export all field data to JSON."""
+        if not self.all_fields:
+            messagebox.showwarning("Warning", "No fields to export. Run scan first!")
+            return
+        
+        try:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = filedialog.asksaveasfilename(
+                title="Save Field Data as JSON",
+                defaultextension=".json",
+                filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
+                initialname=f"sap_fields_{timestamp}.json"
+            )
+            
+            if filename:
+                with open(filename, 'w', encoding='utf-8') as f:
+                    json.dump({
+                        'scan_info': {
+                            'timestamp': datetime.now().isoformat(),
+                            'transaction': self.session.Info.Transaction if self.session else 'Unknown',
+                            'total_fields': len(self.all_fields)
+                        },
+                        'fields': self.all_fields
+                    }, f, indent=2, ensure_ascii=False)
+                
+                self.log_to_tab(self.all_fields_text, f"💾 Exported {len(self.all_fields)} fields to: {filename}")
+                messagebox.showinfo("Export Complete", f"Exported to {filename}")
+                
+        except Exception as e:
+            messagebox.showerror("Export Error", f"Failed to export: {e}")
+    
+    def export_to_text(self):
+        """Export all field data to text file."""
+        if not self.all_fields:
+            messagebox.showwarning("Warning", "No fields to export. Run scan first!")
+            return
+        
+        try:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = filedialog.asksaveasfilename(
+                title="Save Field Data as Text",
+                defaultextension=".txt",
+                filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+                initialname=f"sap_fields_{timestamp}.txt"
+            )
+            
+            if filename:
+                with open(filename, 'w', encoding='utf-8') as f:
+                    f.write("SAP FIELD DISCOVERY REPORT\n")
+                    f.write("=" * 50 + "\n")
+                    f.write(f"Scan Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                    f.write(f"Transaction: {self.session.Info.Transaction if self.session else 'Unknown'}\n")
+                    f.write(f"Total Fields: {len(self.all_fields)}\n\n")
+                    
+                    # Input fields
+                    input_fields = [f for f in self.all_fields if f['is_input']]
+                    f.write(f"INPUT FIELDS ({len(input_fields)}):\n")
+                    f.write("-" * 30 + "\n")
+                    for i, field in enumerate(input_fields, 1):
+                        f.write(f"{i:02d}. {field['path']}\n")
+                        f.write(f"    Type: {field['type']}\n")
+                        f.write(f"    ID: {field['id']}\n")
+                        f.write(f"    Text: '{field['text']}'\n")
+                        f.write(f"    Modifiable: {field['modifiable']}\n\n")
+                    
+                    # Clickable elements
+                    clickable_fields = [f for f in self.all_fields if f['is_clickable']]
+                    f.write(f"\nCLICKABLE ELEMENTS ({len(clickable_fields)}):\n")
+                    f.write("-" * 30 + "\n")
+                    for i, field in enumerate(clickable_fields, 1):
+                        f.write(f"{i:02d}. {field['path']}\n")
+                        f.write(f"    Type: {field['type']}\n")
+                        f.write(f"    Text: '{field['text']}'\n\n")
+                    
+                    # All fields
+                    f.write(f"\nALL FIELDS ({len(self.all_fields)}):\n")
+                    f.write("-" * 30 + "\n")
+                    for i, field in enumerate(self.all_fields, 1):
+                        f.write(f"{i:03d}. {field['path']}\n")
+                        f.write(f"     Type: {field['type']}\n")
+                        f.write(f"     ID: {field['id']}\n")
+                        f.write(f"     Text: '{field['text']}'\n")
+                        f.write(f"     Input: {field['is_input']}\n")
+                        f.write(f"     Clickable: {field['is_clickable']}\n\n")
+                
+                self.log_to_tab(self.all_fields_text, f"📄 Exported {len(self.all_fields)} fields to: {filename}")
+                messagebox.showinfo("Export Complete", f"Exported to {filename}")
+                
+        except Exception as e:
+            messagebox.showerror("Export Error", f"Failed to export: {e}")
     
     def clear_results(self):
-        """Clear the results text."""
-        self.results_text.delete(1.0, tk.END)
-    
-    def generate_code(self):
-        """Generate code based on found fields."""
-        if not self.session:
-            self.log("[X] Not connected to SAP")
-            return
-            
-        self.log("=== GENERATING CODE FOR FOUND FIELDS ===")
-        self.log("")
-        self.log("# Based on your SAP system, use these field IDs:")
-        self.log("")
+        """Clear all results."""
+        self.all_fields_text.delete(1.0, tk.END)
+        self.input_fields_text.delete(1.0, tk.END)
+        self.clickable_text.delete(1.0, tk.END)
+        self.material_text.delete(1.0, tk.END)
+        self.guide_text.delete(1.0, tk.END)
+        self.all_fields = []
+        self.stats_text.config(text="Ready to scan...")
         
-        # Test the most likely fields and generate code
-        material_fields = [
-            "wnd[0]/usr/ctxtRM61E-MATNR",
-            "wnd[0]/usr/ctxtMANTR", 
-            "wnd[0]/usr/txtMANTR",
-            "wnd[0]/usr/ctxtMATNR"
-        ]
-        
-        working_field = None
-        for field_id in material_fields:
-            try:
-                field = self.session.findById(field_id)
-                if field and getattr(field, 'Modifiable', False):
-                    working_field = field_id
-                    break
-            except:
-                continue
-        
-        if working_field:
-            self.log(f"# Material field found: {working_field}")
-            self.log(f"self.session.findById(\"{working_field}\").text = part_number")
-        else:
-            self.log("# No working material field found - manual investigation needed")
-            
-        self.log("")
-    
-    def export_results(self):
-        """Export results to a file."""
-        try:
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            filename = f"sap_field_scan_{timestamp}.txt"
-            
-            with open(filename, 'w') as f:
-                f.write(self.results_text.get(1.0, tk.END))
-            
-            self.log(f"Results exported to: {filename}")
-            
-        except Exception as e:
-            self.log(f"Export failed: {e}")
+        self.log_to_tab(self.all_fields_text, "🗑️ Results cleared. Ready for new scan!")
     
     def run(self):
-        """Run the field finder."""
-        self.log("SAP Field Finder Tool Started")
-        self.log("This tool will help you find the correct field IDs for your SAP system")
-        self.log("")
-        self.log("Instructions:")
-        self.log("1. Click 'Connect to SAP'")
-        self.log("2. Click 'Go to MD04'") 
-        self.log("3. Click 'Find All Fields' or 'Find Input Fields'")
-        self.log("4. Test specific fields using the test section")
-        self.log("5. Generate code for working fields")
-        self.log("")
+        """Run the enhanced field finder."""
+        self.log_to_tab(self.all_fields_text, "🔍 Enhanced SAP Field Finder Started!")
+        self.log_to_tab(self.all_fields_text, "")
+        self.log_to_tab(self.all_fields_text, "📋 INSTRUCTIONS:")
+        self.log_to_tab(self.all_fields_text, "1. 🔌 Connect to SAP")
+        self.log_to_tab(self.all_fields_text, "2. 📍 Go to MD04 (or any SAP screen)")
+        self.log_to_tab(self.all_fields_text, "3. 🔍 Click 'SCAN ALL FIELDS' for complete discovery")
+        self.log_to_tab(self.all_fields_text, "4. 📋 Check different tabs for organized results")
+        self.log_to_tab(self.all_fields_text, "5. 🎯 Generate Step Guide to see numbered fields")
+        self.log_to_tab(self.all_fields_text, "6. 💾 Export results to share with me")
+        self.log_to_tab(self.all_fields_text, "")
+        self.log_to_tab(self.all_fields_text, "🎯 GOAL: Find the exact field IDs so you can tell me:")
+        self.log_to_tab(self.all_fields_text, "   - Which field for part number input")
+        self.log_to_tab(self.all_fields_text, "   - Which field for MRP area")
+        self.log_to_tab(self.all_fields_text, "   - Which button to execute")
+        self.log_to_tab(self.all_fields_text, "   - Which table shows results")
+        self.log_to_tab(self.all_fields_text, "   - Which field has description")
+        self.log_to_tab(self.all_fields_text, "")
+        self.log_to_tab(self.all_fields_text, "🚀 Let's discover ALL the fields!")
         
         self.root.mainloop()
 
 
 def main():
-    """Run the field finder."""
-    app = SAPFieldFinder()
-    app.run()
+    """Run the enhanced field finder."""
+    print("=" * 80)
+    print("ENHANCED SAP FIELD FINDER - COMPLETE DISCOVERY TOOL")
+    print("=" * 80)
+    print()
+    print("🎯 PURPOSE:")
+    print("This tool will extract EVERY field ID from your SAP screen")
+    print("so you can tell me exactly which fields to use step-by-step!")
+    print()
+    print("🔍 FEATURES:")
+    print("• Complete recursive scan of all SAP elements")
+    print("• Organized tabs for different field types")
+    print("• Input fields detection")
+    print("• Clickable elements discovery")
+    print("• Material-related field highlighting")
+    print("• Step-by-step guide generation")
+    print("• Export to JSON/Text for sharing")
+    print()
+    print("📋 WORKFLOW:")
+    print("1. Connect to SAP")
+    print("2. Navigate to MD04")
+    print("3. Run complete field scan")
+    print("4. Review organized results")
+    print("5. Generate step-by-step guide")
+    print("6. Tell me which fields to use!")
+    print()
+    print("🚀 Starting Enhanced Field Finder...")
+    print("=" * 80)
+    
+    try:
+        app = EnhancedSAPFieldFinder()
+        app.run()
+    except Exception as e:
+        print(f"❌ Failed to start application: {e}")
+        input("Press Enter to exit...")
 
 
 if __name__ == "__main__":

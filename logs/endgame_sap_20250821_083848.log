@@ -1,0 +1,30 @@
+2025-08-21 08:38:51,788 - INFO - ? Endgame SAP Automation Started!
+2025-08-21 08:38:51,893 - INFO - ? Complete workflow automation:
+2025-08-21 08:38:51,903 - INFO -    1. Connect to SAP Dashboard
+2025-08-21 08:38:51,910 - INFO -    2. Navigate to Transaction
+2025-08-21 08:38:51,916 - INFO -    3. Fill Fields & Execute
+2025-08-21 08:38:51,920 - INFO -    4. Find & Click MatRes
+2025-08-21 08:38:51,923 - INFO -    5. Maximize Popup (F7)
+2025-08-21 08:38:51,927 - INFO -    6. Extract Description
+2025-08-21 08:38:51,930 - INFO -    7. Save to Excel
+2025-08-21 08:38:51,932 - INFO - 
+2025-08-21 08:38:51,937 - INFO - ? Ready for complete automation!
+2025-08-21 08:39:06,163 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 08:39:08,626 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 08:39:11,284 - INFO - ? Navigating to transaction: MD04
+2025-08-21 08:39:16,441 - INFO - ? Successfully navigated to MD04
+2025-08-21 08:39:16,450 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-21 08:39:17,486 - INFO - ? Individual access tab selected
+2025-08-21 08:39:22,179 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 08:39:22,201 - INFO - 
+============================================================
+2025-08-21 08:39:22,208 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 08:39:22,225 - INFO - ============================================================
+2025-08-21 08:39:22,232 - INFO - ? Starting workflow for part: 857-A65473-106
+2025-08-21 08:39:22,269 - WARNING - ?? Could not ensure MD04 input screen: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 08:39:22,278 - WARNING - ?? Could not ensure MD04 input screen, continuing...
+2025-08-21 08:39:22,305 - INFO - ? STEP 2: Filling material field with: 857-A65473-106
+2025-08-21 08:39:22,313 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 08:39:22,326 - ERROR - ? Error entering material number: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 08:39:22,336 - ERROR - ? WORKFLOW FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 08:39:22,420 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors

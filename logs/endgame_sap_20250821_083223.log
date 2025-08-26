@@ -1,0 +1,35 @@
+2025-08-21 08:32:27,160 - INFO - ? Endgame SAP Automation Started!
+2025-08-21 08:32:27,260 - INFO - ? Complete workflow automation:
+2025-08-21 08:32:27,278 - INFO -    1. Connect to SAP Dashboard
+2025-08-21 08:32:27,314 - INFO -    2. Navigate to Transaction
+2025-08-21 08:32:27,318 - INFO -    3. Fill Fields & Execute
+2025-08-21 08:32:27,321 - INFO -    4. Find & Click MatRes
+2025-08-21 08:32:27,324 - INFO -    5. Maximize Popup (F7)
+2025-08-21 08:32:27,330 - INFO -    6. Extract Description
+2025-08-21 08:32:27,333 - INFO -    7. Save to Excel
+2025-08-21 08:32:27,334 - INFO - 
+2025-08-21 08:32:27,339 - INFO - ? Ready for complete automation!
+2025-08-21 08:32:51,130 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 08:32:52,678 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 08:32:58,488 - INFO - ? Navigating to transaction: MD04
+2025-08-21 08:33:03,142 - INFO - ? Successfully navigated to MD04
+2025-08-21 08:33:03,149 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-21 08:33:04,188 - INFO - ? Individual access tab selected
+2025-08-21 08:33:09,772 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 08:33:09,793 - INFO - 
+============================================================
+2025-08-21 08:33:09,800 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 08:33:09,815 - INFO - ============================================================
+2025-08-21 08:33:09,861 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 08:33:09,873 - ERROR - ? Error entering material number: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 08:33:09,880 - ERROR - ? AUTOMATION FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 08:33:09,965 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors
+2025-08-21 08:33:37,877 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 08:33:37,890 - INFO - 
+============================================================
+2025-08-21 08:33:37,894 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 08:33:37,902 - INFO - ============================================================
+2025-08-21 08:33:37,909 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 08:33:37,932 - ERROR - ? Error entering material number: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 08:33:37,941 - ERROR - ? AUTOMATION FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 08:33:37,949 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors

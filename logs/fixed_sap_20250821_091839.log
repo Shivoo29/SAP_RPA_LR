@@ -1,0 +1,56 @@
+2025-08-21 09:18:40,764 - INFO - ? Fixed SAP Automation Started!
+2025-08-21 09:18:40,965 - INFO - ? Key fixes applied:
+2025-08-21 09:18:40,973 - INFO -    ? Added missing MRP Area field ID
+2025-08-21 09:18:40,976 - INFO -    ? Enhanced field detection methods
+2025-08-21 09:18:40,983 - INFO -    ? Improved error handling
+2025-08-21 09:18:40,985 - INFO -    ? Added field validation tools
+2025-08-21 09:18:40,985 - INFO - 
+2025-08-21 09:18:40,987 - INFO - ? Ready to test and run automation!
+2025-08-21 09:19:41,139 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 09:19:42,453 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 09:19:46,478 - INFO - ? Testing field access...
+2025-08-21 09:19:46,479 - INFO - ============================================================
+2025-08-21 09:19:46,488 - INFO - ? Navigating to MD04...
+2025-08-21 09:19:51,827 - INFO - ? Individual access tab selected
+2025-08-21 09:19:51,829 - INFO - ? Testing material_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR
+2025-08-21 09:19:51,849 - INFO -    ? Field found!
+2025-08-21 09:19:51,850 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:19:51,851 - INFO -    ? Current text: ''
+2025-08-21 09:19:51,851 - INFO -    ? Modifiable: False
+2025-08-21 09:19:51,851 - INFO -    ? Changeable: True
+2025-08-21 09:19:51,852 - INFO - ? Testing mrp_area_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID
+2025-08-21 09:19:51,876 - INFO -    ? Field found!
+2025-08-21 09:19:51,877 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:19:51,878 - INFO -    ? Current text: ''
+2025-08-21 09:19:51,879 - INFO -    ? Modifiable: False
+2025-08-21 09:19:51,879 - INFO -    ? Changeable: True
+2025-08-21 09:19:51,880 - INFO - ? Testing plant_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS
+2025-08-21 09:19:51,919 - INFO -    ? Field found!
+2025-08-21 09:19:51,920 - INFO -    ? Type: GuiCTextField
+2025-08-21 09:19:51,920 - INFO -    ? Current text: '1000'
+2025-08-21 09:19:51,921 - INFO -    ? Modifiable: False
+2025-08-21 09:19:51,921 - INFO -    ? Changeable: True
+2025-08-21 09:19:51,922 - INFO - ? Testing matres_field: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ/txtMDEZ-DELB0
+2025-08-21 09:19:51,924 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 09:19:51,926 - INFO - ? Testing description_field: /app/con[0]/ses[0]/wnd[0]/usr/subBLOCK:SAPLKACB:1002/txtTEXT_AUFNR
+2025-08-21 09:19:51,927 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-21 09:19:51,928 - INFO - ============================================================
+2025-08-21 09:19:51,929 - INFO - ? Field Test Summary:
+2025-08-21 09:19:51,929 - INFO -    material_field: ? ACCESSIBLE
+2025-08-21 09:19:51,929 - INFO -    mrp_area_field: ? ACCESSIBLE
+2025-08-21 09:19:51,930 - INFO -    plant_field: ? ACCESSIBLE
+2025-08-21 09:19:51,930 - ERROR -    matres_field: ? NOT ACCESSIBLE
+2025-08-21 09:19:51,931 - ERROR -    description_field: ? NOT ACCESSIBLE
+2025-08-21 09:19:55,837 - INFO - ? Validating all required fields...
+2025-08-21 09:19:56,913 - INFO - ? Individual access tab selected
+2025-08-21 09:19:56,916 - INFO - ? material_field: VALID
+2025-08-21 09:19:56,920 - INFO - ? mrp_area_field: VALID
+2025-08-21 09:19:56,924 - INFO - ? plant_field: VALID
+2025-08-21 09:19:56,924 - INFO - ? All required fields are accessible!
+2025-08-21 09:19:59,828 - INFO - ? Testing field filling...
+2025-08-21 09:20:00,901 - INFO - ? Individual access tab selected
+2025-08-21 09:20:00,902 - INFO - ? Filling material_field with: '857-A65473-106'
+2025-08-21 09:20:00,912 - ERROR - ? Error filling material_field: 'FixedSAPAutomation' object has no attribute '_method_send_keys'
+2025-08-21 09:20:01,914 - INFO - ? Filling mrp_area_field with: '1000'
+2025-08-21 09:20:01,924 - ERROR - ? Error filling mrp_area_field: 'FixedSAPAutomation' object has no attribute '_method_send_keys'
+2025-08-21 09:20:01,926 - ERROR - ? Field filling test FAILED!

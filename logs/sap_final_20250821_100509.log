@@ -1,0 +1,8 @@
+2025-08-21 10:05:10,516 - INFO - SAP Final Working Version Started
+2025-08-21 10:05:10,682 - INFO - Using YOUR exact field IDs from the scan!
+2025-08-21 10:05:10,690 - INFO - Field IDs configured:
+2025-08-21 10:05:10,700 - INFO -   material_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR
+2025-08-21 10:05:10,706 - INFO -   mrp_area_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID
+2025-08-21 10:05:10,712 - INFO -   plant_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS
+2025-08-21 10:05:10,718 - INFO -   description_field: /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/txtMT61D-MAKTX
+2025-08-21 10:05:10,721 - INFO - Please connect to SAP to begin...

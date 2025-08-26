@@ -1,0 +1,50 @@
+2025-08-21 09:03:16,301 - INFO - ? Endgame SAP Automation Started!
+2025-08-21 09:03:16,397 - INFO - ? Complete workflow automation:
+2025-08-21 09:03:16,400 - INFO -    1. Connect to SAP Dashboard
+2025-08-21 09:03:16,401 - INFO -    2. Navigate to Transaction
+2025-08-21 09:03:16,403 - INFO -    3. Fill Fields & Execute
+2025-08-21 09:03:16,404 - INFO -    4. Find & Click MatRes
+2025-08-21 09:03:16,406 - INFO -    5. Maximize Popup (F7)
+2025-08-21 09:03:16,420 - INFO -    6. Extract Description
+2025-08-21 09:03:16,421 - INFO -    7. Save to Excel
+2025-08-21 09:03:16,422 - INFO - 
+2025-08-21 09:03:16,429 - INFO - ? Ready for complete automation!
+2025-08-21 09:03:24,973 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 09:03:26,669 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 09:03:28,558 - INFO - ? Navigating to transaction: MD04
+2025-08-21 09:03:33,192 - INFO - ? Successfully navigated to MD04
+2025-08-21 09:03:33,193 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-21 09:03:34,216 - INFO - ? Individual access tab selected
+2025-08-21 09:03:45,225 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 09:03:45,253 - INFO - 
+============================================================
+2025-08-21 09:03:45,258 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 09:03:45,265 - INFO - ============================================================
+2025-08-21 09:03:45,268 - INFO - ? Starting workflow for part: 857-A65473-106
+2025-08-21 09:03:45,288 - WARNING - ?? Could not ensure MD04 input screen: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:03:45,295 - WARNING - ?? Could not ensure MD04 input screen, continuing...
+2025-08-21 09:03:45,302 - INFO - ? STEP 2: Filling material field with: 857-A65473-106
+2025-08-21 09:03:45,305 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 09:03:45,310 - ERROR - ? Error making field editable: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:03:45,320 - ERROR - ? Error entering material number: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:03:45,324 - ERROR - ? WORKFLOW FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 09:03:45,357 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors
+2025-08-21 09:03:49,281 - ERROR - Failed to save results: bad option "-initialname": must be -confirmoverwrite, -defaultextension, -filetypes, -initialdir, -initialfile, -parent, -title, or -typevariable
+2025-08-21 09:05:29,691 - INFO - ? Starting complete automation for 1 parts
+2025-08-21 09:05:29,699 - INFO - 
+============================================================
+2025-08-21 09:05:29,702 - INFO - ? PROCESSING PART 1/1: 857-A65473-106
+2025-08-21 09:05:29,705 - INFO - ============================================================
+2025-08-21 09:05:29,713 - INFO - ? Starting workflow for part: 857-A65473-106
+2025-08-21 09:05:29,727 - WARNING - ?? Could not ensure MD04 input screen: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:05:29,731 - WARNING - ?? Could not ensure MD04 input screen, continuing...
+2025-08-21 09:05:29,738 - INFO - ? STEP 2: Filling material field with: 857-A65473-106
+2025-08-21 09:05:29,741 - INFO - ? Entering material number: 857-A65473-106
+2025-08-21 09:05:29,745 - ERROR - ? Error making field editable: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:05:29,749 - ERROR - ? Error entering material number: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-21 09:05:29,753 - ERROR - ? WORKFLOW FAILED for 857-A65473-106: Failed to enter material number
+2025-08-21 09:05:29,765 - INFO - ? Automation completed! 0 successful, 0 no MatRes, 1 errors
+2025-08-21 09:08:36,066 - INFO - ? Navigating to transaction: MD04
+2025-08-21 09:08:40,730 - INFO - ? Successfully navigated to MD04
+2025-08-21 09:08:40,732 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-21 09:08:41,778 - INFO - ? Individual access tab selected

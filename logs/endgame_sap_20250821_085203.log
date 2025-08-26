@@ -1,0 +1,17 @@
+2025-08-21 08:52:06,193 - INFO - ? Endgame SAP Automation Started!
+2025-08-21 08:52:06,272 - INFO - ? Complete workflow automation:
+2025-08-21 08:52:06,282 - INFO -    1. Connect to SAP Dashboard
+2025-08-21 08:52:06,286 - INFO -    2. Navigate to Transaction
+2025-08-21 08:52:06,290 - INFO -    3. Fill Fields & Execute
+2025-08-21 08:52:06,293 - INFO -    4. Find & Click MatRes
+2025-08-21 08:52:06,299 - INFO -    5. Maximize Popup (F7)
+2025-08-21 08:52:06,302 - INFO -    6. Extract Description
+2025-08-21 08:52:06,305 - INFO -    7. Save to Excel
+2025-08-21 08:52:06,307 - INFO - 
+2025-08-21 08:52:06,312 - INFO - ? Ready for complete automation!
+2025-08-21 08:52:09,207 - INFO - ? Connecting to SAP dashboard...
+2025-08-21 08:52:11,070 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-21 08:52:16,007 - INFO - ? Navigating to transaction: MD04
+2025-08-21 08:52:20,903 - INFO - ? Successfully navigated to MD04
+2025-08-21 08:52:20,910 - INFO - Window title: Stock/Requirements List: Initial Screen
+2025-08-21 08:52:21,967 - INFO - ? Individual access tab selected
