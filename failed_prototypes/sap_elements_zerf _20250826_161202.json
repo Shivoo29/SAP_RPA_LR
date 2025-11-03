@@ -1,0 +1,822 @@
+{
+  "scan_info": {
+    "timestamp": "2025-08-26T16:12:02.961017",
+    "transaction": "zerf ",
+    "total_elements": 116,
+    "sap_system": "Connected: PRD Client 250 User JHASH"
+  },
+  "elements": [
+    {
+      "name": "ERF Basic Data",
+      "type": "GuiMainWindow",
+      "id": "/app/con[0]/ses[0]/wnd[0]",
+      "text": "ERF Basic Data",
+      "path": "wnd[0]"
+    },
+    {
+      "name": "Report",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[0]",
+      "text": "Report",
+      "path": "wnd[0]/child[0]/child[0]"
+    },
+    {
+      "name": "Exit",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[0]/menu[0]",
+      "text": "Exit",
+      "path": "wnd[0]/child[0]/child[0]/child[0]"
+    },
+    {
+      "name": "Edit",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[1]",
+      "text": "Edit",
+      "path": "wnd[0]/child[0]/child[1]"
+    },
+    {
+      "name": "Cancel",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[1]/menu[0]",
+      "text": "Cancel",
+      "path": "wnd[0]/child[0]/child[1]/child[0]"
+    },
+    {
+      "name": "Goto",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[2]",
+      "text": "Goto",
+      "path": "wnd[0]/child[0]/child[2]"
+    },
+    {
+      "name": "Back",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[2]/menu[0]",
+      "text": "Back",
+      "path": "wnd[0]/child[0]/child[2]/child[0]"
+    },
+    {
+      "name": "System",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]",
+      "text": "System",
+      "path": "wnd[0]/child[0]/child[3]"
+    },
+    {
+      "name": "New GUI Window",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[0]",
+      "text": "New GUI Window",
+      "path": "wnd[0]/child[0]/child[3]/child[0]"
+    },
+    {
+      "name": "Close GUI Window",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[1]",
+      "text": "Close GUI Window",
+      "path": "wnd[0]/child[0]/child[3]/child[1]"
+    },
+    {
+      "name": "User Profile",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]",
+      "text": "User Profile",
+      "path": "wnd[0]/child[0]/child[3]/child[2]"
+    },
+    {
+      "name": "Hold Data",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]/menu[0]",
+      "text": "Hold Data",
+      "path": "wnd[0]/child[0]/child[3]/child[2]/child[0]"
+    },
+    {
+      "name": "Set Data",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]/menu[1]",
+      "text": "Set Data",
+      "path": "wnd[0]/child[0]/child[3]/child[2]/child[1]"
+    },
+    {
+      "name": "Delete Data",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]/menu[2]",
+      "text": "Delete Data",
+      "path": "wnd[0]/child[0]/child[3]/child[2]/child[2]"
+    },
+    {
+      "name": "Own Data",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]/menu[3]",
+      "text": "Own Data",
+      "path": "wnd[0]/child[0]/child[3]/child[2]/child[3]"
+    },
+    {
+      "name": "Expand Favorites",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[2]/menu[4]",
+      "text": "Expand Favorites",
+      "path": "wnd[0]/child[0]/child[3]/child[2]/child[4]"
+    },
+    {
+      "name": "Services",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]",
+      "text": "Services",
+      "path": "wnd[0]/child[0]/child[3]/child[3]"
+    },
+    {
+      "name": "Reporting",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[0]",
+      "text": "Reporting",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[0]"
+    },
+    {
+      "name": "QuickViewer",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[1]",
+      "text": "QuickViewer",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[1]"
+    },
+    {
+      "name": "Output Control",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[2]",
+      "text": "Output Control",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[2]"
+    },
+    {
+      "name": "Table Maintenance",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[3]",
+      "text": "Table Maintenance",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[3]"
+    },
+    {
+      "name": "Extended Table Maintenance",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[3]/menu[0]",
+      "text": "Extended Table Maintenance",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[3]/child[0]"
+    },
+    {
+      "name": "View Cluster Maintenance",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[3]/menu[1]",
+      "text": "View Cluster Maintenance",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[3]/child[1]"
+    },
+    {
+      "name": "Batch Input",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]",
+      "text": "Batch Input",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]"
+    },
+    {
+      "name": "Sessions",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[0]",
+      "text": "Sessions",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[0]"
+    },
+    {
+      "name": "Logs",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[1]",
+      "text": "Logs",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[1]"
+    },
+    {
+      "name": "Recorder",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[2]",
+      "text": "Recorder",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[2]"
+    },
+    {
+      "name": "Restart Transaction",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[4]",
+      "text": "Restart Transaction",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[4]"
+    },
+    {
+      "name": "Delete Transaction",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[5]",
+      "text": "Delete Transaction",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[5]"
+    },
+    {
+      "name": "Next Transaction",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[6]",
+      "text": "Next Transaction",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[6]"
+    },
+    {
+      "name": "Process in Foreground",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[8]",
+      "text": "Process in Foreground",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[8]"
+    },
+    {
+      "name": "Display Errors Only",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[9]",
+      "text": "Display Errors Only",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[9]"
+    },
+    {
+      "name": "Expert Mode On",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[10]",
+      "text": "Expert Mode On",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[10]"
+    },
+    {
+      "name": "Expert Mode Off",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[11]",
+      "text": "Expert Mode Off",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[11]"
+    },
+    {
+      "name": "Cancel",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[4]/menu[13]",
+      "text": "Cancel",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[4]/child[13]"
+    },
+    {
+      "name": "Fast Entry",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[5]",
+      "text": "Fast Entry",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[5]"
+    },
+    {
+      "name": "Recorder",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[5]/menu[0]",
+      "text": "Recorder",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[5]/child[0]"
+    },
+    {
+      "name": "Process in Foreground",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[5]/menu[2]",
+      "text": "Process in Foreground",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[5]/child[2]"
+    },
+    {
+      "name": "Display Errors Only",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[5]/menu[3]",
+      "text": "Display Errors Only",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[5]/child[3]"
+    },
+    {
+      "name": "Cancel",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[5]/menu[5]",
+      "text": "Cancel",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[5]/child[5]"
+    },
+    {
+      "name": "Direct Input",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[6]",
+      "text": "Direct Input",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[6]"
+    },
+    {
+      "name": "Jobs",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[7]",
+      "text": "Jobs",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[7]"
+    },
+    {
+      "name": "Define Job",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[7]/menu[0]",
+      "text": "Define Job",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[7]/child[0]"
+    },
+    {
+      "name": "Job Overview",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[7]/menu[1]",
+      "text": "Job Overview",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[7]/child[1]"
+    },
+    {
+      "name": "Queue",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[8]",
+      "text": "Queue",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[8]"
+    },
+    {
+      "name": "SAP Service",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[3]/menu[9]",
+      "text": "SAP Service",
+      "path": "wnd[0]/child[0]/child[3]/child[3]/child[9]"
+    },
+    {
+      "name": "Utilities",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]",
+      "text": "Utilities",
+      "path": "wnd[0]/child[0]/child[3]/child[4]"
+    },
+    {
+      "name": "Debug Dynpro",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[0]",
+      "text": "Debug Dynpro",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[0]"
+    },
+    {
+      "name": "Debug ABAP",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[1]",
+      "text": "Debug ABAP",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[1]"
+    },
+    {
+      "name": "Debug System",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[2]",
+      "text": "Debug System",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[2]"
+    },
+    {
+      "name": "Resource Usage",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[3]",
+      "text": "Resource Usage",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[3]"
+    },
+    {
+      "name": "Autom Queue Synchronous Proc",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[4]",
+      "text": "Autom. Queue: Synchronous Processing",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[4]"
+    },
+    {
+      "name": "Performance Trace",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[5]",
+      "text": "Performance Trace",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[5]"
+    },
+    {
+      "name": "Context Trace",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[6]",
+      "text": "Context Trace",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[6]"
+    },
+    {
+      "name": "Runtime Analysis",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[7]",
+      "text": "Runtime Analysis",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[7]"
+    },
+    {
+      "name": "Execute",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[7]/menu[0]",
+      "text": "Execute",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[7]/child[0]"
+    },
+    {
+      "name": "Switch On",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[7]/menu[1]",
+      "text": "Switch On",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[7]/child[1]"
+    },
+    {
+      "name": "Switch Off",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[7]/menu[2]",
+      "text": "Switch Off",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[7]/child[2]"
+    },
+    {
+      "name": "Display Authorization Check",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[8]",
+      "text": "Display Authorization Check",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[8]"
+    },
+    {
+      "name": "Memory Analysis",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[9]",
+      "text": "Memory Analysis",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[9]"
+    },
+    {
+      "name": "Create Memory Snapshot",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[9]/menu[0]",
+      "text": "Create Memory Snapshot",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[9]/child[0]"
+    },
+    {
+      "name": "Compare Memory Snapshots",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[4]/menu[9]/menu[1]",
+      "text": "Compare Memory Snapshots",
+      "path": "wnd[0]/child[0]/child[3]/child[4]/child[9]/child[1]"
+    },
+    {
+      "name": "List",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]",
+      "text": "List",
+      "path": "wnd[0]/child[0]/child[3]/child[5]"
+    },
+    {
+      "name": "Print",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[0]",
+      "text": "Print",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[0]"
+    },
+    {
+      "name": "Find",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[1]",
+      "text": "Find...",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[1]"
+    },
+    {
+      "name": "Save",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[2]",
+      "text": "Save",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[2]"
+    },
+    {
+      "name": "SAPoffice Folders",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[2]/menu[0]",
+      "text": "SAPoffice Folders",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[2]/child[0]"
+    },
+    {
+      "name": "Local File",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[2]/menu[1]",
+      "text": "Local File",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[2]/child[1]"
+    },
+    {
+      "name": "Send",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[3]",
+      "text": "Send",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[3]"
+    },
+    {
+      "name": "List Header",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[5]/menu[4]",
+      "text": "List Header",
+      "path": "wnd[0]/child[0]/child[3]/child[5]/child[4]"
+    },
+    {
+      "name": "Services for Object",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[6]",
+      "text": "Services for Object",
+      "path": "wnd[0]/child[0]/child[3]/child[6]"
+    },
+    {
+      "name": "My Objects",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[7]",
+      "text": "My Objects",
+      "path": "wnd[0]/child[0]/child[3]/child[7]"
+    },
+    {
+      "name": "Object History",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[7]/menu[0]",
+      "text": "Object History",
+      "path": "wnd[0]/child[0]/child[3]/child[7]/child[0]"
+    },
+    {
+      "name": "Edit Objects",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[7]/menu[1]",
+      "text": "Edit Objects",
+      "path": "wnd[0]/child[0]/child[3]/child[7]/child[1]"
+    },
+    {
+      "name": "Own Spool Requests",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[8]",
+      "text": "Own Spool Requests",
+      "path": "wnd[0]/child[0]/child[3]/child[8]"
+    },
+    {
+      "name": "Own Jobs",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[9]",
+      "text": "Own Jobs",
+      "path": "wnd[0]/child[0]/child[3]/child[9]"
+    },
+    {
+      "name": "Short Message",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[10]",
+      "text": "Short Message",
+      "path": "wnd[0]/child[0]/child[3]/child[10]"
+    },
+    {
+      "name": "Status",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[11]",
+      "text": "Status...",
+      "path": "wnd[0]/child[0]/child[3]/child[11]"
+    },
+    {
+      "name": "Log Off",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[3]/menu[12]",
+      "text": "Log Off",
+      "path": "wnd[0]/child[0]/child[3]/child[12]"
+    },
+    {
+      "name": "Help",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]",
+      "text": "Help",
+      "path": "wnd[0]/child[0]/child[4]"
+    },
+    {
+      "name": "Application Help",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[0]",
+      "text": "Application Help",
+      "path": "wnd[0]/child[0]/child[4]/child[0]"
+    },
+    {
+      "name": "SAP Library",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[1]",
+      "text": "SAP Library",
+      "path": "wnd[0]/child[0]/child[4]/child[1]"
+    },
+    {
+      "name": "Glossary",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[2]",
+      "text": "Glossary",
+      "path": "wnd[0]/child[0]/child[4]/child[2]"
+    },
+    {
+      "name": "Release Notes",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[3]",
+      "text": "Release Notes",
+      "path": "wnd[0]/child[0]/child[4]/child[3]"
+    },
+    {
+      "name": "SAP Service Marketplace",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[5]",
+      "text": "SAP Service Marketplace",
+      "path": "wnd[0]/child[0]/child[4]/child[5]"
+    },
+    {
+      "name": "Create Support Message",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[6]",
+      "text": "Create Support Message",
+      "path": "wnd[0]/child[0]/child[4]/child[6]"
+    },
+    {
+      "name": "Settings",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[8]",
+      "text": "Settings...",
+      "path": "wnd[0]/child[0]/child[4]/child[8]"
+    },
+    {
+      "name": "Lam Help",
+      "type": "GuiMenu",
+      "id": "/app/con[0]/ses[0]/wnd[0]/mbar/menu[4]/menu[10]",
+      "text": "Lam Help",
+      "path": "wnd[0]/child[0]/child[4]/child[10]"
+    },
+    {
+      "name": "button_89",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[0]"
+    },
+    {
+      "name": "button_90",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[423]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[1]"
+    },
+    {
+      "name": "button_91",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[11]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[2]"
+    },
+    {
+      "name": "button_92",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[3]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[3]"
+    },
+    {
+      "name": "button_93",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[15]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[4]"
+    },
+    {
+      "name": "button_94",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[12]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[5]"
+    },
+    {
+      "name": "button_95",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[86]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[6]"
+    },
+    {
+      "name": "button_96",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[71]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[7]"
+    },
+    {
+      "name": "button_97",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[84]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[8]"
+    },
+    {
+      "name": "button_98",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[80]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[9]"
+    },
+    {
+      "name": "button_99",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[81]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[10]"
+    },
+    {
+      "name": "button_100",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[82]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[11]"
+    },
+    {
+      "name": "button_101",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[83]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[12]"
+    },
+    {
+      "name": "button_102",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[419]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[13]"
+    },
+    {
+      "name": "button_103",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[418]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[14]"
+    },
+    {
+      "name": "button_104",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[1]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[15]"
+    },
+    {
+      "name": "button_105",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[446]",
+      "text": "",
+      "path": "wnd[0]/child[1]/child[16]"
+    },
+    {
+      "name": "ERF Basic Data",
+      "type": "GuiTitlebar",
+      "id": "/app/con[0]/ses[0]/wnd[0]/titl",
+      "text": "ERF Basic Data",
+      "path": "wnd[0]/child[2]"
+    },
+    {
+      "name": "button_107",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[8]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[0]"
+    },
+    {
+      "name": "button_108",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[17]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[1]"
+    },
+    {
+      "name": "button_109",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[36]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[2]"
+    },
+    {
+      "name": "button_110",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[42]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[3]"
+    },
+    {
+      "name": "button_111",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[14]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[4]"
+    },
+    {
+      "name": "button_112",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[39]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[5]"
+    },
+    {
+      "name": "button_113",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[38]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[6]"
+    },
+    {
+      "name": "button_114",
+      "type": "GuiButton",
+      "id": "/app/con[0]/ses[0]/wnd[0]/tbar[1]/btn[37]",
+      "text": "",
+      "path": "wnd[0]/child[3]/child[7]"
+    },
+    {
+      "name": "SAPGUICONTAINERCTRL1",
+      "type": "GuiContainerShell",
+      "id": "/app/con[0]/ses[0]/wnd[0]/usr/cntlCONTAINER/shellcont",
+      "text": "SAPGUI.CONTAINERCTRL.1",
+      "path": "wnd[0]/child[4]/child[0]/child[0]"
+    },
+    {
+      "name": "SAPGUIGridViewCtrl1",
+      "type": "GuiShell",
+      "id": "/app/con[0]/ses[0]/wnd[0]/usr/cntlCONTAINER/shellcont/shell",
+      "text": "SAPGUI.GridViewCtrl.1",
+      "path": "wnd[0]/child[4]/child[0]/child[0]/child[0]"
+    }
+  ]
+}

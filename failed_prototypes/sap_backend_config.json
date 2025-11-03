@@ -1,0 +1,37 @@
+{
+    "sap_connection": {
+        "system_name": "001. SAP ECC Production (PRD)",
+        "client": "100",
+        "language": "EN"
+    },
+    "transactions": {
+        "material_display": "MM03",
+        "stock_requirements": "MD04",
+        "mrp_list": "MD06"
+    },
+    "field_mappings": {
+        "md04": {
+            "material_field": "wnd[0]/usr/ctxtRM61E-MATNR",
+            "mrp_area_field": "wnd[0]/usr/ctxtRM61E-BERID",
+            "plant_field": "wnd[0]/usr/ctxtRM61E-WERKS",
+            "execute_button": "wnd[0]/tbar[1]/btn[8]",
+            "result_grid": "wnd[0]/usr/cntlGRID1/shellcont/shell",
+            "detail_window": "wnd[1]",
+            "description_field": "wnd[1]/usr/subSUB0:SAPLMGMM:2001/subSUB0:SAPLMGMM:2003/txtRMMG1-MAKTX"
+        }
+    },
+    "default_values": {
+        "mrp_area": "1000",
+        "plant": ""
+    },
+    "ocr_fallback": {
+        "enabled": true,
+        "description_region": [
+            100,
+            400,
+            700,
+            500
+        ],
+        "confidence_threshold": 60
+    }
+}

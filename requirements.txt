@@ -1,24 +1,49 @@
-# SAP MD04 Workflow with OCR Integration - Requirements
+# Enhanced SAP MD04 Automation - Requirements
+# ===========================================
 # Install with: pip install -r requirements.txt
 
-# Core Data Processing
+# Core Data Processing & Excel Handling
 pandas>=1.5.0
-openpyxl>=3.0.0
+openpyxl>=3.1.0
+xlsxwriter>=3.0.0
 
 # SAP GUI Scripting
 pywin32>=305
 
-# OCR and Image Processing
-pytesseract>=0.3.10
-Pillow>=9.0.0
-opencv-python>=4.6.0
-numpy>=1.21.0
+# GUI Framework
+# tkinter  # Usually comes with Python, but listed for completeness
 
-# Automation and Screen Control
-pyautogui>=0.9.54
+# Logging and File Handling
+# logging  # Built-in Python module
 
-# Additional utilities (optional but recommended)
-requests>=2.28.0
-matplotlib>=3.5.0
+# Date and Time Handling
+# datetime  # Built-in Python module
 
-# Note: tkinter comes built-in with Python - no need to install separately
+# Threading for Batch Processing
+# threading  # Built-in Python module
+
+# File Operations
+# os  # Built-in Python module
+# json  # Built-in Python module
+
+# Optional: For enhanced functionality
+requests>=2.28.0  # For future API integration
+matplotlib>=3.6.0  # For data visualization (optional)
+
+# Development and Building
+pyinstaller>=5.0  # For creating executable files
+
+# Additional utilities
+# typing>=3.10.0  # For type hints
+pathlib  # Built-in, for advanced file path handling
+
+# Notes:
+# - tkinter comes built-in with most Python installations
+# - All 'built-in' modules don't need separate installation
+# - This enhanced version focuses on Excel processing and batch operations
+# - SAP GUI Scripting API access is required on the target system
+
+
+
+
+selenium

@@ -1,0 +1,57 @@
+2025-08-26 16:31:56,540 - INFO - ? SAP ZERF Date Automation Started!
+2025-08-26 16:31:56,585 - INFO - Default Start Date: 08/03/2025
+2025-08-26 16:31:56,590 - INFO - Default End Date: 08/26/2025
+2025-08-26 16:31:56,591 - INFO - 
+2025-08-26 16:31:56,594 - INFO - Instructions:
+2025-08-26 16:31:56,597 - INFO - 1. Click 'Connect to SAP' to establish connection
+2025-08-26 16:31:56,600 - INFO - 2. Optionally test navigation and field access
+2025-08-26 16:31:56,602 - INFO - 3. Adjust dates if needed
+2025-08-26 16:31:56,604 - INFO - 4. Click 'Run Full Automation' to execute
+2025-08-26 16:31:56,605 - INFO - 
+2025-08-26 16:31:56,607 - INFO - Ready to begin...
+2025-08-26 16:32:26,944 - INFO - ? Connecting to SAP GUI...
+2025-08-26 16:32:28,366 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-26 16:32:28,374 - INFO - ? Current transaction: SESSION_MANAGER
+2025-08-26 16:32:36,248 - INFO - End date updated to: 08/26/2025
+2025-08-26 16:32:42,048 - INFO - ? Navigating to ZERF transaction...
+2025-08-26 16:32:45,544 - INFO - ? Successfully navigated to ZERF
+2025-08-26 16:32:50,519 - INFO - ? Testing field access...
+2025-08-26 16:32:50,521 - INFO - ============================================================
+2025-08-26 16:32:50,521 - INFO - ? Testing start_date_field: /app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-LOW
+2025-08-26 16:32:50,528 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-26 16:32:50,530 - INFO - ? Testing end_date_field: /app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-HIGH
+2025-08-26 16:32:50,539 - ERROR -    ? Field NOT found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-26 16:32:50,540 - INFO - ============================================================
+2025-08-26 16:32:58,032 - INFO - ? Starting full automation...
+2025-08-26 16:32:58,035 - INFO - ============================================================
+2025-08-26 16:32:58,039 - INFO - ? STARTING ZERF DATE AUTOMATION WORKFLOW
+2025-08-26 16:32:58,039 - INFO - ============================================================
+2025-08-26 16:32:58,040 - INFO - ? Step 1: Navigating to ZERF transaction...
+2025-08-26 16:32:58,040 - INFO - ? Navigating to ZERF transaction...
+2025-08-26 16:32:58,042 - ERROR - ? Failed to navigate to ZERF: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-26 16:32:58,043 - ERROR - ? Automation failed: Failed to navigate to ZERF
+2025-08-26 16:33:00,801 - INFO - ? Automation process finished
+2025-08-26 17:40:09,742 - INFO - ? Executing query (pressing F8)...
+2025-08-26 17:40:09,773 - ERROR - ? Failed to execute query: (-2147417848, 'The object invoked has disconnected from its clients.', None, None)
+2025-08-26 17:40:12,161 - INFO - ? Starting full automation...
+2025-08-26 17:40:12,168 - INFO - ============================================================
+2025-08-26 17:40:12,172 - INFO - ? STARTING ZERF DATE AUTOMATION WORKFLOW
+2025-08-26 17:40:12,175 - INFO - ============================================================
+2025-08-26 17:40:12,177 - INFO - ? Step 1: Navigating to ZERF transaction...
+2025-08-26 17:40:12,179 - INFO - ? Navigating to ZERF transaction...
+2025-08-26 17:40:12,186 - ERROR - ? Failed to navigate to ZERF: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-26 17:40:12,190 - ERROR - ? Automation failed: Failed to navigate to ZERF
+2025-08-26 17:40:14,785 - INFO - ? Automation process finished
+2025-08-26 17:40:15,947 - INFO - ? Testing date field filling...
+2025-08-26 17:40:15,955 - INFO - ? Filling start_date_field with: '08/03/2025'
+2025-08-26 17:40:15,960 - ERROR - ? Error filling start_date_field: (-2147417848, 'The object invoked has disconnected from its clients.', None, None)
+2025-08-26 17:40:16,965 - INFO - ? Filling end_date_field with: '08/26/2025'
+2025-08-26 17:40:16,971 - ERROR - ? Error filling end_date_field: (-2147417848, 'The object invoked has disconnected from its clients.', None, None)
+2025-08-26 17:40:16,976 - WARNING - ?? Some date fields may not have been filled correctly
+2025-08-26 17:40:21,688 - INFO - ? Testing field access...
+2025-08-26 17:40:21,695 - INFO - ============================================================
+2025-08-26 17:40:21,697 - INFO - ? Testing start_date_field: /app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-LOW
+2025-08-26 17:40:21,705 - ERROR -    ? Field NOT found: (-2147417848, 'The object invoked has disconnected from its clients.', None, None)
+2025-08-26 17:40:21,708 - INFO - ? Testing end_date_field: /app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-HIGH
+2025-08-26 17:40:21,711 - ERROR -    ? Field NOT found: (-2147417848, 'The object invoked has disconnected from its clients.', None, None)
+2025-08-26 17:40:21,713 - INFO - ============================================================

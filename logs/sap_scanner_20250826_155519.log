@@ -1,0 +1,21 @@
+2025-08-26 15:55:20,161 - INFO - SAP Element Scanner started
+2025-08-26 15:55:20,211 - INFO - Instructions:
+2025-08-26 15:55:20,214 - INFO - 1. Connect to SAP
+2025-08-26 15:55:20,221 - INFO - 2. Navigate to desired transaction
+2025-08-26 15:55:20,231 - INFO - 3. Click 'Scan Current Screen'
+2025-08-26 15:55:20,236 - INFO - 4. Export or copy field IDs
+2025-08-26 15:55:53,113 - INFO - Connecting to SAP GUI...
+2025-08-26 15:55:54,332 - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-08-26 15:56:07,889 - INFO - Navigating to ZERF...
+2025-08-26 15:56:10,898 - INFO - Successfully navigated to ZERF
+2025-08-26 15:56:14,174 - INFO - Starting screen scan...
+2025-08-26 15:56:14,184 - INFO - Scanning transaction: ZERF
+2025-08-26 15:56:16,817 - INFO - Scan complete. Found 264 elements
+2025-08-26 15:56:36,870 - INFO - Starting screen scan...
+2025-08-26 15:56:36,891 - INFO - Scanning transaction: ZERF
+2025-08-26 15:56:39,595 - INFO - Scan complete. Found 264 elements
+2025-08-26 15:59:39,177 - INFO - Starting screen scan...
+2025-08-26 15:59:39,242 - INFO - Scanning transaction: ZERF
+2025-08-26 15:59:40,510 - INFO - Scan complete. Found 116 elements
+2025-08-26 16:12:02,963 - INFO - Elements exported to: sap_elements_zerf _20250826_161202.json
+2025-08-26 16:12:23,672 - INFO - Copied 110 field IDs to clipboard

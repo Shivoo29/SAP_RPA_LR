@@ -1,0 +1,25 @@
+2025-08-28 06:29:29,263 - INFO - SAP Automation Started - Multi-Part Processing
+2025-08-28 06:29:33,625 - INFO - Connecting to SAP dashboard...
+2025-08-28 06:29:35,791 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-28 06:29:42,100 - INFO - Starting automation for 4 parts...
+2025-08-28 06:29:42,101 - INFO - ============================================================
+2025-08-28 06:29:42,109 - INFO - Processing part 1/4: 857-A65473-106
+2025-08-28 06:29:42,112 - ERROR - Error ensuring MD04 screen: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-08-28 06:29:42,115 - INFO - Filling material_field with: '857-A65473-106'
+2025-08-28 06:29:42,117 - ERROR - Error filling material_field: <unknown>.findById
+2025-08-28 06:29:42,119 - ERROR - Error processing first part 857-A65473-106: Failed to fill material field
+2025-08-28 06:29:42,123 - WARNING - Failed to process (added empty record): 857-A65473-106
+2025-08-28 06:29:44,125 - INFO - Processing part 2/4: 684-B20512-006
+2025-08-28 06:29:44,127 - INFO - Pressing F3 to go back...
+2025-08-28 06:29:44,128 - ERROR - Error processing next part 684-B20512-006: <unknown>.findById
+2025-08-28 06:29:44,129 - WARNING - Failed to process (added empty record): 684-B20512-006
+2025-08-28 06:29:46,130 - INFO - Processing part 3/4: 813-B97886-001
+2025-08-28 06:29:46,131 - INFO - Pressing F3 to go back...
+2025-08-28 06:29:46,132 - ERROR - Error processing next part 813-B97886-001: <unknown>.findById
+2025-08-28 06:29:46,132 - WARNING - Failed to process (added empty record): 813-B97886-001
+2025-08-28 06:29:48,135 - INFO - Processing part 4/4: 660-300316-500
+2025-08-28 06:29:48,137 - INFO - Pressing F3 to go back...
+2025-08-28 06:29:48,139 - ERROR - Error processing next part 660-300316-500: <unknown>.findById
+2025-08-28 06:29:48,141 - WARNING - Failed to process (added empty record): 660-300316-500
+2025-08-28 06:29:50,142 - INFO - ============================================================
+2025-08-28 06:29:50,143 - INFO - Processing completed! Total: 4, Successful: 0

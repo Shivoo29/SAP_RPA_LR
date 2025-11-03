@@ -1,0 +1,6 @@
+{
+    "default_values": {
+        "mrp_area": "1000",
+        "plant": ""
+    }
+}

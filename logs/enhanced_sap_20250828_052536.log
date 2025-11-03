@@ -1,0 +1,48 @@
+2025-08-28 05:25:38,190 - INFO - ? Enhanced SAP Automation Started!
+2025-08-28 05:25:38,241 - INFO - ? NEW FEATURES:
+2025-08-28 05:25:38,247 - INFO -    ? Multi-part batch processing from Excel/CSV
+2025-08-28 05:25:38,257 - INFO -    ? Data extraction from maximized pages
+2025-08-28 05:25:38,263 - INFO -    ? Automatic Excel export of results
+2025-08-28 05:25:38,267 - INFO -    ? Progress tracking and error recovery
+2025-08-28 05:25:38,268 - INFO - 
+2025-08-28 05:25:38,275 - INFO - ? Ready to load part numbers and start processing!
+2025-08-28 05:25:51,570 - INFO - ? Connecting to SAP dashboard...
+2025-08-28 05:25:53,062 - INFO - ? Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-28 05:26:16,287 - INFO - ? Loading part numbers from: C:/Users/jhash/Documents/SAP_RPA_LR/SAP_Large_Sample_10parts_20250828_052220.xlsx
+2025-08-28 05:26:16,726 - INFO - ? Successfully loaded 4 part numbers
+2025-08-28 05:26:49,941 - INFO - ? Starting batch processing...
+2025-08-28 05:26:49,946 - INFO - ? Starting batch processing of 4 parts
+2025-08-28 05:26:49,957 - INFO - ================================================================================
+2025-08-28 05:26:49,962 - INFO - ? Processing part 1/4: 813-B97886-001
+2025-08-28 05:26:49,975 - ERROR - ? Error ensuring MD04 screen: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-28 05:26:49,984 - INFO - ? Filling material_field with: '813-B97886-001'
+2025-08-28 05:26:49,989 - ERROR - ? Error filling material_field: <unknown>.findById
+2025-08-28 05:26:49,994 - ERROR - ? Error processing 813-B97886-001: Failed to fill material field
+2025-08-28 05:26:49,998 - ERROR - ? Failed to process: 813-B97886-001
+2025-08-28 05:26:52,002 - INFO - ? Processing part 2/4: 857-A65473-106
+2025-08-28 05:26:52,007 - ERROR - ? Error ensuring MD04 screen: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-28 05:26:52,011 - INFO - ? Filling material_field with: '857-A65473-106'
+2025-08-28 05:26:52,020 - ERROR - ? Error filling material_field: <unknown>.findById
+2025-08-28 05:26:52,023 - ERROR - ? Error processing 857-A65473-106: Failed to fill material field
+2025-08-28 05:26:52,025 - ERROR - ? Failed to process: 857-A65473-106
+2025-08-28 05:26:54,026 - INFO - ? Processing part 3/4: 660-300316-500
+660-300316-500
+2025-08-28 05:26:54,035 - ERROR - ? Error ensuring MD04 screen: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-28 05:26:54,041 - INFO - ? Filling material_field with: '660-300316-500
+660-300316-500'
+2025-08-28 05:26:54,045 - ERROR - ? Error filling material_field: <unknown>.findById
+2025-08-28 05:26:54,048 - ERROR - ? Error processing 660-300316-500
+660-300316-500: Failed to fill material field
+2025-08-28 05:26:54,049 - ERROR - ? Failed to process: 660-300316-500
+660-300316-500
+2025-08-28 05:26:56,062 - INFO - ? Processing part 4/4: 713-A08164-007
+2025-08-28 05:26:56,072 - ERROR - ? Error ensuring MD04 screen: (-2147417842, 'The application called an interface that was marshalled for a different thread.', None, None)
+2025-08-28 05:26:56,081 - INFO - ? Filling material_field with: '713-A08164-007'
+2025-08-28 05:26:56,085 - ERROR - ? Error filling material_field: <unknown>.findById
+2025-08-28 05:26:56,090 - ERROR - ? Error processing 713-A08164-007: Failed to fill material field
+2025-08-28 05:26:56,093 - ERROR - ? Failed to process: 713-A08164-007
+2025-08-28 05:26:58,100 - INFO - ================================================================================
+2025-08-28 05:26:58,103 - INFO - ? Batch processing completed!
+2025-08-28 05:26:58,105 - INFO - ? Successful: 0
+2025-08-28 05:26:58,107 - INFO - ? Failed: 4
+2025-08-28 05:26:58,108 - INFO - ? Total: 4

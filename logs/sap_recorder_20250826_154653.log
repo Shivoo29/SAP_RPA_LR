@@ -1,0 +1,8 @@
+2025-08-26 15:46:54,682 - INFO - Hotkeys registered: F1=Start, F2=Stop, ESC=Emergency Stop
+2025-08-26 15:46:54,724 - INFO - SAP Element Recorder Started
+2025-08-26 15:46:54,730 - INFO - Connect to SAP and start recording to capture element information
+2025-08-26 15:46:54,734 - INFO - Use hotkeys: F1=Start Recording, F2=Stop, ESC=Emergency Stop
+2025-08-26 15:47:52,091 - INFO - Connecting to SAP GUI...
+2025-08-26 15:47:53,643 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-26 15:47:56,617 - INFO - Started element recording - move cursor over SAP elements
+2025-08-26 15:49:16,437 - INFO - Recording stopped - captured 0 elements

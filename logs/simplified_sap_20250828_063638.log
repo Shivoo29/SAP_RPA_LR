@@ -1,0 +1,451 @@
+2025-08-28 06:36:38,727 - INFO - SAP Automation Started - Multi-Part Processing
+2025-08-28 06:36:48,483 - INFO - Connecting to SAP dashboard...
+2025-08-28 06:36:50,283 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-28 06:37:40,306 - INFO - Starting automation for 3 parts...
+2025-08-28 06:37:40,307 - INFO - Processing part 1/3: 857-A65473-106
+2025-08-28 06:37:40,322 - INFO - Navigating to MD04...
+2025-08-28 06:37:46,304 - INFO - Individual access tab selected
+2025-08-28 06:37:46,306 - INFO - Filling material_field with: '857-A65473-106'
+2025-08-28 06:37:46,823 - INFO - Filling mrp_area_field with: '1000'
+2025-08-28 06:37:47,335 - INFO - Executing query by pressing Enter...
+2025-08-28 06:37:52,459 - INFO - Scanning for MatRes element...
+2025-08-28 06:37:57,109 - INFO - Pressing F7 to maximize...
+2025-08-28 06:38:03,168 - INFO - Extracting data from page...
+2025-08-28 06:38:03,173 - INFO - Extracted Material: 857-A65473-106
+2025-08-28 06:38:03,178 - INFO - Extracted Part_Description: CE Sense.i - Akara BL (OPEX)
+2025-08-28 06:38:03,183 - INFO - Extracted Recipient: RPM 619514
+2025-08-28 06:38:03,188 - INFO - Extracted Order: 229663
+2025-08-28 06:38:03,189 - INFO - Successfully processed: 857-A65473-106
+2025-08-28 06:38:05,197 - INFO - Processing part 2/3: 813-B97886-001
+2025-08-28 06:38:05,200 - INFO - Pressing F3 to go back...
+2025-08-28 06:38:07,541 - INFO - Filling next part field with: 813-B97886-001
+2025-08-28 06:38:08,049 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:38:11,444 - INFO - Scanning for MatRes element...
+2025-08-28 06:38:15,361 - WARNING - Failed to process (added empty record): 813-B97886-001
+2025-08-28 06:38:17,363 - INFO - Processing part 3/3: 660-300316-500
+2025-08-28 06:38:17,366 - INFO - Pressing F3 to go back...
+2025-08-28 06:38:19,723 - INFO - Filling next part field with: 660-300316-500
+2025-08-28 06:38:19,725 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:38:19,727 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:38:19,728 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:38:19,730 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:38:19,731 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:38:24,244 - INFO - Successfully filled main MD04 field
+2025-08-28 06:38:27,712 - INFO - Scanning for MatRes element...
+2025-08-28 06:38:32,389 - INFO - Pressing F7 to maximize...
+2025-08-28 06:38:38,436 - INFO - Extracting data from page...
+2025-08-28 06:38:38,441 - INFO - Extracted Material: 660-300316-500
+2025-08-28 06:38:38,445 - INFO - Extracted Part_Description: CE Sense.i - AKARA BXE (OPEX)
+2025-08-28 06:38:38,450 - INFO - Extracted Recipient: RPM0626282
+2025-08-28 06:38:38,454 - INFO - Extracted Order: 231621
+2025-08-28 06:38:38,456 - INFO - Successfully processed: 660-300316-500
+2025-08-28 06:38:40,462 - INFO - ============================================================
+2025-08-28 06:38:40,464 - INFO - Processing completed! Total: 3, Successful: 2
+2025-08-28 06:39:10,226 - INFO - Exporting to: C:/Users/jhash/Documents/SAP_RPA_LR/SAP_Export_20250828_063846.xlsx
+2025-08-28 06:39:10,391 - INFO - Successfully exported 3 records
+2025-08-28 06:46:16,528 - INFO - Connecting to SAP dashboard...
+2025-08-28 06:46:18,248 - INFO - Successfully connected to SAP: PRD Client 250 User JHASH
+2025-08-28 06:46:26,485 - INFO - Starting automation for 35 parts...
+2025-08-28 06:46:26,487 - INFO - Processing part 1/35: 857-A65473-106
+2025-08-28 06:46:26,500 - INFO - Navigating to MD04...
+2025-08-28 06:46:31,499 - INFO - Individual access tab selected
+2025-08-28 06:46:31,501 - INFO - Filling material_field with: '857-A65473-106'
+2025-08-28 06:46:32,009 - INFO - Filling mrp_area_field with: '1000'
+2025-08-28 06:46:32,517 - INFO - Executing query by pressing Enter...
+2025-08-28 06:46:37,783 - INFO - Scanning for MatRes element...
+2025-08-28 06:46:42,544 - INFO - Pressing F7 to maximize...
+2025-08-28 06:46:48,592 - INFO - Extracting data from page...
+2025-08-28 06:46:48,601 - INFO - Extracted Material: 857-A65473-106
+2025-08-28 06:46:48,611 - INFO - Extracted Part_Description: CE Sense.i - Akara BL (OPEX)
+2025-08-28 06:46:48,619 - INFO - Extracted Recipient: RPM 619514
+2025-08-28 06:46:48,628 - INFO - Extracted Order: 229663
+2025-08-28 06:46:48,630 - INFO - Successfully processed: 857-A65473-106
+2025-08-28 06:46:50,640 - INFO - Processing part 2/35: 813-B97886-001
+2025-08-28 06:46:50,643 - INFO - Pressing F3 to go back...
+2025-08-28 06:46:53,016 - INFO - Filling next part field with: 813-B97886-001
+2025-08-28 06:46:53,528 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:46:56,988 - INFO - Scanning for MatRes element...
+2025-08-28 06:47:01,946 - WARNING - Failed to process (added empty record): 813-B97886-001
+2025-08-28 06:47:03,956 - INFO - Processing part 3/35: 660-300316-500
+2025-08-28 06:47:03,960 - INFO - Pressing F3 to go back...
+2025-08-28 06:47:06,314 - INFO - Filling next part field with: 660-300316-500
+2025-08-28 06:47:06,317 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:06,319 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:06,321 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:06,324 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:06,326 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:47:10,859 - INFO - Successfully filled main MD04 field
+2025-08-28 06:47:14,390 - INFO - Scanning for MatRes element...
+2025-08-28 06:47:19,167 - INFO - Pressing F7 to maximize...
+2025-08-28 06:47:25,204 - INFO - Extracting data from page...
+2025-08-28 06:47:25,210 - INFO - Extracted Material: 660-300316-500
+2025-08-28 06:47:25,213 - INFO - Extracted Part_Description: CE Sense.i - AKARA BXE (OPEX)
+2025-08-28 06:47:25,220 - INFO - Extracted Recipient: RPM0626282
+2025-08-28 06:47:25,226 - INFO - Extracted Order: 231621
+2025-08-28 06:47:25,228 - INFO - Successfully processed: 660-300316-500
+2025-08-28 06:47:27,239 - INFO - Processing part 4/35: 684-B20512-006
+2025-08-28 06:47:27,242 - INFO - Pressing F3 to go back...
+2025-08-28 06:47:29,606 - INFO - Filling next part field with: 684-B20512-006
+2025-08-28 06:47:30,114 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:47:33,535 - INFO - Scanning for MatRes element...
+2025-08-28 06:47:37,841 - WARNING - Failed to process (added empty record): 684-B20512-006
+2025-08-28 06:47:39,853 - INFO - Processing part 5/35: 713-A08164-007
+2025-08-28 06:47:39,855 - INFO - Pressing F3 to go back...
+2025-08-28 06:47:42,185 - INFO - Filling next part field with: 713-A08164-007
+2025-08-28 06:47:42,187 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:42,190 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:42,191 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:42,193 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:47:42,194 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:47:48,982 - INFO - Successfully filled main MD04 field
+2025-08-28 06:47:52,522 - INFO - Scanning for MatRes element...
+2025-08-28 06:47:57,456 - INFO - Pressing F7 to maximize...
+2025-08-28 06:48:03,533 - INFO - Extracting data from page...
+2025-08-28 06:48:03,541 - INFO - Extracted Material: 713-A08164-007
+2025-08-28 06:48:03,545 - INFO - Extracted Part_Description: DE Sense.i Vantex DX
+2025-08-28 06:48:03,549 - INFO - Extracted Recipient: RPM0620424
+2025-08-28 06:48:03,553 - INFO - Extracted Order: 226704
+2025-08-28 06:48:03,555 - INFO - Successfully processed: 713-A08164-007
+2025-08-28 06:48:05,570 - INFO - Processing part 6/35: 668-075684-037
+2025-08-28 06:48:05,572 - INFO - Pressing F3 to go back...
+2025-08-28 06:48:07,914 - INFO - Filling next part field with: 668-075684-037
+2025-08-28 06:48:08,424 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:48:11,967 - INFO - Scanning for MatRes element...
+2025-08-28 06:48:16,278 - WARNING - Failed to process (added empty record): 668-075684-037
+2025-08-28 06:48:18,285 - INFO - Processing part 7/35: 668-325873-001
+2025-08-28 06:48:18,288 - INFO - Pressing F3 to go back...
+2025-08-28 06:48:20,641 - INFO - Filling next part field with: 668-325873-001
+2025-08-28 06:48:20,643 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:20,645 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:20,647 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:20,649 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:20,650 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:48:25,128 - INFO - Successfully filled main MD04 field
+2025-08-28 06:48:28,613 - INFO - Scanning for MatRes element...
+2025-08-28 06:48:32,886 - WARNING - Failed to process (added empty record): 668-325873-001
+2025-08-28 06:48:34,902 - INFO - Processing part 8/35: 39-10024-00
+2025-08-28 06:48:34,905 - INFO - Pressing F3 to go back...
+2025-08-28 06:48:37,220 - INFO - Filling next part field with: 39-10024-00
+2025-08-28 06:48:37,223 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:37,225 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:37,227 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:37,229 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:48:37,231 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:48:41,768 - INFO - Successfully filled main MD04 field
+2025-08-28 06:48:45,288 - INFO - Scanning for MatRes element...
+2025-08-28 06:48:50,191 - INFO - Pressing F7 to maximize...
+2025-08-28 06:48:56,244 - INFO - Extracting data from page...
+2025-08-28 06:48:56,250 - INFO - Extracted Material: 39-10024-00
+2025-08-28 06:48:56,255 - INFO - Extracted Part_Description: Halo HX - Unbudgeted C&F
+2025-08-28 06:48:56,260 - INFO - Extracted Recipient: VW_MTT
+2025-08-28 06:48:56,264 - INFO - Extracted Order: 217931
+2025-08-28 06:48:56,266 - INFO - Successfully processed: 39-10024-00
+2025-08-28 06:48:58,268 - INFO - Processing part 9/35: 668-075684-037
+2025-08-28 06:48:58,271 - INFO - Pressing F3 to go back...
+2025-08-28 06:49:00,617 - INFO - Filling next part field with: 668-075684-037
+2025-08-28 06:49:01,127 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:49:04,560 - INFO - Scanning for MatRes element...
+2025-08-28 06:49:08,589 - WARNING - Failed to process (added empty record): 668-075684-037
+2025-08-28 06:49:10,599 - INFO - Processing part 10/35: 668-120495-001
+2025-08-28 06:49:10,602 - INFO - Pressing F3 to go back...
+2025-08-28 06:49:12,949 - INFO - Filling next part field with: 668-120495-001
+2025-08-28 06:49:12,951 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:12,954 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:12,956 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:12,958 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:12,960 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:49:17,526 - INFO - Successfully filled main MD04 field
+2025-08-28 06:49:21,062 - INFO - Scanning for MatRes element...
+2025-08-28 06:49:25,639 - INFO - Pressing F7 to maximize...
+2025-08-28 06:49:31,722 - INFO - Extracting data from page...
+2025-08-28 06:49:31,728 - INFO - Extracted Material: 668-120495-001
+2025-08-28 06:49:31,733 - INFO - Extracted Part_Description: Cool/treat station program (CTS)
+2025-08-28 06:49:31,738 - INFO - Extracted Recipient: RPM0564157
+2025-08-28 06:49:31,742 - INFO - Extracted Order: 229892
+2025-08-28 06:49:31,744 - INFO - Successfully processed: 668-120495-001
+2025-08-28 06:49:33,749 - INFO - Processing part 11/35: 39-178688-16
+2025-08-28 06:49:33,752 - INFO - Pressing F3 to go back...
+2025-08-28 06:49:36,096 - INFO - Filling next part field with: 39-178688-16
+2025-08-28 06:49:36,607 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:49:40,090 - INFO - Scanning for MatRes element...
+2025-08-28 06:49:44,180 - WARNING - Failed to process (added empty record): 39-178688-16
+2025-08-28 06:49:46,183 - INFO - Processing part 12/35: 668-075684-137
+2025-08-28 06:49:46,185 - INFO - Pressing F3 to go back...
+2025-08-28 06:49:48,538 - INFO - Filling next part field with: 668-075684-137
+2025-08-28 06:49:48,540 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:48,542 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:48,544 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:48,547 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:49:48,548 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:49:53,127 - INFO - Successfully filled main MD04 field
+2025-08-28 06:49:57,181 - INFO - Scanning for MatRes element...
+2025-08-28 06:50:01,057 - WARNING - Failed to process (added empty record): 668-075684-137
+2025-08-28 06:50:03,065 - INFO - Processing part 13/35: 39-178688-26
+2025-08-28 06:50:03,068 - INFO - Pressing F3 to go back...
+2025-08-28 06:50:05,427 - INFO - Filling next part field with: 39-178688-26
+2025-08-28 06:50:05,431 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:05,434 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:05,435 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:05,437 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:05,438 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:50:09,997 - INFO - Successfully filled main MD04 field
+2025-08-28 06:50:33,675 - INFO - Scanning for MatRes element...
+2025-08-28 06:50:40,434 - WARNING - Failed to process (added empty record): 39-178688-26
+2025-08-28 06:50:42,447 - INFO - Processing part 14/35: 39-178688-09
+2025-08-28 06:50:42,449 - INFO - Pressing F3 to go back...
+2025-08-28 06:50:44,795 - INFO - Filling next part field with: 39-178688-09
+2025-08-28 06:50:44,798 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:44,801 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:44,803 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:44,805 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:50:44,806 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:50:49,423 - INFO - Successfully filled main MD04 field
+2025-08-28 06:50:52,913 - INFO - Scanning for MatRes element...
+2025-08-28 06:50:57,118 - WARNING - Failed to process (added empty record): 39-178688-09
+2025-08-28 06:50:59,124 - INFO - Processing part 15/35: 668-073437-006
+2025-08-28 06:50:59,126 - INFO - Pressing F3 to go back...
+2025-08-28 06:51:01,481 - INFO - Filling next part field with: 668-073437-006
+2025-08-28 06:51:01,483 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:01,486 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:01,488 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:01,490 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:01,491 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:51:06,035 - INFO - Successfully filled main MD04 field
+2025-08-28 06:51:09,582 - INFO - Scanning for MatRes element...
+2025-08-28 06:51:14,237 - INFO - Pressing F7 to maximize...
+2025-08-28 06:51:20,342 - INFO - Extracting data from page...
+2025-08-28 06:51:20,349 - INFO - Extracted Material: 668-073437-006
+2025-08-28 06:51:20,351 - WARNING - Failed to extract Part_Description: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:20,357 - INFO - Extracted Recipient: VW_MTT
+2025-08-28 06:51:20,359 - WARNING - Failed to extract Order: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:20,362 - INFO - Successfully processed: 668-073437-006
+2025-08-28 06:51:22,377 - INFO - Processing part 16/35: 39-10026-00
+2025-08-28 06:51:22,380 - INFO - Pressing F3 to go back...
+2025-08-28 06:51:24,756 - INFO - Filling next part field with: 39-10026-00
+2025-08-28 06:51:25,266 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:51:28,661 - INFO - Scanning for MatRes element...
+2025-08-28 06:51:32,914 - WARNING - Failed to process (added empty record): 39-10026-00
+2025-08-28 06:51:34,928 - INFO - Processing part 17/35: 839-B75412-001
+2025-08-28 06:51:34,930 - INFO - Pressing F3 to go back...
+2025-08-28 06:51:37,270 - INFO - Filling next part field with: 839-B75412-001
+2025-08-28 06:51:37,272 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:37,275 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:37,277 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:37,280 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:37,282 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:51:41,791 - INFO - Successfully filled main MD04 field
+2025-08-28 06:51:45,223 - INFO - Scanning for MatRes element...
+2025-08-28 06:51:49,487 - WARNING - Failed to process (added empty record): 839-B75412-001
+2025-08-28 06:51:51,494 - INFO - Processing part 18/35: 839-B75406-001
+2025-08-28 06:51:51,496 - INFO - Pressing F3 to go back...
+2025-08-28 06:51:53,849 - INFO - Filling next part field with: 839-B75406-001
+2025-08-28 06:51:53,852 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:53,854 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:53,856 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:53,858 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:51:53,858 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:51:58,454 - INFO - Successfully filled main MD04 field
+2025-08-28 06:52:01,918 - INFO - Scanning for MatRes element...
+2025-08-28 06:52:06,017 - WARNING - Failed to process (added empty record): 839-B75406-001
+2025-08-28 06:52:08,027 - INFO - Processing part 19/35: 839-B75409-001
+2025-08-28 06:52:08,029 - INFO - Pressing F3 to go back...
+2025-08-28 06:52:10,383 - INFO - Filling next part field with: 839-B75409-001
+2025-08-28 06:52:10,387 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:10,390 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:10,392 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:10,395 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:10,397 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:52:14,844 - INFO - Successfully filled main MD04 field
+2025-08-28 06:52:18,257 - INFO - Scanning for MatRes element...
+2025-08-28 06:52:22,778 - WARNING - Failed to process (added empty record): 839-B75409-001
+2025-08-28 06:52:24,792 - INFO - Processing part 20/35: 727-B77852-001
+2025-08-28 06:52:24,794 - INFO - Pressing F3 to go back...
+2025-08-28 06:52:27,113 - INFO - Filling next part field with: 727-B77852-001
+2025-08-28 06:52:27,115 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:27,118 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:27,120 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:27,122 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:27,123 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:52:31,498 - INFO - Successfully filled main MD04 field
+2025-08-28 06:52:34,925 - INFO - Scanning for MatRes element...
+2025-08-28 06:52:39,072 - WARNING - Failed to process (added empty record): 727-B77852-001
+2025-08-28 06:52:41,075 - INFO - Processing part 21/35: 955-037045-107
+2025-08-28 06:52:41,077 - INFO - Pressing F3 to go back...
+2025-08-28 06:52:43,411 - INFO - Filling next part field with: 955-037045-107
+2025-08-28 06:52:43,413 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:43,415 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:43,416 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:43,418 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:52:43,419 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:52:47,820 - INFO - Successfully filled main MD04 field
+2025-08-28 06:52:51,279 - INFO - Scanning for MatRes element...
+2025-08-28 06:52:55,851 - WARNING - Failed to process (added empty record): 955-037045-107
+2025-08-28 06:52:57,858 - INFO - Processing part 22/35: 713-136117-012
+2025-08-28 06:52:57,860 - INFO - Pressing F3 to go back...
+2025-08-28 06:53:00,236 - INFO - Filling next part field with: 713-136117-012
+2025-08-28 06:53:00,238 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:00,242 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:00,244 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:00,247 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:00,248 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:53:04,769 - INFO - Successfully filled main MD04 field
+2025-08-28 06:53:08,237 - INFO - Scanning for MatRes element...
+2025-08-28 06:53:12,446 - WARNING - Failed to process (added empty record): 713-136117-012
+2025-08-28 06:53:14,457 - INFO - Processing part 23/35: 713-270066-215
+2025-08-28 06:53:14,458 - INFO - Pressing F3 to go back...
+2025-08-28 06:53:16,814 - INFO - Filling next part field with: 713-270066-215
+2025-08-28 06:53:16,817 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:16,820 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:16,822 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:16,826 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:53:16,827 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:53:21,273 - INFO - Successfully filled main MD04 field
+2025-08-28 06:53:24,717 - INFO - Scanning for MatRes element...
+2025-08-28 06:53:29,330 - INFO - Pressing F7 to maximize...
+2025-08-28 06:53:35,355 - INFO - Extracting data from page...
+2025-08-28 06:53:35,360 - INFO - Extracted Material: 713-270066-215
+2025-08-28 06:53:35,365 - INFO - Extracted Part_Description: Conductor Escalation Support
+2025-08-28 06:53:35,370 - INFO - Extracted Recipient: ERF0591845
+2025-08-28 06:53:35,375 - INFO - Extracted Order: 202323
+2025-08-28 06:53:35,377 - INFO - Successfully processed: 713-270066-215
+2025-08-28 06:53:37,387 - INFO - Processing part 24/35: 713-270066-214
+2025-08-28 06:53:37,390 - INFO - Pressing F3 to go back...
+2025-08-28 06:53:39,743 - INFO - Filling next part field with: 713-270066-214
+2025-08-28 06:53:40,252 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:53:43,642 - INFO - Scanning for MatRes element...
+2025-08-28 06:53:48,191 - INFO - Pressing F7 to maximize...
+2025-08-28 06:53:54,191 - INFO - Extracting data from page...
+2025-08-28 06:53:54,197 - INFO - Extracted Material: 713-270066-214
+2025-08-28 06:53:54,202 - INFO - Extracted Part_Description: Conductor Escalation Support
+2025-08-28 06:53:54,207 - INFO - Extracted Recipient: ERF0591845
+2025-08-28 06:53:54,212 - INFO - Extracted Order: 202323
+2025-08-28 06:53:54,214 - INFO - Successfully processed: 713-270066-214
+2025-08-28 06:53:56,222 - INFO - Processing part 25/35: 713-136117-011
+2025-08-28 06:53:56,224 - INFO - Pressing F3 to go back...
+2025-08-28 06:53:58,575 - INFO - Filling next part field with: 713-136117-011
+2025-08-28 06:53:59,084 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:54:02,483 - INFO - Scanning for MatRes element...
+2025-08-28 06:54:07,148 - INFO - Pressing F7 to maximize...
+2025-08-28 06:54:13,201 - INFO - Extracting data from page...
+2025-08-28 06:54:13,208 - INFO - Extracted Material: 713-136117-011
+2025-08-28 06:54:13,212 - INFO - Extracted Part_Description: Conductor Escalation Support
+2025-08-28 06:54:13,216 - INFO - Extracted Recipient: ERF0613952
+2025-08-28 06:54:13,223 - INFO - Extracted Order: 202323
+2025-08-28 06:54:13,225 - INFO - Successfully processed: 713-136117-011
+2025-08-28 06:54:15,238 - INFO - Processing part 26/35: 713-270066-216
+2025-08-28 06:54:15,240 - INFO - Pressing F3 to go back...
+2025-08-28 06:54:17,591 - INFO - Filling next part field with: 713-270066-216
+2025-08-28 06:54:18,098 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:54:25,608 - INFO - Scanning for MatRes element...
+2025-08-28 06:54:30,516 - INFO - Pressing F7 to maximize...
+2025-08-28 06:54:36,597 - INFO - Extracting data from page...
+2025-08-28 06:54:36,605 - INFO - Extracted Material: 713-270066-216
+2025-08-28 06:54:36,610 - INFO - Extracted Part_Description: NSRs & PRs IO for J Benavidez's Group
+2025-08-28 06:54:36,616 - INFO - Extracted Recipient: ERF0592147
+2025-08-28 06:54:36,624 - INFO - Extracted Order: 217320
+2025-08-28 06:54:36,626 - INFO - Successfully processed: 713-270066-216
+2025-08-28 06:54:38,635 - INFO - Processing part 27/35: 713-B82672-001
+2025-08-28 06:54:38,639 - INFO - Pressing F3 to go back...
+2025-08-28 06:54:40,979 - INFO - Filling next part field with: 713-B82672-001
+2025-08-28 06:54:41,489 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:54:44,889 - INFO - Scanning for MatRes element...
+2025-08-28 06:54:48,980 - WARNING - Failed to process (added empty record): 713-B82672-001
+2025-08-28 06:54:50,986 - INFO - Processing part 28/35: 713-B82671-001
+2025-08-28 06:54:50,988 - INFO - Pressing F3 to go back...
+2025-08-28 06:54:53,310 - INFO - Filling next part field with: 713-B82671-001
+2025-08-28 06:54:53,312 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:54:53,315 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:54:53,317 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:54:53,319 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:54:53,320 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:54:57,891 - INFO - Successfully filled main MD04 field
+2025-08-28 06:55:01,506 - INFO - Scanning for MatRes element...
+2025-08-28 06:55:05,853 - WARNING - Failed to process (added empty record): 713-B82671-001
+2025-08-28 06:55:07,868 - INFO - Processing part 29/35: 713-B82672-001
+2025-08-28 06:55:07,871 - INFO - Pressing F3 to go back...
+2025-08-28 06:55:10,235 - INFO - Filling next part field with: 713-B82672-001
+2025-08-28 06:55:10,238 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:10,240 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:10,241 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:10,242 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:10,243 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:55:14,769 - INFO - Successfully filled main MD04 field
+2025-08-28 06:55:18,341 - INFO - Scanning for MatRes element...
+2025-08-28 06:55:22,590 - WARNING - Failed to process (added empty record): 713-B82672-001
+2025-08-28 06:55:24,601 - INFO - Processing part 30/35: 714-B77625-001
+2025-08-28 06:55:24,604 - INFO - Pressing F3 to go back...
+2025-08-28 06:55:26,961 - INFO - Filling next part field with: 714-B77625-001
+2025-08-28 06:55:26,971 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:26,980 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:26,986 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:26,989 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:26,993 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:55:31,614 - INFO - Successfully filled main MD04 field
+2025-08-28 06:55:35,239 - INFO - Scanning for MatRes element...
+2025-08-28 06:55:39,775 - WARNING - Failed to process (added empty record): 714-B77625-001
+2025-08-28 06:55:41,783 - INFO - Processing part 31/35: 768-A39647-001
+2025-08-28 06:55:41,786 - INFO - Pressing F3 to go back...
+2025-08-28 06:55:44,120 - INFO - Filling next part field with: 768-A39647-001
+2025-08-28 06:55:44,122 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:44,125 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:44,127 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:44,129 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:55:44,130 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:55:48,662 - INFO - Successfully filled main MD04 field
+2025-08-28 06:55:52,297 - INFO - Scanning for MatRes element...
+2025-08-28 06:55:56,806 - INFO - Pressing F7 to maximize...
+2025-08-28 06:56:02,837 - INFO - Extracting data from page...
+2025-08-28 06:56:02,841 - INFO - Extracted Material: 768-A39647-001
+2025-08-28 06:56:02,848 - INFO - Extracted Part_Description: Halo HXD DRAM
+2025-08-28 06:56:02,854 - INFO - Extracted Recipient: VW_MTT
+2025-08-28 06:56:02,859 - INFO - Extracted Order: 229420
+2025-08-28 06:56:02,860 - INFO - Successfully processed: 768-A39647-001
+2025-08-28 06:56:04,866 - INFO - Processing part 32/35: 715-B77627-001
+2025-08-28 06:56:04,868 - INFO - Pressing F3 to go back...
+2025-08-28 06:56:07,227 - INFO - Filling next part field with: 715-B77627-001
+2025-08-28 06:56:07,737 - INFO - Successfully filled field using: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR
+2025-08-28 06:56:11,170 - INFO - Scanning for MatRes element...
+2025-08-28 06:56:15,143 - WARNING - Failed to process (added empty record): 715-B77627-001
+2025-08-28 06:56:17,149 - INFO - Processing part 33/35: 715-800326-917
+2025-08-28 06:56:17,150 - INFO - Pressing F3 to go back...
+2025-08-28 06:56:19,481 - INFO - Filling next part field with: 715-800326-917
+2025-08-28 06:56:19,484 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:19,487 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:19,489 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:19,491 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:19,493 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:56:24,099 - INFO - Successfully filled main MD04 field
+2025-08-28 06:56:27,592 - INFO - Scanning for MatRes element...
+2025-08-28 06:56:31,724 - WARNING - Failed to process (added empty record): 715-800326-917
+2025-08-28 06:56:33,731 - INFO - Processing part 34/35: 715-800331-021
+2025-08-28 06:56:33,733 - INFO - Pressing F3 to go back...
+2025-08-28 06:56:36,077 - INFO - Filling next part field with: 715-800331-021
+2025-08-28 06:56:36,079 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:36,083 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:36,086 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:36,087 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:36,088 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:56:40,581 - INFO - Successfully filled main MD04 field
+2025-08-28 06:56:44,120 - INFO - Scanning for MatRes element...
+2025-08-28 06:56:48,406 - WARNING - Failed to process (added empty record): 715-800331-021
+2025-08-28 06:56:50,412 - INFO - Processing part 35/35: 790-B78142-001
+2025-08-28 06:56:50,414 - INFO - Pressing F3 to go back...
+2025-08-28 06:56:52,765 - INFO - Filling next part field with: 790-B78142-001
+2025-08-28 06:56:52,768 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:52,770 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:52,773 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:52,775 - WARNING - Field /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR not found: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-08-28 06:56:52,776 - INFO - All next part fields failed, trying MD04 main field...
+2025-08-28 06:56:57,254 - INFO - Successfully filled main MD04 field
+2025-08-28 06:57:00,679 - INFO - Scanning for MatRes element...
+2025-08-28 06:57:05,376 - INFO - Pressing F7 to maximize...
+2025-08-28 06:57:11,445 - INFO - Extracting data from page...
+2025-08-28 06:57:11,451 - INFO - Extracted Material: 790-B78142-001
+2025-08-28 06:57:11,454 - INFO - Extracted Part_Description: Platform - 300mm PECVD BU
+2025-08-28 06:57:11,458 - INFO - Extracted Recipient: RPM0592229
+2025-08-28 06:57:11,461 - INFO - Extracted Order: 214322
+2025-08-28 06:57:11,463 - INFO - Successfully processed: 790-B78142-001
+2025-08-28 06:57:13,480 - INFO - ============================================================
+2025-08-28 06:57:13,482 - INFO - Processing completed! Total: 35, Successful: 12
+2025-08-28 06:57:24,272 - INFO - Exporting to: C:/Users/jhash/Documents/SAP_RPA_LR/SAP_Export_20250828_065720.xlsx
+2025-08-28 06:57:24,341 - INFO - Successfully exported 35 records
