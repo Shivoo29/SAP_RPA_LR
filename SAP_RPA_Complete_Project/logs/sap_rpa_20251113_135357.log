@@ -1,0 +1,91 @@
+2025-11-13 13:53:57,954 - __main__ - INFO - ============================================================
+2025-11-13 13:53:57,955 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-13 13:53:57,955 - __main__ - INFO - ============================================================
+2025-11-13 13:53:57,955 - __main__ - INFO - Configuration loaded successfully
+2025-11-13 13:53:57,956 - __main__ - INFO - Starting GUI application...
+2025-11-13 13:54:01,813 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-13 13:54:03,149 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-13 13:54:11,570 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-13 13:54:11,573 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 13:54:11,574 - workflows.scenario_manager - INFO - Processing material: 713-A75951-002
+2025-11-13 13:54:11,574 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 13:54:11,574 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-13 13:54:11,574 - transactions.md04_handler - INFO - Trying multiple plants for 713-A75951-002: ['1000', '2000', '1020', '1900']
+2025-11-13 13:54:11,580 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-13 13:54:16,020 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-13 13:54:16,020 - transactions.md04_handler - INFO - Attempting plant 1000...
+2025-11-13 13:54:17,028 - transactions.md04_handler - INFO - Entering material number: 713-A75951-002
+2025-11-13 13:54:18,101 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-13 13:54:19,177 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-13 13:54:20,243 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-13 13:54:23,847 - core.field_manager - INFO - Scanning for MatRes element...
+2025-11-13 13:54:27,843 - core.field_manager - WARNING - MatRes element not found
+2025-11-13 13:54:27,843 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1000, trying next...
+2025-11-13 13:54:27,844 - transactions.md04_handler - INFO - Attempting plant 2000...
+2025-11-13 13:54:31,192 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-13 13:54:31,192 - transactions.md04_handler - INFO - Entering material number: 713-A75951-002
+2025-11-13 13:54:31,193 - core.field_manager - ERROR - Cannot fill field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR: Field not found
+2025-11-13 13:54:31,193 - transactions.md04_handler - ERROR - Failed to enter material number: 713-A75951-002
+2025-11-13 13:54:31,194 - transactions.md04_handler - INFO - Attempting plant 1020...
+2025-11-13 13:54:34,526 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-13 13:54:34,526 - transactions.md04_handler - INFO - Entering material number: 713-A75951-002
+2025-11-13 13:54:34,527 - core.field_manager - ERROR - Cannot fill field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR: Field not found
+2025-11-13 13:54:34,527 - transactions.md04_handler - ERROR - Failed to enter material number: 713-A75951-002
+2025-11-13 13:54:34,527 - transactions.md04_handler - INFO - Attempting plant 1900...
+2025-11-13 13:54:34,530 - core.sap_connector - ERROR - Failed to press F3: (-2147352567, 'Exception occurred.', (617, 'SAP Frontend Server', 'The virtual key is not enabled.', None, 0, 0), None)
+2025-11-13 13:54:35,532 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-13 13:54:35,533 - transactions.md04_handler - INFO - Entering material number: 713-A75951-002
+2025-11-13 13:54:35,534 - core.field_manager - ERROR - Cannot fill field /app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR: Field not found
+2025-11-13 13:54:35,534 - transactions.md04_handler - ERROR - Failed to enter material number: 713-A75951-002
+2025-11-13 13:54:35,534 - transactions.md04_handler - ERROR - MatRes not found in any of the specified plants for 713-A75951-002
+2025-11-13 13:54:35,534 - workflows.scenario_manager - INFO - SCENARIO 2: MatRes not found, trying ERF Dashboard...
+2025-11-13 13:54:35,534 - workflows.erf_workflow - INFO - ============================================================
+2025-11-13 13:54:35,535 - workflows.erf_workflow - INFO - Starting ERF workflow for: 713-A75951-002
+2025-11-13 13:54:35,535 - workflows.erf_workflow - INFO - ============================================================
+2025-11-13 13:54:35,535 - workflows.erf_workflow - INFO - Setting up Edge WebDriver...
+2025-11-13 13:54:36,803 - workflows.erf_workflow - INFO - WebDriver setup successful
+2025-11-13 13:54:36,807 - workflows.erf_workflow - INFO - Navigating to ERF Dashboard...
+2025-11-13 13:54:45,960 - workflows.erf_workflow - INFO - Clicked ERF Dashboard tab
+2025-11-13 13:54:45,961 - workflows.erf_workflow - INFO - Switching to ERF iframe...
+2025-11-13 13:54:51,701 - workflows.erf_workflow - INFO - Switched to iframe 1
+2025-11-13 13:54:51,726 - workflows.erf_workflow - INFO - Switched to nested iframe
+2025-11-13 13:54:51,726 - workflows.erf_workflow - INFO - Searching ERF for material: 713-A75951-002
+2025-11-13 13:54:54,900 - workflows.erf_workflow - ERROR - Error searching ERF: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: MicrosoftEdge=142.0.3595.53)
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff686ff9a65
+	0x7ff686ff9ac4
+	0x7ff6871ab8a8
+	0x7ff686d50878
+	0x7ff686dd8b4a
+	0x7ff686dee02a
+	0x7ff686daa8aa
+	0x7ff686da9bd1
+	0x7ff686daa6d3
+	0x7ff686e665f4
+	0x7ff686e62b17
+	0x7ff6870266c5
+	0x7ff687014b21
+	0x7ff68701cfc9
+	0x7ff687000fb4
+	0x7ff687001103
+	0x7ff686feee36
+	0x7ffa0928259d
+	0x7ffa0a22af78
+
+2025-11-13 13:54:57,136 - workflows.erf_workflow - INFO - WebDriver cleaned up
+2025-11-13 13:54:57,137 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-13 13:54:57,137 - workflows.scenario_manager - ERROR - ✗ Failed: 713-A75951-002 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-13 13:54:57,241 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 13:54:57,241 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-13 13:54:57,242 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 13:54:57,242 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-13 13:54:57,242 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-13 13:54:57,242 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-13 13:54:57,243 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-13 13:54:57,243 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-13 13:54:57,243 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-13 13:54:57,244 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 13:55:04,301 - __main__ - INFO - Application interrupted by user
