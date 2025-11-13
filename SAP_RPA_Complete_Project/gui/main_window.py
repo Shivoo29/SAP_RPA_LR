@@ -31,9 +31,9 @@ class MainWindow:
         self.logger = logging.getLogger(__name__)
         
         # Initialize managers
-        self.sap_connector = SAPConnector()
         self.excel_manager = ExcelManager()
-        self.scenario_manager = ScenarioManager(None, self.excel_manager) # Pass None for the connector
+        # The ScenarioManager is now responsible for creating its own SAP connector
+        self.scenario_manager = ScenarioManager(None, self.excel_manager)
         
         # State
         self.is_processing = False
@@ -309,22 +309,10 @@ class MainWindow:
         self.root.update_idletasks()
     
     def connect_to_sap(self):
-        """Connect to SAP."""
-        self.log_message("Connecting to SAP...")
-        
-        if self.sap_connector.connect():
-            session_info = self.sap_connector.get_session_info()
-            self.connection_status_var.set(
-                f"✅ Connected: {session_info.get('system_name', '')} "
-                f"Client {session_info.get('client', '')} "
-                f"User {session_info.get('user', '')}"
-            )
-            self.log_message("Successfully connected to SAP", "SUCCESS")
-            
-        else:
-            self.connection_status_var.set("❌ Connection Failed")
-            self.log_message("Failed to connect to SAP", "ERROR")
-            messagebox.showerror("Connection Error", "Failed to connect to SAP. Please check SAP Logon.")
+        """Confirm readiness, but do not connect. Connection happens in the background."""
+        self.log_message("System ready. SAP connection will be established when automation starts.")
+        self.connection_status_var.set("✅ Ready to Process")
+        messagebox.showinfo("Ready", "System is ready. Please input materials and start the automation.")
     
     def browse_file(self):
         """Browse for Excel input file."""
@@ -375,11 +363,6 @@ class MainWindow:
     
     def start_automation(self):
         """Start automation process."""
-        # Validate connection
-        if not self.sap_connector.is_connected:
-            messagebox.showerror("Error", "Please connect to SAP first!")
-            return
-        
         # Get materials
         materials = self.get_materials_list()
         if not materials:
@@ -511,9 +494,5 @@ class MainWindow:
     def run(self):
         """Run the application."""
         self.log_message("SAP RPA Application Started")
-        self.log_message("Please connect to SAP to begin...")
+        self.log_message("Please click 'Connect to SAP' to confirm readiness, then start automation.")
         self.root.mainloop()
-        
-        # Cleanup on exit
-        if self.sap_connector.is_connected:
-            self.sap_connector.disconnect()
