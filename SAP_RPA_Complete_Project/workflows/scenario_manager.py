@@ -17,6 +17,7 @@ from transactions.md04_handler import MD04Handler
 from transactions.ko03_handler import KO03Handler
 from workflows.erf_workflow import ERFWorkflow
 from data.data_models import ProcessingResult, ScenarioType
+from core.sap_connector import SAPConnector
 from config import Config
 
 
@@ -28,7 +29,7 @@ class ScenarioManager:
         Initialize scenario manager.
         
         Args:
-            sap_connector: SAP connector instance
+            sap_connector: SAP connector instance (can be None if created later)
             excel_manager: Excel manager for data operations
         """
         self.sap_connector = sap_connector
@@ -36,11 +37,14 @@ class ScenarioManager:
         self.logger = logging.getLogger(__name__)
         self.config = Config()
         
-        # Initialize handlers
-        self.md04_handler = MD04Handler(sap_connector)
-        self.ko03_handler = KO03Handler(sap_connector)
-        self.erf_workflow = ERFWorkflow(sap_connector)
+        # Handlers are initialized later if sap_connector is None
+        self.md04_handler = None
+        self.ko03_handler = None
+        self.erf_workflow = None
         
+        if sap_connector:
+            self._initialize_handlers()
+
         # Statistics
         self.stats = {
             'total_processed': 0,
@@ -50,6 +54,16 @@ class ScenarioManager:
             'failures': 0
         }
     
+    def _initialize_handlers(self):
+        """Initializes all handlers with the current SAP connector."""
+        if not self.sap_connector:
+            self.logger.error("Cannot initialize handlers without a SAP connector.")
+            return
+        self.md04_handler = MD04Handler(self.sap_connector)
+        self.ko03_handler = KO03Handler(self.sap_connector)
+        self.erf_workflow = ERFWorkflow(self.sap_connector)
+        self.logger.info("All handlers initialized.")
+
     def process_single_material(
         self,
         material_number: str,
@@ -171,7 +185,7 @@ class ScenarioManager:
         progress_callback=None
     ) -> List[ProcessingResult]:
         """
-        Process multiple materials in batch.
+        Process multiple materials in batch. This method is thread-safe.
         
         Args:
             material_list: List of material numbers
@@ -184,39 +198,58 @@ class ScenarioManager:
         Returns:
             List of ProcessingResult objects
         """
-        self.logger.info(f"Starting batch processing of {len(material_list)} materials")
-        
-        results = []
-        total = len(material_list)
-        
-        for idx, material in enumerate(material_list, 1):
-            self.logger.info(f"Processing {idx}/{total}: {material}")
+        # Thread-local SAP connection handling
+        is_local_connector = False
+        if self.sap_connector is None:
+            self.logger.info("Creating a new thread-local SAP connection...")
+            self.sap_connector = SAPConnector()
+            if not self.sap_connector.connect():
+                self.logger.error("Failed to create thread-local SAP connection. Aborting batch.")
+                # Optionally, communicate this failure back to the GUI
+                return []
+            self._initialize_handlers()
+            is_local_connector = True
+
+        try:
+            self.logger.info(f"Starting batch processing of {len(material_list)} materials")
             
-            # Update progress
-            if progress_callback:
-                progress_callback(idx, total, material)
+            results = []
+            total = len(material_list)
             
-            # Process material
-            result = self.process_single_material(
-                material_number=material,
-                selected_plants=selected_plants,
-                mrp_area=mrp_area,
-                enable_erf_fallback=enable_erf_fallback,
-                enable_ko03_fallback=enable_ko03_fallback
-            )
+            for idx, material in enumerate(material_list, 1):
+                self.logger.info(f"Processing {idx}/{total}: {material}")
+                
+                # Update progress
+                if progress_callback:
+                    progress_callback(idx, total, material)
+                
+                # Process material
+                result = self.process_single_material(
+                    material_number=material,
+                    selected_plants=selected_plants,
+                    mrp_area=mrp_area,
+                    enable_erf_fallback=enable_erf_fallback,
+                    enable_ko03_fallback=enable_ko03_fallback
+                )
+                
+                results.append(result)
+                
+                # Log result
+                if result.success:
+                    self.logger.info(f"✓ Success: {material} - Scenario: {result.scenario.value}")
+                else:
+                    self.logger.error(f"✗ Failed: {material} - Error: {result.error_message}")
             
-            results.append(result)
+            # Log final statistics
+            self.log_statistics()
             
-            # Log result
-            if result.success:
-                self.logger.info(f"✓ Success: {material} - Scenario: {result.scenario.value}")
-            else:
-                self.logger.error(f"✗ Failed: {material} - Error: {result.error_message}")
-        
-        # Log final statistics
-        self.log_statistics()
-        
-        return results
+            return results
+        finally:
+            # Clean up the thread-local connection if it was created here
+            if is_local_connector and self.sap_connector:
+                self.sap_connector.disconnect()
+                self.sap_connector = None # Important to reset for next run
+                self.logger.info("Thread-local SAP connection closed.")
     
     def log_statistics(self):
         """Log processing statistics."""

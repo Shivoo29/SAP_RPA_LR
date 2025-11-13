@@ -33,7 +33,7 @@ class MainWindow:
         # Initialize managers
         self.sap_connector = SAPConnector()
         self.excel_manager = ExcelManager()
-        self.scenario_manager = None  # Created after SAP connection
+        self.scenario_manager = ScenarioManager(None, self.excel_manager) # Pass None for the connector
         
         # State
         self.is_processing = False
@@ -320,9 +320,6 @@ class MainWindow:
                 f"User {session_info.get('user', '')}"
             )
             self.log_message("Successfully connected to SAP", "SUCCESS")
-            
-            # Initialize scenario manager
-            self.scenario_manager = ScenarioManager(self.sap_connector, self.excel_manager)
             
         else:
             self.connection_status_var.set("❌ Connection Failed")
