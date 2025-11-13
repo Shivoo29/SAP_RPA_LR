@@ -1,0 +1,149 @@
+"""
+Configuration Management
+========================
+Central configuration for SAP RPA system.
+"""
+
+from typing import List, Dict
+from pathlib import Path
+
+
+class Config:
+    """Central configuration class for SAP RPA."""
+    
+    # ===== SAP Connection Settings =====
+    SAP_CONNECTION_DETAILS = {
+        "name": "001. SAP ECC Production (PRD)",
+        "system_description": "SAP ERP",
+        "sid": "PRD",
+        "group_server": "Production PRD",
+        "message_server": "pdtcprd01.fermont.lamrc.net"
+    }
+    
+    # ===== Plant Configuration =====
+    AVAILABLE_PLANTS = ['1000', '2000', '1020', '1900']
+    DEFAULT_PLANT = '1000'
+    DEFAULT_MRP_AREA = '1000'
+    
+    # ===== MD04 Transaction Field IDs =====
+    MD04_FIELDS = {
+        "material_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-MATNR",
+        "mrp_area_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-BERID",
+        "plant_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/ctxtRM61R-WERKS",
+        "description_field": "/app/con[0]/ses[0]/wnd[0]/usr/tabsTAB300/tabpF01/ssubINCLUDE300:SAPMM61R:0301/txtMT61D-MAKTX",
+        "next_part_field": "/app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE8XX:SAPMM61R:0800/ctxtRM61R-MATNR"
+    }
+    
+    # ===== Data Extraction Field IDs =====
+    EXTRACTION_FIELDS = {
+        "Material": "/app/con[0]/ses[0]/wnd[0]/usr/ctxtRESB-MATNR",
+        "Part_Description": "/app/con[0]/ses[0]/wnd[0]/usr/subBLOCK:SAPLKACB:1002/txtTEXT_AUFNR",
+        "Recipient": "/app/con[0]/ses[0]/wnd[0]/usr/txtRESB-WEMPF",
+        "Order": "/app/con[0]/ses[0]/wnd[0]/usr/subBLOCK:SAPLKACB:1002/ctxtCOBL-AUFNR"
+    }
+    
+    # ===== KO03 Transaction Field IDs =====
+    KO03_FIELDS = {
+        "order_field": "wnd[0]/usr/ctxtCAUFVD-AUFNR",
+        "order_type_field": "wnd[0]/usr/ctxtCAUFVD-AUART",
+        # Add more KO03 fields as needed
+    }
+    
+    # ===== ZERF Transaction Field IDs =====
+    ZERF_FIELDS = {
+        "start_date_field": "/app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-LOW",
+        "end_date_field": "/app/con[0]/ses[0]/wnd[0]/usr/ctextSP$00018-HIGH"
+    }
+    
+    # ===== Workflow Settings =====
+    MAX_RETRIES = 3
+    TIMEOUT_SECONDS = 30
+    WAIT_TIME_AFTER_ACTION = 2
+    WAIT_TIME_AFTER_QUERY = 3
+    
+    # ===== Scenario Settings =====
+    ENABLE_MULTI_PLANT_SEARCH = True
+    ENABLE_ERF_FALLBACK = True
+    ENABLE_KO03_FALLBACK = True
+    
+    # ===== Output Settings =====
+    OUTPUT_DIRECTORY = 'output'
+    LOG_DIRECTORY = 'logs'
+    OUTPUT_FILE_PREFIX = 'SAP_Export'
+    
+    # ===== Excel Settings =====
+    EXCEL_SHEET_NAMES = {
+        'results': 'Part_Data',
+        'summary': 'Summary',
+        'errors': 'Errors'
+    }
+    
+    # ===== Web Automation Settings =====
+    ERF_DASHBOARD_URL = 'https://epp.fremont.lamrc.net/irj/portal?&EPPAP13_0'
+    EDGE_DRIVER_PATH = r"c:\Program Files\edgedriver_win64\msedgedriver.exe"
+    WEB_TIMEOUT = 30
+    
+    # ===== VBS Script Paths =====
+    VBS_SCRIPT_DIR = Path(__file__).parent / 'vbs_scripts'
+    VBS_ERF_SCRIPT_1 = VBS_SCRIPT_DIR / 'erf_dashboard_1.vbs'
+    VBS_ERF_SCRIPT_2 = VBS_SCRIPT_DIR / 'erf_dashboard_2.vbs'
+    
+    @classmethod
+    def get_plant_list(cls, user_selection: List[str] = None) -> List[str]:
+        """
+        Get the list of plants to search, based on user selection.
+        
+        Args:
+            user_selection: User-selected plants, or None for all plants
+            
+        Returns:
+            List of plant numbers to search
+        """
+        if user_selection and len(user_selection) > 0:
+            return user_selection
+        return cls.AVAILABLE_PLANTS
+    
+    @classmethod
+    def get_field_id(cls, transaction: str, field_name: str) -> str:
+        """
+        Get field ID for a specific transaction and field name.
+        
+        Args:
+            transaction: Transaction code (MD04, KO03, etc.)
+            field_name: Name of the field
+            
+        Returns:
+            Field ID string
+        """
+        field_map = {
+            'MD04': cls.MD04_FIELDS,
+            'KO03': cls.KO03_FIELDS,
+            'ZERF': cls.ZERF_FIELDS,
+        }
+        
+        fields = field_map.get(transaction.upper(), {})
+        return fields.get(field_name, '')
+    
+    @classmethod
+    def validate_config(cls) -> bool:
+        """
+        Validate configuration settings.
+        
+        Returns:
+            True if configuration is valid
+        """
+        # Check if plant list is not empty
+        if not cls.AVAILABLE_PLANTS:
+            return False
+        
+        # Check if essential field IDs exist
+        if not cls.MD04_FIELDS.get('material_field'):
+            return False
+        
+        # Check if output directory can be created
+        try:
+            output_dir = Path(cls.OUTPUT_DIRECTORY)
+            output_dir.mkdir(exist_ok=True)
+            return True
+        except Exception:
+            return False

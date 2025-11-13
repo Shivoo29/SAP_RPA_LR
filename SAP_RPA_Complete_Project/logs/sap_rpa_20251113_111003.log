@@ -1,0 +1,92 @@
+2025-11-13 11:10:03,704 - __main__ - INFO - ============================================================
+2025-11-13 11:10:03,704 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-13 11:10:03,704 - __main__ - INFO - ============================================================
+2025-11-13 11:10:03,704 - __main__ - INFO - Configuration loaded successfully
+2025-11-13 11:10:03,705 - __main__ - INFO - Starting GUI application...
+2025-11-13 11:11:47,866 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-13 11:11:49,728 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-13 11:11:59,036 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-13 11:12:00,206 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-13 11:12:15,209 - workflows.scenario_manager - INFO - Starting batch processing of 1 materials
+2025-11-13 11:12:15,209 - workflows.scenario_manager - INFO - Processing 1/1: 713-A75951-002
+2025-11-13 11:12:15,212 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 11:12:15,212 - workflows.scenario_manager - INFO - Processing material: 713-A75951-002
+2025-11-13 11:12:15,212 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 11:12:15,212 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-13 11:12:15,213 - transactions.md04_handler - INFO - Trying multiple plants for 713-A75951-002: ['1000', '2000', '1020', '1900']
+2025-11-13 11:12:15,213 - transactions.md04_handler - INFO - Attempting plant 1000...
+2025-11-13 11:12:15,213 - transactions.md04_handler - INFO - Processing 713-A75951-002 in plant 1000
+2025-11-13 11:12:15,214 - core.sap_connector - ERROR - Session verification failed: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-11-13 11:12:15,214 - core.sap_connector - ERROR - Cannot navigate: Not connected to SAP
+2025-11-13 11:12:15,214 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1000, trying next...
+2025-11-13 11:12:16,216 - transactions.md04_handler - INFO - Attempting plant 2000...
+2025-11-13 11:12:16,216 - transactions.md04_handler - INFO - Processing 713-A75951-002 in plant 2000
+2025-11-13 11:12:16,216 - core.sap_connector - ERROR - Session verification failed: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-11-13 11:12:16,216 - core.sap_connector - ERROR - Cannot navigate: Not connected to SAP
+2025-11-13 11:12:16,216 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 2000, trying next...
+2025-11-13 11:12:17,217 - transactions.md04_handler - INFO - Attempting plant 1020...
+2025-11-13 11:12:17,217 - transactions.md04_handler - INFO - Processing 713-A75951-002 in plant 1020
+2025-11-13 11:12:17,218 - core.sap_connector - ERROR - Session verification failed: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-11-13 11:12:17,218 - core.sap_connector - ERROR - Cannot navigate: Not connected to SAP
+2025-11-13 11:12:17,219 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1020, trying next...
+2025-11-13 11:12:18,219 - transactions.md04_handler - INFO - Attempting plant 1900...
+2025-11-13 11:12:18,220 - transactions.md04_handler - INFO - Processing 713-A75951-002 in plant 1900
+2025-11-13 11:12:18,221 - core.sap_connector - ERROR - Session verification failed: (-2147221008, 'CoInitialize has not been called.', None, None)
+2025-11-13 11:12:18,222 - core.sap_connector - ERROR - Cannot navigate: Not connected to SAP
+2025-11-13 11:12:18,222 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1900, trying next...
+2025-11-13 11:12:19,223 - transactions.md04_handler - ERROR - MatRes not found in any plant for 713-A75951-002
+2025-11-13 11:12:19,224 - workflows.scenario_manager - INFO - SCENARIO 2: MatRes not found, trying ERF Dashboard...
+2025-11-13 11:12:19,224 - workflows.erf_workflow - INFO - ============================================================
+2025-11-13 11:12:19,225 - workflows.erf_workflow - INFO - Starting ERF workflow for: 713-A75951-002
+2025-11-13 11:12:19,225 - workflows.erf_workflow - INFO - ============================================================
+2025-11-13 11:12:19,225 - workflows.erf_workflow - INFO - Setting up Edge WebDriver...
+2025-11-13 11:12:20,643 - workflows.erf_workflow - INFO - WebDriver setup successful
+2025-11-13 11:12:20,644 - workflows.erf_workflow - INFO - Navigating to ERF Dashboard...
+2025-11-13 11:12:30,183 - workflows.erf_workflow - INFO - Clicked ERF Dashboard tab
+2025-11-13 11:12:30,183 - workflows.erf_workflow - INFO - Switching to ERF iframe...
+2025-11-13 11:12:35,212 - workflows.erf_workflow - INFO - Switched to iframe 1
+2025-11-13 11:12:35,231 - workflows.erf_workflow - INFO - Switched to nested iframe
+2025-11-13 11:12:35,232 - workflows.erf_workflow - INFO - Searching ERF for material: 713-A75951-002
+2025-11-13 11:12:43,084 - workflows.erf_workflow - INFO - Selected 'ALL' from plant dropdown
+2025-11-13 11:12:43,781 - workflows.erf_workflow - INFO - Entered material number: 713-A75951-002
+2025-11-13 11:12:44,567 - workflows.erf_workflow - INFO - Clicked search button
+2025-11-13 11:12:47,030 - workflows.erf_workflow - INFO - Found and clicked result link
+2025-11-13 11:12:47,030 - workflows.erf_workflow - INFO - Extracting ERF data...
+2025-11-13 11:13:17,037 - workflows.erf_workflow - ERROR - Error extracting ERF data: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff61bc89a65
+	0x7ff61bc89ac4
+	0x7ff61be3b8a8
+	0x7ff61ba440ce
+	0x7ff61ba4431b
+	0x7ff61ba80777
+	0x7ff61ba3b3d5
+	0x7ff61ba7e6f2
+	0x7ff61ba3a8aa
+	0x7ff61ba39bd1
+	0x7ff61ba3a6d3
+	0x7ff61baf65f4
+	0x7ff61baf2b17
+	0x7ff61bcb66c5
+	0x7ff61bca4b21
+	0x7ff61bcacfc9
+	0x7ff61bc90fb4
+	0x7ff61bc91103
+	0x7ff61bc7ee36
+	0x7ffa0928259d
+	0x7ffa0a22af78
+
+2025-11-13 11:13:19,259 - workflows.erf_workflow - INFO - WebDriver cleaned up
+2025-11-13 11:13:19,259 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-13 11:13:19,259 - workflows.scenario_manager - ERROR - ✗ Failed: 713-A75951-002 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-13 11:13:19,259 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 11:13:19,259 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-13 11:13:19,259 - workflows.scenario_manager - INFO - ============================================================
+2025-11-13 11:13:19,260 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-13 11:13:19,260 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-13 11:13:19,260 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-13 11:13:19,260 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-13 11:13:19,260 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-13 11:13:19,261 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-13 11:13:19,261 - workflows.scenario_manager - INFO - ============================================================

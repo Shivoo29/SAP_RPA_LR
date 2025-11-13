@@ -1,0 +1,37 @@
+# SAP RPA - Multi-Scenario Automation System
+# Requirements
+# ============================================
+
+# Core Data Processing & Excel
+pandas>=1.5.0
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+
+# SAP GUI Scripting (Windows only)
+pywin32>=305
+
+# Web Automation for ERF Dashboard
+selenium>=4.10.0
+
+# GUI Framework (usually comes with Python)
+# tkinter
+
+# Logging and utilities (built-in)
+# logging
+# datetime
+# threading
+# pathlib
+
+# Type hints
+typing-extensions>=4.5.0
+
+# Optional: For future enhancements
+# requests>=2.31.0  # For API integration
+# python-dotenv>=1.0.0  # For environment variables
+
+# Development & Building
+# pyinstaller>=5.13  # For creating executables (uncomment if needed)
+
+# Testing (optional)
+# pytest>=7.4.0
+# pytest-cov>=4.1.0
