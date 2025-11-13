@@ -31,9 +31,6 @@ class SAPConnector:
             True if connection successful, False otherwise
         """
         try:
-            # Initialize COM
-            pythoncom.CoInitialize()
-            
             self.logger.info("Connecting to SAP GUI...")
             
             # Get SAP GUI Automation object
@@ -82,6 +79,9 @@ class SAPConnector:
             True if session is active, False otherwise
         """
         try:
+            # Initialize COM for the current thread
+            pythoncom.CoInitialize()
+            
             if not self.session:
                 return False
             

@@ -15,6 +15,7 @@ from selenium.webdriver.edge.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 from config import Config
 from data.data_models import ERFData
@@ -199,55 +200,43 @@ class ERFWorkflow:
         Returns:
             ERFData object if successful, None otherwise
         """
+        self.logger.info("Extracting ERF data...")
+        wait = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
+        erf_data = ERFData()
+
         try:
-            self.logger.info("Extracting ERF data...")
-            
-            wait = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
-            
-            # Click "Update/View ERF" button
+            # Click "Update/View ERF" button and wait for a known element on the next page
             update_button = wait.until(
                 EC.element_to_be_clickable((By.ID, "aaaa.HeaderView.UpdateBtn"))
             )
             update_button.click()
             self.logger.info("Clicked Update/View ERF button")
+
+            # Wait for the first input field to be visible as a confirmation the page has loaded
+            short_desc_element = wait.until(
+                EC.visibility_of_element_located((By.ID, "aaaa.CreateOrderView.ShortDescInp"))
+            )
             
-            time.sleep(2)
-            
-            # Extract data fields
-            erf_data = ERFData()
-            
-            try:
-                short_order_desc = self.driver.find_element(
-                    By.ID, "aaaa.CreateOrderView.ShortDescInp"
-                ).get_attribute("value")
-                erf_data.short_order_desc = short_order_desc
-                self.logger.info(f"Short Order Description: {short_order_desc}")
-            except:
-                self.logger.warning("Could not extract Short Order Description")
-            
-            try:
-                internal_order = self.driver.find_element(
-                    By.ID, "aaaa.CreateOrderView.InternalOrderInp"
-                ).get_attribute("value")
-                erf_data.internal_order = internal_order
-                erf_data.order_number = internal_order  # Use for KO03
-                self.logger.info(f"Internal Order: {internal_order}")
-            except:
-                self.logger.warning("Could not extract Internal Order")
-            
-            try:
-                cost_center = self.driver.find_element(
-                    By.ID, "aaaa.CreateOrderView.CostCenterInp"
-                ).get_attribute("value")
-                erf_data.cost_center = cost_center
-                self.logger.info(f"Cost Center: {cost_center}")
-            except:
-                self.logger.warning("Could not extract Cost Center")
+            # Extract data fields using the now-visible elements
+            erf_data.short_order_desc = short_desc_element.get_attribute("value")
+            self.logger.info(f"Short Order Description: {erf_data.short_order_desc}")
+
+            internal_order_element = self.driver.find_element(By.ID, "aaaa.CreateOrderView.InternalOrderInp")
+            erf_data.internal_order = internal_order_element.get_attribute("value")
+            erf_data.order_number = erf_data.internal_order
+            self.logger.info(f"Internal Order: {erf_data.internal_order}")
+
+            cost_center_element = self.driver.find_element(By.ID, "aaaa.CreateOrderView.CostCenterInp")
+            erf_data.cost_center = cost_center_element.get_attribute("value")
+            self.logger.info(f"Cost Center: {erf_data.cost_center}")
             
             return erf_data
-            
+
+        except TimeoutException:
+            self.logger.error("Error extracting ERF data: Timed out waiting for 'Update/View' page elements to load.")
+            return None
         except Exception as e:
-            self.logger.error(f"Error extracting ERF data: {e}")
+            self.logger.error(f"An unexpected error occurred during ERF data extraction: {e}")
             return None
     
     def execute_vbs_script_1(self) -> Optional[Dict]:
