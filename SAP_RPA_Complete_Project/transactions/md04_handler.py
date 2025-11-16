@@ -285,13 +285,14 @@ class MD04Handler:
         
         self.logger.info(f"Trying multiple plants for {material_number}: {plant_list}")
 
-        # Navigate to MD04 once at the beginning
-        if not self.navigate_to_md04():
-            return None
-
         for plant in plant_list:
             self.logger.info(f"Attempting plant {plant}...")
             
+            # Navigate to MD04 at the start of each loop to ensure a clean state
+            if not self.navigate_to_md04():
+                self.logger.error("Failed to navigate to MD04, aborting multi-plant search.")
+                return None # Abort if we can't even get to the transaction
+
             try:
                 # Ensure we are on the correct tab and fill details
                 self.ensure_individual_tab()
@@ -303,8 +304,6 @@ class MD04Handler:
                 # Execute query
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
-                    # Attempt to go back to recover for the next loop
-                    self.sap_connector.press_f3()
                     continue
 
                 # Find MatRes
@@ -316,29 +315,17 @@ class MD04Handler:
                         data = self.extract_data()
                         data['plant'] = plant
                         data['material'] = material_number
-                        
-                        # Press F3 twice to get back to the main MD04 screen for the next material
-                        self.logger.info("Success: Pressing F3 twice to return to MD04 main screen.")
-                        self.sap_connector.press_f3()
-                        time.sleep(0.5)
-                        self.sap_connector.press_f3()
+                        # No need to press F3, we will re-navigate for the next material
                         return data
                 else:
                     # FAILURE PATH
                     self.logger.warning(f"✗ MatRes not found in plant {plant}, trying next...")
-                    # Press F3 once to go back from the results screen to the entry screen
-                    self.logger.info("Failure: Pressing F3 once to return to MD04 entry screen.")
-                    self.sap_connector.press_f3()
-                    time.sleep(1)
+                    # No need to press F3, the loop will re-navigate on the next iteration
 
             except Exception as e:
                 self.logger.error(f"An exception occurred while trying plant {plant}: {e}")
-                try:
-                    # Try to recover by going back
-                    self.sap_connector.press_f3()
-                except Exception as e2:
-                    self.logger.error(f"Recovery by pressing F3 failed: {e2}. Aborting multi-plant search.")
-                    continue
+                # Continue to the next plant
+                continue
         
         self.logger.error(f"MatRes not found in any of the specified plants for {material_number}")
         return None
