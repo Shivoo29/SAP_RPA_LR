@@ -180,7 +180,7 @@ class SAPConnector:
                 return True
             else:
                 self.logger.warning(f"Navigation uncertain. Current transaction: {current_tcode}")
-                return True  # Continue anyway
+                return False # Continue anyway
                 
         except Exception as e:
             self.logger.error(f"Failed to navigate to {tcode}: {e}")
