@@ -270,7 +270,7 @@ class MD04Handler:
     ) -> Optional[Dict[str, str]]:
         """
         Try to process material across multiple plants until successful.
-        This method uses a back-and-forth navigation pattern to avoid session state issues.
+        This method uses a state-aware back navigation pattern.
         
         Args:
             material_number: Material/part number
@@ -289,19 +289,12 @@ class MD04Handler:
         if not self.navigate_to_md04():
             return None
 
-        for i, plant in enumerate(plant_list):
+        for plant in plant_list:
             self.logger.info(f"Attempting plant {plant}...")
             
             try:
-                # On subsequent runs, press F3 to go back to the entry screen
-                if i > 0:
-                    self.sap_connector.press_f3()
-                    time.sleep(1) # Wait for back navigation
-
-                # Ensure correct tab is selected
+                # Ensure we are on the correct tab and fill details
                 self.ensure_individual_tab()
-                
-                # Enter details
                 if not self.enter_material(material_number): continue
                 if not self.set_plant(plant): continue
                 if mrp_area:
@@ -310,33 +303,41 @@ class MD04Handler:
                 # Execute query
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
+                    # Attempt to go back to recover for the next loop
+                    self.sap_connector.press_f3()
                     continue
 
                 # Find MatRes
                 matres_element = self.find_matres()
                 if matres_element:
+                    # SUCCESS PATH
                     self.logger.info(f"✓ Successfully found MatRes in plant {plant}")
-                    # Open details and extract data
                     if self.open_matres_details(matres_element):
                         data = self.extract_data()
                         data['plant'] = plant
                         data['material'] = material_number
+                        
                         # Press F3 twice to get back to the main MD04 screen for the next material
+                        self.logger.info("Success: Pressing F3 twice to return to MD04 main screen.")
                         self.sap_connector.press_f3()
                         time.sleep(0.5)
                         self.sap_connector.press_f3()
                         return data
                 else:
+                    # FAILURE PATH
                     self.logger.warning(f"✗ MatRes not found in plant {plant}, trying next...")
+                    # Press F3 once to go back from the results screen to the entry screen
+                    self.logger.info("Failure: Pressing F3 once to return to MD04 entry screen.")
+                    self.sap_connector.press_f3()
+                    time.sleep(1)
 
             except Exception as e:
                 self.logger.error(f"An exception occurred while trying plant {plant}: {e}")
-                # Attempt to recover by navigating back
                 try:
+                    # Try to recover by going back
                     self.sap_connector.press_f3()
-                except:
-                    # If recovery fails, best to exit the loop
-                    self.logger.error("Recovery by pressing F3 failed. Aborting multi-plant search.")
+                except Exception as e2:
+                    self.logger.error(f"Recovery by pressing F3 failed: {e2}. Aborting multi-plant search.")
                     break
         
         self.logger.error(f"MatRes not found in any of the specified plants for {material_number}")

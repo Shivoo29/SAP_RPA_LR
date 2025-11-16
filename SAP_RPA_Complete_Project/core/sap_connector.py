@@ -79,9 +79,6 @@ class SAPConnector:
             True if session is active, False otherwise
         """
         try:
-            # Initialize COM for the current thread
-            pythoncom.CoInitialize()
-            
             if not self.session:
                 return False
             
@@ -140,12 +137,6 @@ class SAPConnector:
             self.connection = None
             self.application = None
             self.sap_gui_auto = None
-            
-            # Uninitialize COM
-            try:
-                pythoncom.CoUninitialize()
-            except:
-                pass
             
             self.is_connected = False
             self.logger.info("Disconnected from SAP")
