@@ -295,7 +295,7 @@ class MD04Handler:
 
             try:
                 # Ensure we are on the correct tab and fill details
-                self.ensure_individual_tab()
+                if not self.ensure_individual_tab(): continue
                 if not self.enter_material(material_number): continue
                 if not self.set_plant(plant): continue
                 if mrp_area:
