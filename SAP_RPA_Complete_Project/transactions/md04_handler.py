@@ -338,7 +338,7 @@ class MD04Handler:
                     self.sap_connector.press_f3()
                 except Exception as e2:
                     self.logger.error(f"Recovery by pressing F3 failed: {e2}. Aborting multi-plant search.")
-                    break
+                    continue
         
         self.logger.error(f"MatRes not found in any of the specified plants for {material_number}")
         return None
