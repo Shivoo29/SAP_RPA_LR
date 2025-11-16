@@ -308,8 +308,9 @@ class MD04Handler:
                 if not self.ensure_individual_tab(): continue
                 if not self.enter_material(material_number): continue
                 if not self.set_plant(plant): continue
-                if mrp_area:
-                    self.set_mrp_area(mrp_area)
+                
+                # Set the MRP Area to be the same as the current plant in the loop
+                self.set_mrp_area(plant)
                 
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
