@@ -1,0 +1,98 @@
+2025-11-16 19:31:27,930 - __main__ - INFO - ============================================================
+2025-11-16 19:31:27,931 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-16 19:31:27,932 - __main__ - INFO - ============================================================
+2025-11-16 19:31:27,933 - __main__ - INFO - Configuration loaded successfully
+2025-11-16 19:31:27,934 - __main__ - INFO - Starting GUI application...
+2025-11-16 19:31:32,128 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-16 19:31:33,795 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-16 19:31:40,177 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-16 19:31:40,193 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:31:40,194 - workflows.scenario_manager - INFO - Processing material: 839-B25280-129
+2025-11-16 19:31:40,195 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:31:40,195 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-16 19:31:40,196 - transactions.md04_handler - INFO - Trying multiple plants for 839-B25280-129: ['1000', '2000', '1020', '1900']
+2025-11-16 19:31:40,210 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:31:45,899 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:31:45,900 - transactions.md04_handler - INFO - Attempting plant 1000 (1/4)...
+2025-11-16 19:31:46,951 - transactions.md04_handler - INFO - Entering material number: 839-B25280-129
+2025-11-16 19:31:48,062 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-16 19:31:49,231 - transactions.md04_handler - WARNING - Could not set plant: 1000
+2025-11-16 19:31:49,232 - transactions.md04_handler - INFO - Attempting plant 2000 (2/4)...
+2025-11-16 19:31:51,769 - transactions.md04_handler - INFO - Entering material number: 839-B25280-129
+2025-11-16 19:31:52,894 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-16 19:31:54,148 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-16 19:31:55,380 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-16 19:31:59,805 - core.field_manager - INFO - Scanning for MatRes element...
+2025-11-16 19:32:07,739 - core.field_manager - WARNING - MatRes element not found
+2025-11-16 19:32:07,740 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 2000, trying next...
+2025-11-16 19:32:11,400 - transactions.md04_handler - INFO - Attempting plant 1020 (3/4)...
+2025-11-16 19:32:11,404 - transactions.md04_handler - WARNING - Navigation state is uncertain. Recovering by navigating to /nMD04.
+2025-11-16 19:32:11,420 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:32:16,612 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:32:17,672 - transactions.md04_handler - INFO - Entering material number: 839-B25280-129
+2025-11-16 19:32:18,792 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-16 19:32:20,031 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-16 19:32:21,249 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-16 19:32:24,916 - core.field_manager - INFO - Scanning for MatRes element...
+2025-11-16 19:32:28,445 - core.field_manager - WARNING - MatRes element not found
+2025-11-16 19:32:28,446 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1020, trying next...
+2025-11-16 19:32:32,355 - transactions.md04_handler - INFO - Attempting plant 1900 (4/4)...
+2025-11-16 19:32:32,359 - transactions.md04_handler - WARNING - Navigation state is uncertain. Recovering by navigating to /nMD04.
+2025-11-16 19:32:32,370 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:32:37,446 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:32:38,500 - transactions.md04_handler - INFO - Entering material number: 839-B25280-129
+2025-11-16 19:32:39,654 - transactions.md04_handler - INFO - Setting plant: 1900
+2025-11-16 19:32:40,874 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-16 19:32:42,085 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-16 19:32:46,592 - core.field_manager - INFO - Scanning for MatRes element...
+2025-11-16 19:32:53,019 - core.field_manager - WARNING - MatRes element not found
+2025-11-16 19:32:53,021 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1900, trying next...
+2025-11-16 19:32:56,780 - transactions.md04_handler - ERROR - MatRes not found in any of the specified plants for 839-B25280-129
+2025-11-16 19:32:56,781 - workflows.scenario_manager - INFO - SCENARIO 2: MatRes not found, trying ERF Dashboard...
+2025-11-16 19:32:56,781 - workflows.erf_workflow - INFO - ============================================================
+2025-11-16 19:32:56,782 - workflows.erf_workflow - INFO - Starting ERF workflow for: 839-B25280-129
+2025-11-16 19:32:56,782 - workflows.erf_workflow - INFO - ============================================================
+2025-11-16 19:32:56,783 - workflows.erf_workflow - INFO - Setting up Edge WebDriver...
+2025-11-16 19:32:58,645 - workflows.erf_workflow - INFO - WebDriver setup successful
+2025-11-16 19:32:58,645 - workflows.erf_workflow - INFO - Navigating to ERF Dashboard...
+2025-11-16 19:33:17,504 - workflows.erf_workflow - ERROR - Failed to navigate to ERF Dashboard: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: MicrosoftEdge=142.0.3595.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff64f939a65
+	0x7ff64f939ac4
+	0x7ff64faeb8a8
+	0x7ff64f69ece1
+	0x7ff64f6ba07e
+	0x7ff64f718cd3
+	0x7ff64f72e02a
+	0x7ff64f6ea8aa
+	0x7ff64f6e9bd1
+	0x7ff64f6ea6d3
+	0x7ff64f7a65f4
+	0x7ff64f7a2b17
+	0x7ff64f9666c5
+	0x7ff64f954b21
+	0x7ff64f95cfc9
+	0x7ff64f940fb4
+	0x7ff64f941103
+	0x7ff64f92ee36
+	0x7ffd8c47259d
+	0x7ffd8c86af78
+
+2025-11-16 19:33:19,730 - workflows.erf_workflow - INFO - WebDriver cleaned up
+2025-11-16 19:33:19,731 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-16 19:33:19,731 - workflows.scenario_manager - ERROR - ✗ Failed: 839-B25280-129 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-16 19:33:19,833 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:33:19,834 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-16 19:33:19,835 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:33:19,835 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-16 19:33:19,836 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-16 19:33:19,836 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-16 19:33:19,836 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-16 19:33:19,836 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-16 19:33:19,837 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-16 19:33:19,837 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:38:16,812 - core.sap_connector - INFO - Disconnecting from SAP...
+2025-11-16 19:38:16,817 - core.sap_connector - INFO - Disconnected from SAP

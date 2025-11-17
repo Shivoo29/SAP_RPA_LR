@@ -1,0 +1,83 @@
+2025-11-16 19:26:48,183 - __main__ - INFO - ============================================================
+2025-11-16 19:26:48,184 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-16 19:26:48,185 - __main__ - INFO - ============================================================
+2025-11-16 19:26:48,186 - __main__ - INFO - Configuration loaded successfully
+2025-11-16 19:26:48,187 - __main__ - INFO - Starting GUI application...
+2025-11-16 19:26:52,948 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-16 19:26:54,525 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-16 19:27:04,566 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-16 19:27:04,578 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:27:04,578 - workflows.scenario_manager - INFO - Processing material: 839-B25280-129
+2025-11-16 19:27:04,579 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:27:04,580 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-16 19:27:04,580 - transactions.md04_handler - INFO - Trying multiple plants for 839-B25280-129: ['1000', '2000', '1020', '1900']
+2025-11-16 19:27:04,580 - transactions.md04_handler - INFO - Attempting plant 1000...
+2025-11-16 19:27:04,605 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:27:10,803 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:27:11,857 - transactions.md04_handler - INFO - Entering material number: 839-B25280-129
+2025-11-16 19:27:12,979 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-16 19:27:14,223 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-16 19:27:15,450 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-16 19:27:19,958 - core.field_manager - INFO - Scanning for MatRes element...
+2025-11-16 19:27:28,834 - core.field_manager - WARNING - MatRes element not found
+2025-11-16 19:27:28,837 - transactions.md04_handler - WARNING - ✗ MatRes not found in plant 1000, trying next...
+2025-11-16 19:27:28,838 - transactions.md04_handler - INFO - Attempting plant 2000...
+2025-11-16 19:27:28,845 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:27:33,342 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:27:33,345 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-16 19:27:33,346 - transactions.md04_handler - INFO - Attempting plant 1020...
+2025-11-16 19:27:33,359 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:27:37,967 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:27:37,971 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-16 19:27:37,971 - transactions.md04_handler - INFO - Attempting plant 1900...
+2025-11-16 19:27:37,985 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-16 19:27:42,587 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-16 19:27:42,590 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-16 19:27:42,591 - transactions.md04_handler - ERROR - MatRes not found in any of the specified plants for 839-B25280-129
+2025-11-16 19:27:42,591 - workflows.scenario_manager - INFO - SCENARIO 2: MatRes not found, trying ERF Dashboard...
+2025-11-16 19:27:42,592 - workflows.erf_workflow - INFO - ============================================================
+2025-11-16 19:27:42,592 - workflows.erf_workflow - INFO - Starting ERF workflow for: 839-B25280-129
+2025-11-16 19:27:42,592 - workflows.erf_workflow - INFO - ============================================================
+2025-11-16 19:27:42,593 - workflows.erf_workflow - INFO - Setting up Edge WebDriver...
+2025-11-16 19:27:44,582 - workflows.erf_workflow - INFO - WebDriver setup successful
+2025-11-16 19:27:44,583 - workflows.erf_workflow - INFO - Navigating to ERF Dashboard...
+2025-11-16 19:27:47,070 - workflows.erf_workflow - ERROR - Failed to navigate to ERF Dashboard: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: MicrosoftEdge=142.0.3595.80)
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff64f939a65
+	0x7ff64f939ac4
+	0x7ff64faeb8a8
+	0x7ff64f690878
+	0x7ff64f718b4a
+	0x7ff64f72e02a
+	0x7ff64f6ea8aa
+	0x7ff64f6e9bd1
+	0x7ff64f6ea6d3
+	0x7ff64f7a65f4
+	0x7ff64f7a2b17
+	0x7ff64f9666c5
+	0x7ff64f954b21
+	0x7ff64f95cfc9
+	0x7ff64f940fb4
+	0x7ff64f941103
+	0x7ff64f92ee36
+	0x7ffd8c47259d
+	0x7ffd8c86af78
+
+2025-11-16 19:27:49,325 - workflows.erf_workflow - INFO - WebDriver cleaned up
+2025-11-16 19:27:49,325 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-16 19:27:49,326 - workflows.scenario_manager - ERROR - ✗ Failed: 839-B25280-129 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-16 19:27:49,427 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:27:49,428 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-16 19:27:49,428 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:27:49,428 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-16 19:27:49,428 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-16 19:27:49,429 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-16 19:27:49,429 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-16 19:27:49,429 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-16 19:27:49,429 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-16 19:27:49,430 - workflows.scenario_manager - INFO - ============================================================
+2025-11-16 19:29:18,428 - core.sap_connector - INFO - Disconnecting from SAP...
+2025-11-16 19:29:18,433 - core.sap_connector - INFO - Disconnected from SAP
