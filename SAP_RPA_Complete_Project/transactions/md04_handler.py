@@ -349,10 +349,10 @@ class MD04Handler:
 
     def find_and_extract_rpm_number(self, material_number: str, plant: str) -> Optional[str]:
         """
-        Finds the STPord row in MD04 for a specific plant, navigates to details,
-        and extracts the first available RPM number from the requirements table.
+        Finds the STPord row, navigates to details, and extracts the RPM number
+        by directly accessing the cell ID, exactly like the VBScript.
         """
-        self.logger.info(f"Attempting to find RPM number for material {material_number} in specific plant {plant}")
+        self.logger.info(f"Attempting to find RPM number for material {material_number} in plant {plant} using VBS-style direct access.")
         try:
             # 1. Navigate and execute query
             if not self.navigate_to_md04(): return None
@@ -363,7 +363,7 @@ class MD04Handler:
             if not self.set_mrp_area(plant): return None
             if not self.execute_query(): return None
 
-            # 2. Find the 'STPord' row
+            # 2. Find and select the 'STPord' row
             table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
             table = self.session.findById(table_id)
             stpord_row_index = -1
@@ -384,7 +384,6 @@ class MD04Handler:
             table.getCell(stpord_row_index, 0).setFocus()
             self.session.findById("wnd[0]").sendVKey(2)
             time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
-            
             try:
                 self.session.findById(self.config.get_field_id('MD04_RPM', 'item_display_button')).press()
                 time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
@@ -395,27 +394,31 @@ class MD04Handler:
             self.session.findById(expand_button_id).press()
             time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
 
-            # 5. Find the requirements table and iterate through rows to find the RPM number
+            # 5. THIS IS THE FIX: Iterate by building the direct cell ID from the VBScript
+            self.logger.info("Now on final table. Reading rows using direct cell ID access...")
             req_table_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211"
             req_table = self.session.findById(req_table_id)
             
-            # The "Reqmt No." column has the ID 'BEDNR'. Find its index.
-            req_col = req_table.columns.elementAt(18) # Assuming it's always column 18 as per VBS
-            
+            # The VBScript gives the base ID for the cell text: 'txtMEPO1211-BEDNR' at column 18
+            base_cell_id = f"{req_table_id}/txtMEPO1211-BEDNR[18,"
+
             for i in range(req_table.rows.count):
                 try:
-                    rpm_full_text = req_table.getCell(i, req_col.id).text.strip()
-                    if rpm_full_text.upper().startswith("RPM"):
+                    # Construct the full ID for the cell in the current row
+                    cell_id = f"{base_cell_id}{i}]"
+                    rpm_full_text = self.field_manager.get_field_value(cell_id)
+                    
+                    if rpm_full_text and rpm_full_text.upper().startswith("RPM"):
                         self.logger.info(f"Found raw RPM text: '{rpm_full_text}' in row {i}")
                         match = re.search(r'\d+', rpm_full_text)
                         if match:
-                            rpm_number = match.group(0)
-                            # Strip leading zeros if necessary, e.g., "0644433" -> "644433"
-                            rpm_number_cleaned = str(int(rpm_number))
-                            self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number_cleaned}")
-                            return rpm_number_cleaned
-                except:
-                    continue # Continue to next row if there's an error reading a cell
+                            rpm_number = match.group(0).lstrip('0')
+                            self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
+                            return rpm_number
+                except Exception as e:
+                    # This will fail for rows that don't have the cell, which is expected.
+                    self.logger.debug(f"No RPM cell found at row {i} or error reading it: {e}")
+                    continue
             
             self.logger.error("Found the requirements table, but no RPM number was found within it.")
             return None
