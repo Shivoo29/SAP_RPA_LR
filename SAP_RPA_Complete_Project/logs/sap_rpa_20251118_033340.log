@@ -1,0 +1,109 @@
+2025-11-18 03:33:40,272 - __main__ - INFO - ============================================================
+2025-11-18 03:33:40,273 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-18 03:33:40,273 - __main__ - INFO - ============================================================
+2025-11-18 03:33:40,274 - __main__ - INFO - Configuration loaded successfully
+2025-11-18 03:33:40,275 - __main__ - INFO - Starting GUI application...
+2025-11-18 03:33:54,701 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-18 03:33:56,371 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-18 03:34:09,279 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-18 03:34:09,300 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:34:09,302 - workflows.scenario_manager - INFO - Processing material: 715-A89715-101
+2025-11-18 03:34:09,303 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:34:09,305 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-18 03:34:09,305 - transactions.md04_handler - INFO - Starting 'Trust but Verify' multi-plant search for 715-A89715-101: ['1000', '2000', '1020', '1900']
+2025-11-18 03:34:09,326 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:34:14,328 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:34:14,331 - transactions.md04_handler - INFO - Attempting plant 1000 (1/4)...
+2025-11-18 03:34:15,385 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:34:16,510 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-18 03:34:17,775 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-18 03:34:19,045 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:34:22,777 - core.field_manager - INFO - Scanning MD04 results table for 'MatRes'...
+2025-11-18 03:34:24,376 - core.field_manager - WARNING - MatRes element not found in the results table.
+2025-11-18 03:34:24,511 - transactions.md04_handler - INFO - ✓ PRIORITY 2: Noted 'STPord' found in plant 1000.
+2025-11-18 03:34:28,043 - transactions.md04_handler - WARNING - F3 (Back) method failed or did not return to expected screen. Error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:34:28,044 - transactions.md04_handler - INFO - Falling back to /nMD04 navigation to recover session...
+2025-11-18 03:34:28,059 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:34:32,856 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:34:34,858 - transactions.md04_handler - INFO - Session recovered with /nMD04.
+2025-11-18 03:34:34,861 - transactions.md04_handler - INFO - Attempting plant 2000 (2/4)...
+2025-11-18 03:34:35,932 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:34:37,049 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-18 03:34:38,314 - transactions.md04_handler - INFO - Setting MRP area: 2000
+2025-11-18 03:34:39,525 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:34:43,232 - core.field_manager - INFO - Scanning MD04 results table for 'MatRes'...
+2025-11-18 03:34:44,116 - core.field_manager - WARNING - MatRes element not found in the results table.
+2025-11-18 03:34:47,663 - transactions.md04_handler - WARNING - F3 (Back) method failed or did not return to expected screen. Error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:34:47,664 - transactions.md04_handler - INFO - Falling back to /nMD04 navigation to recover session...
+2025-11-18 03:34:47,678 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:34:52,651 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:34:54,652 - transactions.md04_handler - INFO - Session recovered with /nMD04.
+2025-11-18 03:34:54,653 - transactions.md04_handler - INFO - Attempting plant 1020 (3/4)...
+2025-11-18 03:34:55,705 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:34:56,816 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-18 03:34:58,032 - transactions.md04_handler - INFO - Setting MRP area: 1020
+2025-11-18 03:34:59,265 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:35:02,734 - core.field_manager - INFO - Scanning MD04 results table for 'MatRes'...
+2025-11-18 03:35:02,736 - core.field_manager - ERROR - Error finding MatRes in table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 220, in find_matres_element
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:35:06,264 - transactions.md04_handler - WARNING - F3 (Back) method failed or did not return to expected screen. Error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:35:06,265 - transactions.md04_handler - INFO - Falling back to /nMD04 navigation to recover session...
+2025-11-18 03:35:06,276 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:35:11,107 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:35:13,108 - transactions.md04_handler - INFO - Session recovered with /nMD04.
+2025-11-18 03:35:13,116 - transactions.md04_handler - INFO - Attempting plant 1900 (4/4)...
+2025-11-18 03:35:14,164 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:35:15,278 - transactions.md04_handler - INFO - Setting plant: 1900
+2025-11-18 03:35:16,549 - transactions.md04_handler - INFO - Setting MRP area: 1900
+2025-11-18 03:35:17,793 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:35:21,292 - core.field_manager - INFO - Scanning MD04 results table for 'MatRes'...
+2025-11-18 03:35:21,295 - core.field_manager - ERROR - Error finding MatRes in table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 220, in find_matres_element
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:35:24,905 - transactions.md04_handler - WARNING - F3 (Back) method failed or did not return to expected screen. Error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:35:24,907 - transactions.md04_handler - INFO - Falling back to /nMD04 navigation to recover session...
+2025-11-18 03:35:24,917 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:35:29,885 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:35:31,887 - transactions.md04_handler - INFO - Session recovered with /nMD04.
+2025-11-18 03:35:31,887 - transactions.md04_handler - INFO - Finished all plants. Returning STPord plant: 1000
+2025-11-18 03:35:31,890 - workflows.scenario_manager - INFO - SCENARIO 1.5: MatRes not found, but STPord was found in plant 1000. Extracting RPM number...
+2025-11-18 03:35:31,890 - transactions.md04_handler - INFO - Attempting to find RPM number for material 715-A89715-101 in specific plant 1000
+2025-11-18 03:35:31,908 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:35:35,900 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:35:36,981 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:35:38,071 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-18 03:35:39,275 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-18 03:35:40,534 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:35:44,562 - transactions.md04_handler - INFO - Found 'STPord' at row 1
+2025-11-18 03:35:51,702 - transactions.md04_handler - INFO - Pressed 'Display element' button.
+2025-11-18 03:35:54,403 - transactions.md04_handler - INFO - Pressed 'Expand items' button.
+2025-11-18 03:35:54,437 - transactions.md04_handler - INFO - Found raw RPM text: 'RPM0644433'
+2025-11-18 03:35:54,438 - transactions.md04_handler - INFO - ✓ Successfully extracted RPM number: 0644433
+2025-11-18 03:35:54,440 - workflows.scenario_manager - INFO - Found RPM number: 0644433. Proceeding to ERF Dashboard...
+2025-11-18 03:35:54,440 - workflows.scenario_manager - ERROR - Error processing material 715-A89715-101: ERFWorkflow.execute_erf_workflow() got an unexpected keyword argument 'erf_search_term'
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\workflows\scenario_manager.py", line 123, in process_single_material
+    erf_data = self.erf_workflow.execute_erf_workflow(
+        material_number=material_number,
+        erf_search_term=rpm_number
+    )
+TypeError: ERFWorkflow.execute_erf_workflow() got an unexpected keyword argument 'erf_search_term'
+2025-11-18 03:35:54,443 - workflows.scenario_manager - ERROR - ✗ Failed: 715-A89715-101 - Error: ERFWorkflow.execute_erf_workflow() got an unexpected keyword argument 'erf_search_term'
+2025-11-18 03:35:54,550 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:35:54,551 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-18 03:35:54,551 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:35:54,551 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-18 03:35:54,551 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-18 03:35:54,552 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-18 03:35:54,552 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-18 03:35:54,553 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-18 03:35:54,553 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-18 03:35:54,554 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:37:00,314 - __main__ - INFO - Application interrupted by user
