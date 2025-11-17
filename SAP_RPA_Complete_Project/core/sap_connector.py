@@ -146,44 +146,66 @@ class SAPConnector:
     
     def navigate_to_transaction(self, tcode: str, wait_time: int = 3) -> bool:
         """
-        Navigate to a specific SAP transaction.
+        Navigate to a specific SAP transaction using the most robust method.
+        This method mimics a user by setting focus, clearing the field,
+        and attempting to press the dedicated Enter button before falling back.
         
         Args:
-            tcode: Transaction code (e.g., 'MD04', 'KO03')
-            wait_time: Time to wait after navigation (seconds)
+            tcode: Transaction code (e.g., 'MD04', 'KO03'). Should NOT include /n.
             
         Returns:
-            True if navigation successful
+            True if navigation is successful.
         """
         if not self.verify_connection():
             self.logger.error("Cannot navigate: Not connected to SAP")
             return False
         
+        command_to_run = f"/n{tcode}"
+        self.logger.info(f"Navigating to transaction using robust method: '{command_to_run}'...")
+        
         try:
-            self.logger.info(f"Navigating to transaction {tcode}...")
+            ok_code_field = self.session.findById("wnd[0]/tbar[0]/okcd")
             
-            # Clear transaction field
-            self.session.findById("wnd[0]/tbar[0]/okcd").text = ""
-            time.sleep(0.5)
+            # 1. Set focus and clear the field to ensure a clean state
+            ok_code_field.setFocus()
+            ok_code_field.text = ""
             
-            # Enter transaction code
-            self.session.findById("wnd[0]/tbar[0]/okcd").text = tcode
-            self.session.findById("wnd[0]").sendVKey(0)  # Press Enter
+            # 2. Set the command text
+            ok_code_field.text = command_to_run
             
-            # Wait for transaction to load
+            # 3. Try to press the dedicated 'Enter' button first (more reliable)
+            try:
+                enter_button = self.session.findById("wnd[0]/tbar[0]/btn[0]")
+                enter_button.press()
+            except:
+                # 4. Fallback to sending VKey 0 if the button isn't found
+                self.logger.debug("Enter button (btn[0]) not found, falling back to VKey 0.")
+                self.session.findById("wnd[0]").sendVKey(0)
+
+            # 5. Wait for the screen to change. This is critical.
+            self.logger.debug(f"Waiting {wait_time} seconds for screen to render...")
             time.sleep(wait_time)
             
-            # Verify transaction loaded
+            # 6. Verify that the navigation was successful
             current_tcode = self.session.Info.Transaction
             if current_tcode.upper() == tcode.upper():
-                self.logger.info(f"Successfully navigated to {tcode}")
+                self.logger.info(f"✓ Successfully navigated to {tcode}")
                 return True
             else:
-                self.logger.warning(f"Navigation uncertain. Current transaction: {current_tcode}")
-                return False # Continue anyway
+                # This can happen if a popup appeared and was dismissed.
+                # The command might still be pending. We send one more Enter.
+                self.logger.warning(f"Navigation to {tcode} resulted in a different screen ({current_tcode}). Sending one more Enter to proceed.")
+                self.press_enter(wait_time=2)
+                current_tcode = self.session.Info.Transaction
+                if current_tcode.upper() == tcode.upper():
+                    self.logger.info(f"✓ Successfully navigated to {tcode} after second Enter.")
+                    return True
+                else:
+                    self.logger.error(f"✗ Failed to navigate to {tcode}. Final screen is {current_tcode}.")
+                    return False
                 
         except Exception as e:
-            self.logger.error(f"Failed to navigate to {tcode}: {e}")
+            self.logger.error(f"Fatal error during robust navigation to {tcode}: {e}", exc_info=True)
             return False
     
     def press_enter(self, wait_time: int = 2):
