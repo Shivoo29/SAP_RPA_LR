@@ -44,7 +44,7 @@ class Config:
     
     # ===== KO03 Transaction Field IDs =====
     KO03_FIELDS = {
-        "order_field": "wnd[0]/usr/ctxtCAUFVD-AUFNR",
+        "order_field": "wnd[0]/usr/ctxtCOAS-AUFNR",
         "order_type_field": "wnd[0]/usr/ctxtCAUFVD-AUART",
         # Add more KO03 fields as needed
     }
