@@ -205,67 +205,37 @@ class FieldManager:
         
         return extracted_data
     
-    def scan_element_for_matres(self, element, depth: int = 0) -> Optional[object]:
-        """
-        Recursively scan element tree for MatRes text.
-        
-        Args:
-            element: SAP element to scan
-            depth: Current depth in element tree
-            
-        Returns:
-            MatRes element if found, None otherwise
-        """
-        if depth > 10:  # Prevent infinite recursion
-            return None
-        
-        try:
-            # Check if this element has 'MatRes' text
-            if hasattr(element, 'text'):
-                text = str(element.text).strip()
-                if text == 'MatRes':
-                    return element
-            
-            # Scan children
-            try:
-                children_count = element.Children.Count
-                for i in range(children_count):
-                    try:
-                        child = element.Children(i)
-                        result = self.scan_element_for_matres(child, depth + 1)
-                        if result:
-                            return result
-                    except:
-                        continue
-            except:
-                pass
-                
-        except:
-            pass
-        
-        return None
-    
     def find_matres_element(self) -> Optional[object]:
         """
-        Find the MatRes element in the current SAP window.
-        
+        Finds the MatRes element by specifically searching the MD04 results table
+        across all rows and columns.
+
         Returns:
-            MatRes element if found, None otherwise
+            MatRes element (the table cell) if found, None otherwise.
         """
+        self.logger.info("Scanning MD04 results table for 'MatRes'...")
         try:
-            self.logger.info("Scanning for MatRes element...")
-            main_window = self.session.findById("wnd[0]")
-            matres_element = self.scan_element_for_matres(main_window, 0)
+            # This ID is from the new config, assuming it's the same table for both searches
+            table_id = "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ"
+            table = self.session.findById(table_id)
             
-            if matres_element:
-                self.logger.info("MatRes element found!")
-                return matres_element
-            else:
-                self.logger.warning("MatRes element not found")
-                return None
-                
+            # Iterate through all rows and all columns to find 'MatRes'
+            for row_idx in range(table.rows.count):
+                for col_idx in range(table.columns.count):
+                    try:
+                        cell = table.getCell(row_idx, col_idx)
+                        if hasattr(cell, 'text') and cell.text.strip() == 'MatRes':
+                            self.logger.info(f"✓ MatRes element found in table at row {row_idx}, col {col_idx}.")
+                            return cell
+                    except Exception:
+                        # This cell might not have a 'text' property, continue to the next
+                        continue
+            
+            self.logger.warning("MatRes element not found in the results table.")
+            return None
+
         except Exception as e:
-            self.logger.error(f"Error finding MatRes: {e}")
+            self.logger.error(f"Error finding MatRes in table: {e}", exc_info=True)
             return None
     
     def click_element(self, element_or_id) -> bool:
