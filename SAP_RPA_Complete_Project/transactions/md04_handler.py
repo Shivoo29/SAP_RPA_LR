@@ -349,96 +349,79 @@ class MD04Handler:
 
     def find_and_extract_rpm_number(self, material_number: str, plant: str) -> Optional[str]:
         """
-        Finds the STPord row in MD04 for a *specific plant* and extracts the RPM number.
-        This is the fallback when MatRes is not found.
-
-        Args:
-            material_number: The material number to search for.
-            plant: The specific plant to search in.
-
-        Returns:
-            The extracted RPM number (digits only) if found, otherwise None.
+        Finds the STPord row in MD04 for a specific plant, navigates to details,
+        and extracts the first available RPM number from the requirements table.
         """
         self.logger.info(f"Attempting to find RPM number for material {material_number} in specific plant {plant}")
         try:
-            # 1. Navigate to MD04 and execute query for the specific plant
+            # 1. Navigate and execute query
             if not self.navigate_to_md04(): return None
+            time.sleep(3)
             if not self.ensure_individual_tab(): return None
             if not self.enter_material(material_number): return None
             if not self.set_plant(plant): return None
-            if not self.set_mrp_area(plant): return None # Use plant as MRP area as per previous logic
+            if not self.set_mrp_area(plant): return None
             if not self.execute_query(): return None
 
-            # 2. Find the 'STPord' row in the results table
+            # 2. Find the 'STPord' row
             table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
             table = self.session.findById(table_id)
-            
             stpord_row_index = -1
             for i in range(table.rows.count):
                 for j in range(table.columns.count):
                     try:
-                        element_text = table.getCell(i, j).text.strip()
-                        if element_text == "STPord":
+                        if table.getCell(i, j).text.strip() == "STPord":
                             stpord_row_index = i
-                            self.logger.info(f"Found 'STPord' at row {i}")
                             break
-                    except:
-                        continue
-                if stpord_row_index != -1:
-                    break
+                    except: continue
+                if stpord_row_index != -1: break
             
             if stpord_row_index == -1:
                 self.logger.warning(f"'STPord' row not found in plant {plant}.")
                 return None
 
-            # 3. Select the row and press "Display" (VKey 2)
-            # We need to select the cell we found, not just the row.
-            stpord_cell = table.getCell(stpord_row_index, 0) # Select the first cell of the found row
-            stpord_cell.setFocus()
+            # 3. Navigate to details screen
+            table.getCell(stpord_row_index, 0).setFocus()
             self.session.findById("wnd[0]").sendVKey(2)
             time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
-
-            # 4. Press "Display element" button in the new window/view
-            try:
-                display_button_id = self.config.get_field_id('MD04_RPM', 'item_display_button')
-                self.session.findById(display_button_id).press()
-                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
-                self.logger.info("Pressed 'Display element' button.")
-            except Exception as e:
-                self.logger.warning(f"Could not press 'Display element' button (this might be optional): {e}")
-
-            # 5. Press "Expand items" button
-            try:
-                expand_button_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB1:SAPLMEVIEWS:4001/btnDYN_4000-BUTTON"
-                self.session.findById(expand_button_id).press()
-                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
-                self.logger.info("Pressed 'Expand items' button.")
-            except Exception as e:
-                self.logger.error(f"Failed to press 'Expand items' button: {e}", exc_info=True)
-                return None
-
-            # 6. Extract the RPM number from the table
-            rpm_field_id = self.config.get_field_id('MD04_RPM', 'rpm_number_field')
-            rpm_full_text = self.field_manager.get_field_value(rpm_field_id)
             
-            if not rpm_full_text:
-                self.logger.error("Could not read RPM number field.")
-                return None
-            
-            self.logger.info(f"Found raw RPM text: '{rpm_full_text}'")
+            try:
+                self.session.findById(self.config.get_field_id('MD04_RPM', 'item_display_button')).press()
+                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+            except: pass
 
-            # 7. Parse the number from the text
-            match = re.search(r'\d+', rpm_full_text)
-            if match:
-                rpm_number = match.group(0)
-                self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
-                return rpm_number
-            else:
-                self.logger.error(f"Could not parse digits from RPM text: '{rpm_full_text}'")
-                return None
+            # 4. Expand items to show the requirements table
+            expand_button_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB1:SAPLMEVIEWS:4001/btnDYN_4000-BUTTON"
+            self.session.findById(expand_button_id).press()
+            time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+
+            # 5. Find the requirements table and iterate through rows to find the RPM number
+            req_table_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211"
+            req_table = self.session.findById(req_table_id)
+            
+            # The "Reqmt No." column has the ID 'BEDNR'. Find its index.
+            req_col = req_table.columns.elementAt(18) # Assuming it's always column 18 as per VBS
+            
+            for i in range(req_table.rows.count):
+                try:
+                    rpm_full_text = req_table.getCell(i, req_col.id).text.strip()
+                    if rpm_full_text.upper().startswith("RPM"):
+                        self.logger.info(f"Found raw RPM text: '{rpm_full_text}' in row {i}")
+                        match = re.search(r'\d+', rpm_full_text)
+                        if match:
+                            rpm_number = match.group(0)
+                            # Strip leading zeros if necessary, e.g., "0644433" -> "644433"
+                            rpm_number_cleaned = str(int(rpm_number))
+                            self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number_cleaned}")
+                            return rpm_number_cleaned
+                except:
+                    continue # Continue to next row if there's an error reading a cell
+            
+            self.logger.error("Found the requirements table, but no RPM number was found within it.")
+            return None
 
         except Exception as e:
-            self.logger.error(f"An unexpected error occurred during RPM number extraction in plant {plant}: {e}", exc_info=True)
+            self.logger.error(f"An unexpected error occurred during RPM number extraction: {e}", exc_info=True)
             return None
     
     def process_next_material(self, material_number: str) -> Optional[Dict[str, str]]:
