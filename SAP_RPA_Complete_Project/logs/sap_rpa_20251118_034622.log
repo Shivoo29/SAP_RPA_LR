@@ -1,0 +1,55 @@
+2025-11-18 03:46:22,566 - __main__ - INFO - ============================================================
+2025-11-18 03:46:22,567 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-18 03:46:22,568 - __main__ - INFO - ============================================================
+2025-11-18 03:46:22,568 - __main__ - INFO - Configuration loaded successfully
+2025-11-18 03:46:22,569 - __main__ - INFO - Starting GUI application...
+2025-11-18 03:46:29,749 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-18 03:46:31,691 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-18 03:46:38,127 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-18 03:46:38,154 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:46:38,157 - workflows.scenario_manager - INFO - Processing material: 715-A89715-101
+2025-11-18 03:46:38,157 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:46:38,157 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with multiple plants...
+2025-11-18 03:46:38,159 - transactions.md04_handler - INFO - Starting robust /nMD04-based multi-plant search for 715-A89715-101: ['1000', '2000', '1020', '1900']
+2025-11-18 03:46:38,160 - transactions.md04_handler - INFO - Attempting plant 1000 (1/4)...
+2025-11-18 03:46:38,175 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:46:43,234 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:46:45,286 - transactions.md04_handler - INFO - Entering material number: 715-A89715-101
+2025-11-18 03:46:46,405 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-18 03:46:47,614 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-18 03:46:48,851 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-18 03:46:52,604 - core.field_manager - INFO - Scanning MD04 results table for 'MatRes'...
+2025-11-18 03:46:54,200 - core.field_manager - WARNING - MatRes element not found in the results table.
+2025-11-18 03:46:54,337 - transactions.md04_handler - INFO - ✓ PRIORITY 2: Noted 'STPord' found in plant 1000.
+2025-11-18 03:46:54,338 - transactions.md04_handler - INFO - Attempting plant 2000 (2/4)...
+2025-11-18 03:46:54,344 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:46:58,397 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:46:59,401 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:46:59,402 - transactions.md04_handler - INFO - Attempting plant 1020 (3/4)...
+2025-11-18 03:46:59,421 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:47:03,600 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:47:04,603 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:47:04,603 - transactions.md04_handler - INFO - Attempting plant 1900 (4/4)...
+2025-11-18 03:47:04,612 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:47:08,702 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:47:09,706 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:47:09,708 - transactions.md04_handler - INFO - Finished all plants. Returning STPord plant: 1000
+2025-11-18 03:47:09,711 - workflows.scenario_manager - INFO - SCENARIO 1.5: MatRes not found, but STPord was found in plant 1000. Extracting RPM number...
+2025-11-18 03:47:09,712 - transactions.md04_handler - INFO - Attempting to find RPM number for material 715-A89715-101 in specific plant 1000
+2025-11-18 03:47:09,719 - core.sap_connector - INFO - Navigating to transaction MD04...
+2025-11-18 03:47:13,820 - core.sap_connector - INFO - Successfully navigated to MD04
+2025-11-18 03:47:13,822 - transactions.md04_handler - WARNING - Could not select Individual tab: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-18 03:47:13,823 - workflows.scenario_manager - WARNING - STPord was found in 1000, but failed to extract RPM number.
+2025-11-18 03:47:13,823 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-18 03:47:13,824 - workflows.scenario_manager - ERROR - ✗ Failed: 715-A89715-101 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-18 03:47:13,937 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:47:13,939 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-18 03:47:13,940 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:47:13,940 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-18 03:47:13,941 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-18 03:47:13,942 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-18 03:47:13,942 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-18 03:47:13,943 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-18 03:47:13,943 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-18 03:47:13,944 - workflows.scenario_manager - INFO - ============================================================
+2025-11-18 03:47:29,666 - __main__ - INFO - Application interrupted by user
