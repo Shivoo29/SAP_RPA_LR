@@ -389,22 +389,25 @@ class MD04Handler:
                 time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
             except: pass
 
-            # 4. Expand items to show the requirements table
-            expand_button_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB1:SAPLMEVIEWS:4001/btnDYN_4000-BUTTON"
-            self.session.findById(expand_button_id).press()
-            time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
-
-            # 5. THIS IS THE FIX: Iterate by building the direct cell ID from the VBScript
-            self.logger.info("Now on final table. Reading rows using direct cell ID access...")
+            # 4. Expand items to show the requirements table, only if it's not already expanded.
             req_table_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211"
+            try:
+                # Check if table is already visible. If this fails, it means it's not visible.
+                req_table = self.session.findById(req_table_id)
+                self.logger.info("Requirements table is already visible. Proceeding to read.")
+            except:
+                # If table is not visible, press the expand button to show it.
+                self.logger.info("Requirements table is not visible. Pressing 'Expand items' button...")
+                expand_button_id = "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB1:SAPLMEVIEWS:4001/btnDYN_4000-BUTTON"
+                self.session.findById(expand_button_id).press()
+                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+
+            # 5. Read the RPM number from the now-visible table
             req_table = self.session.findById(req_table_id)
-            
-            # The VBScript gives the base ID for the cell text: 'txtMEPO1211-BEDNR' at column 18
             base_cell_id = f"{req_table_id}/txtMEPO1211-BEDNR[18,"
 
             for i in range(req_table.rows.count):
                 try:
-                    # Construct the full ID for the cell in the current row
                     cell_id = f"{base_cell_id}{i}]"
                     rpm_full_text = self.field_manager.get_field_value(cell_id)
                     
@@ -415,9 +418,7 @@ class MD04Handler:
                             rpm_number = match.group(0).lstrip('0')
                             self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
                             return rpm_number
-                except Exception as e:
-                    # This will fail for rows that don't have the cell, which is expected.
-                    self.logger.debug(f"No RPM cell found at row {i} or error reading it: {e}")
+                except:
                     continue
             
             self.logger.error("Found the requirements table, but no RPM number was found within it.")
