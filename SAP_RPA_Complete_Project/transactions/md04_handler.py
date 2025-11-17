@@ -298,7 +298,7 @@ class MD04Handler:
                 if not self.navigate_to_md04():
                     self.logger.error(f"Navigation to MD04 failed for plant {plant}. Skipping.")
                     continue
-                time.sleep(1) # Add a small delay for screen rendering
+                time.sleep(3) # INCREASED DELAY for screen rendering
 
                 # Enter details for the current plant
                 if not self.ensure_individual_tab(): continue
