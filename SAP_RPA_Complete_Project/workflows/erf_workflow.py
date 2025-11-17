@@ -278,63 +278,47 @@ class ERFWorkflow:
             self.logger.error(f"Error executing VBS Script 1: {e}")
             return None
     
-    def execute_erf_workflow(self, material_number: str) -> Optional[Dict]:
+    def execute_erf_workflow(self, material_number: str, erf_search_term: str) -> Optional[Dict]:
         """
         Execute complete ERF workflow for a material.
         
         Args:
-            material_number: Material/part number
+            material_number: The original material/part number for data association.
+            erf_search_term: The term to use in the ERF search (could be RPM number).
             
         Returns:
             Extracted data if successful, None otherwise
         """
-        self.logger.info("="*60)
-        self.logger.info(f"Starting ERF workflow for: {material_number}")
-        self.logger.info("="*60)
+        self.logger.info(f"Starting ERF workflow for material '{material_number}' using search term '{erf_search_term}'")
         
         try:
-            # Setup WebDriver
-            if not self.setup_webdriver():
-                return None
+            if not self.setup_webdriver(): return None
+            if not self.navigate_to_erf_dashboard(): return None
+            if not self.switch_to_erf_iframe(): return None
             
-            # Navigate to ERF Dashboard
-            if not self.navigate_to_erf_dashboard():
-                return None
-            
-            # Switch to iframe
-            if not self.switch_to_erf_iframe():
-                return None
-            
-            # Search for material
-            erf_number = self.search_erf_by_material(material_number)
+            erf_number = self.search_erf_by_term(erf_search_term)
             if not erf_number:
                 return None
             
-            # Extract data
             erf_data = self.extract_erf_data()
             if not erf_data:
                 return None
             
-            # Set ERF and material numbers
             erf_data.erf_number = erf_number
             erf_data.material = material_number
             
-            # Execute VBS Script 1 for additional data
             vbs_data = self.execute_vbs_script_1()
+            result_data = erf_data.to_dict()
             if vbs_data:
-                result_data = erf_data.to_dict()
                 result_data.update(vbs_data)
-            else:
-                result_data = erf_data.to_dict()
             
             self.logger.info("ERF workflow completed successfully")
             return result_data
             
         except Exception as e:
-            self.logger.error(f"ERF workflow failed: {e}")
+            self.logger.error(f"ERF workflow failed: {e}", exc_info=True)
             return None
         finally:
-            # Cleanup
             self.cleanup_webdriver()
     
     def cleanup_webdriver(self):

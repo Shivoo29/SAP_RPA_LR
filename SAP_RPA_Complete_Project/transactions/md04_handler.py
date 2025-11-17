@@ -270,8 +270,7 @@ class MD04Handler:
         mrp_area: str = None
     ) -> (Optional[Dict[str, str]], Optional[str]):
         """
-        Try to process material across multiple plants using a robust,
-        verified F3-based loop with a /n<TCode> fallback.
+        Try to process material across multiple plants using a robust /nMD04 navigation loop.
         - Priority 1: Find MatRes and return its data immediately.
         - Priority 2: If no MatRes is found, note the first plant where 'STPord' is found.
         
@@ -288,31 +287,28 @@ class MD04Handler:
         if plant_list is None:
             plant_list = self.config.AVAILABLE_PLANTS
         
-        self.logger.info(f"Starting 'Trust but Verify' multi-plant search for {material_number}: {plant_list}")
+        self.logger.info(f"Starting robust /nMD04-based multi-plant search for {material_number}: {plant_list}")
         first_stpord_plant: Optional[str] = None
-
-        # Navigate to MD04 ONCE before the loop starts
-        if not self.navigate_to_md04():
-            self.logger.error("Initial navigation to MD04 failed. Aborting.")
-            return None, None
 
         for i, plant in enumerate(plant_list):
             self.logger.info(f"Attempting plant {plant} ({i+1}/{len(plant_list)})...")
             
             try:
-                # On each loop, we should be on the initial screen.
-                if not self.ensure_individual_tab():
-                    # If tab isn't there, something is wrong, try to recover for the next loop
-                    raise Exception("Individual tab not found, forcing recovery.")
-                
+                # Navigate to /nMD04 at the start of each loop for maximum stability.
+                if not self.navigate_to_md04():
+                    self.logger.error(f"Navigation to MD04 failed for plant {plant}. Skipping.")
+                    continue
+                time.sleep(1) # Add a small delay for screen rendering
+
+                # Enter details for the current plant
+                if not self.ensure_individual_tab(): continue
                 if not self.enter_material(material_number): continue
                 if not self.set_plant(plant): continue
                 self.set_mrp_area(plant)
                 
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
-                    # Don't try F3 if query failed. Force /nMD04 recovery.
-                    raise Exception("Query failed, forcing recovery.")
+                    continue
 
                 # PRIORITY 1: Check for MatRes
                 matres_element = self.find_matres()
@@ -326,7 +322,6 @@ class MD04Handler:
 
                 # PRIORITY 2: If no MatRes, check for STPord
                 if first_stpord_plant is None:
-                    # (Logic to find STPord remains the same)
                     try:
                         table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
                         table = self.session.findById(table_id)
@@ -344,34 +339,9 @@ class MD04Handler:
                                 break
                     except Exception as e:
                         self.logger.warning(f"Could not scan for STPord in plant {plant}: {e}")
-                
-                # --- "TRUST BUT VERIFY" NAVIGATION FOR NEXT LOOP ---
-                self.logger.debug("Attempting to return to entry screen for next plant...")
-                
-                # 1. Try the preferred F3 (Back) method first.
-                try:
-                    self.sap_connector.press_f3()
-                    time.sleep(1)
-                    # 2. Verify if F3 worked. If this check fails, it raises an exception.
-                    self.session.findById(self.config.MD04_FIELDS['material_field'])
-                    self.logger.debug("Successfully returned to entry screen using F3.")
-                    continue # Verification passed, continue to next plant
-                except Exception as f3_error:
-                    self.logger.warning(f"F3 (Back) method failed or did not return to expected screen. Error: {f3_error}")
-                    # 3. If F3 failed, use the powerful /nMD04 fallback.
-                    self.logger.info("Falling back to /nMD04 navigation to recover session...")
-                    if not self.navigate_to_md04():
-                        self.logger.error("Fallback navigation with /nMD04 also failed. Aborting.")
-                        return None, None
-                    time.sleep(2) # Add extra delay for stability
-                    self.logger.info("Session recovered with /nMD04.")
 
             except Exception as e:
-                self.logger.error(f"An unexpected exception occurred in plant {plant} loop: {e}", exc_info=True)
-                self.logger.info("Attempting to recover session with /nMD04 for next plant...")
-                if not self.navigate_to_md04():
-                    self.logger.error("Recovery navigation failed. Aborting.")
-                    return None, None
+                self.logger.error(f"An unexpected exception occurred while processing plant {plant}: {e}", exc_info=True)
                 continue
         
         self.logger.info(f"Finished all plants. Returning STPord plant: {first_stpord_plant}")
