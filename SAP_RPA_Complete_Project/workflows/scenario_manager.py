@@ -93,7 +93,7 @@ class ScenarioManager:
             
             plant_list = selected_plants if selected_plants else self.config.AVAILABLE_PLANTS
             
-            md04_data = self.md04_handler.process_material_multiple_plants(
+            md04_data, stpord_plant = self.md04_handler.process_material_multiple_plants(
                 material_number=material_number,
                 plant_list=plant_list,
                 mrp_area=mrp_area
@@ -108,11 +108,14 @@ class ScenarioManager:
                 result.plant_found = md04_data.get('plant', '')
                 self.stats['scenario_1_success'] += 1
                 
-            # ===== SCENARIO 2: MatRes not found → Find RPM Number and then ERF Dashboard =====
-            elif enable_erf_fallback:
-                self.logger.info("SCENARIO 1.5: MatRes not found, trying to find RPM number in MD04...")
+            # ===== SCENARIO 1.5: MatRes not found, but STPord was found → Extract RPM and go to ERF =====
+            elif enable_erf_fallback and stpord_plant:
+                self.logger.info(f"SCENARIO 1.5: MatRes not found, but STPord was found in plant {stpord_plant}. Extracting RPM number...")
                 
-                rpm_number = self.md04_handler.find_and_extract_rpm_number(material_number)
+                rpm_number = self.md04_handler.find_and_extract_rpm_number(
+                    material_number=material_number,
+                    plant=stpord_plant
+                )
 
                 if rpm_number:
                     self.logger.info(f"Found RPM number: {rpm_number}. Proceeding to ERF Dashboard...")
@@ -143,7 +146,7 @@ class ScenarioManager:
                                 result.data.update(ko03_data)
                                 self.stats['scenario_3_success'] += 1
                 else:
-                    self.logger.warning("RPM number not found in MD04. ERF fallback is not possible.")
+                    self.logger.warning(f"STPord was found in {stpord_plant}, but failed to extract RPM number.")
             
             if not result.success:
                 # ===== ALL SCENARIOS FAILED =====

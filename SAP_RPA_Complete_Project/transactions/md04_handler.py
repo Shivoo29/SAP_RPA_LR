@@ -268,10 +268,12 @@ class MD04Handler:
         material_number: str,
         plant_list: List[str] = None,
         mrp_area: str = None
-    ) -> Optional[Dict[str, str]]:
+    ) -> (Optional[Dict[str, str]], Optional[str]):
         """
-        Try to process material across multiple plants until successful.
-        This method uses a robust navigation loop with a recovery mechanism.
+        Try to process material across multiple plants.
+        - Priority 1: Find MatRes and return its data immediately.
+        - Priority 2: If no MatRes is found in any plant, note the first plant
+                      where 'STPord' is found.
         
         Args:
             material_number: Material/part number
@@ -279,67 +281,79 @@ class MD04Handler:
             mrp_area: MRP area (optional)
             
         Returns:
-            Extracted data from first successful plant, None if all fail
+            A tuple containing:
+            - Extracted data from first successful plant (if MatRes found).
+            - The first plant where 'STPord' was found (if no MatRes was found).
         """
         if plant_list is None:
             plant_list = self.config.AVAILABLE_PLANTS
         
         self.logger.info(f"Trying multiple plants for {material_number}: {plant_list}")
+        first_stpord_plant: Optional[str] = None
 
         # Navigate to MD04 once before the loop starts
         if not self.navigate_to_md04():
             self.logger.error("Initial navigation to MD04 failed. Aborting.")
-            return None
+            return None, None
 
         for i, plant in enumerate(plant_list):
             self.logger.info(f"Attempting plant {plant} ({i+1}/{len(plant_list)})...")
             
             try:
-                # At the start of each loop, check if we are on the right screen.
-                # If not, recover by navigating to MD04 again.
+                # At the start of each loop, ensure we are on the right screen.
                 try:
                     self.session.findById(self.config.MD04_FIELDS['material_field'])
                 except:
                     self.logger.warning("Navigation state is uncertain. Recovering by navigating to /nMD04.")
                     if not self.navigate_to_md04():
                         self.logger.error("Recovery navigation failed. Aborting.")
-                        return None
+                        return None, None
 
                 # Now, proceed with entering details
                 if not self.ensure_individual_tab(): continue
                 if not self.enter_material(material_number): continue
                 if not self.set_plant(plant): continue
-                
-                # Set the MRP Area to be the same as the current plant in the loop
                 self.set_mrp_area(plant)
                 
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
                     continue
 
+                # PRIORITY 1: Check for MatRes
                 matres_element = self.find_matres()
                 if matres_element:
-                    # SUCCESS PATH
                     self.logger.info(f"✓ Successfully found MatRes in plant {plant}")
                     if self.open_matres_details(matres_element):
                         data = self.extract_data()
                         data['plant'] = plant
                         data['material'] = material_number
-                        return data
-                else:
-                    # FAILURE PATH
-                    self.logger.warning(f"✗ MatRes not found in plant {plant}, trying next...")
-                    # Press F3 to go back to the entry screen for the next attempt
-                    self.sap_connector.press_f3()
-                    time.sleep(1)
+                        return data, None  # MatRes found, immediately return data
+
+                # PRIORITY 2: If no MatRes, check for STPord (only if we haven't found one before)
+                if first_stpord_plant is None:
+                    table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+                    table = self.session.findById(table_id)
+                    for row_idx in range(table.rows.count):
+                        element_text = table.getCell(row_idx, 0).text.strip()
+                        if element_text == "STPord":
+                            self.logger.info(f"Noted 'STPord' found in plant {plant}. Will use if no MatRes is found.")
+                            first_stpord_plant = plant
+                            break # Found STPord, no need to check other rows in this table
+                
+                # Go back for the next attempt
+                self.sap_connector.press_f3()
+                time.sleep(1)
 
             except Exception as e:
                 self.logger.error(f"An unexpected exception occurred while trying plant {plant}: {e}")
-                # Continue to the next plant
                 continue
         
-        self.logger.error(f"MatRes not found in any of the specified plants for {material_number}")
-        return None
+        if first_stpord_plant:
+            self.logger.info(f"Finished all plants. No MatRes found, but 'STPord' was found in plant {first_stpord_plant}.")
+        else:
+            self.logger.error(f"MatRes and STPord not found in any of the specified plants for {material_number}")
+
+        return None, first_stpord_plant
     
     def process_next_material(self, material_number: str) -> Optional[Dict[str, str]]:
         """
