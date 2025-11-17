@@ -108,32 +108,42 @@ class ScenarioManager:
                 result.plant_found = md04_data.get('plant', '')
                 self.stats['scenario_1_success'] += 1
                 
-            # ===== SCENARIO 2: MatRes not found → ERF Dashboard =====
+            # ===== SCENARIO 2: MatRes not found → Find RPM Number and then ERF Dashboard =====
             elif enable_erf_fallback:
-                self.logger.info("SCENARIO 2: MatRes not found, trying ERF Dashboard...")
+                self.logger.info("SCENARIO 1.5: MatRes not found, trying to find RPM number in MD04...")
                 
-                erf_data = self.erf_workflow.execute_erf_workflow(material_number)
-                
-                if erf_data:
-                    self.logger.info("✓ SCENARIO 2 SUCCESS: Data extracted from ERF Dashboard!")
-                    result.scenario = ScenarioType.ERF_DASHBOARD
-                    result.success = True
-                    result.data = erf_data
-                    self.stats['scenario_2_success'] += 1
+                rpm_number = self.md04_handler.find_and_extract_rpm_number(material_number)
+
+                if rpm_number:
+                    self.logger.info(f"Found RPM number: {rpm_number}. Proceeding to ERF Dashboard...")
                     
-                    # Check if we need to go to KO03
-                    order_number = erf_data.get('order_number', '')
-                    if order_number and enable_ko03_fallback:
-                        # ===== SCENARIO 3: ERF → KO03 =====
-                        self.logger.info("SCENARIO 3: Going to KO03 with order number...")
+                    erf_data = self.erf_workflow.execute_erf_workflow(
+                        material_number=material_number, 
+                        erf_search_term=rpm_number
+                    )
+                    
+                    if erf_data:
+                        self.logger.info("✓ SCENARIO 2 SUCCESS: Data extracted from ERF Dashboard!")
+                        result.scenario = ScenarioType.ERF_DASHBOARD
+                        result.success = True
+                        result.data = erf_data
+                        self.stats['scenario_2_success'] += 1
                         
-                        ko03_data = self.ko03_handler.process_order(order_number)
-                        
-                        if ko03_data:
-                            self.logger.info("✓ SCENARIO 3 SUCCESS: Data extracted from KO03!")
-                            result.scenario = ScenarioType.ERF_TO_KO03
-                            result.data.update(ko03_data)
-                            self.stats['scenario_3_success'] += 1
+                        # Check if we need to go to KO03
+                        order_number = erf_data.get('order_number', '')
+                        if order_number and enable_ko03_fallback:
+                            # ===== SCENARIO 3: ERF → KO03 =====
+                            self.logger.info("SCENARIO 3: Going to KO03 with order number...")
+                            
+                            ko03_data = self.ko03_handler.process_order(order_number)
+                            
+                            if ko03_data:
+                                self.logger.info("✓ SCENARIO 3 SUCCESS: Data extracted from KO03!")
+                                result.scenario = ScenarioType.ERF_TO_KO03
+                                result.data.update(ko03_data)
+                                self.stats['scenario_3_success'] += 1
+                else:
+                    self.logger.warning("RPM number not found in MD04. ERF fallback is not possible.")
             
             if not result.success:
                 # ===== ALL SCENARIOS FAILED =====

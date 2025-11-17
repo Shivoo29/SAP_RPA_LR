@@ -87,6 +87,14 @@ class Config:
     VBS_SCRIPT_DIR = Path(__file__).parent / 'vbs_scripts'
     VBS_ERF_SCRIPT_1 = VBS_SCRIPT_DIR / 'erf_dashboard_1.vbs'
     VBS_ERF_SCRIPT_2 = VBS_SCRIPT_DIR / 'erf_dashboard_2.vbs'
+
+    # ===== MD04 RPM Extraction Field IDs =====
+    MD04_RPM_EXTRACTION_FIELDS = {
+        "item_list_table": "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
+        "item_display_button": "wnd[1]/tbar[0]/btn[7]",
+        "expand_items_button": "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211",
+        "rpm_number_field": "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211/txtMEPO1211-BEDNR[18,0]"
+    }
     
     @classmethod
     def get_plant_list(cls, user_selection: List[str] = None) -> List[str]:
@@ -119,6 +127,7 @@ class Config:
             'MD04': cls.MD04_FIELDS,
             'KO03': cls.KO03_FIELDS,
             'ZERF': cls.ZERF_FIELDS,
+            'MD04_RPM': cls.MD04_RPM_EXTRACTION_FIELDS,
         }
         
         fields = field_map.get(transaction.upper(), {})

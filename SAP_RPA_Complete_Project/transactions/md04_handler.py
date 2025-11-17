@@ -7,6 +7,7 @@ Supports multiple plant searches.
 
 import time
 import logging
+import re
 from typing import Optional, Dict, List
 
 from core.field_manager import FieldManager

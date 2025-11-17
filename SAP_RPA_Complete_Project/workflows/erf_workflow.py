@@ -131,18 +131,18 @@ class ERFWorkflow:
             self.logger.error(f"Failed to switch to iframe: {e}")
             return False
     
-    def search_erf_by_material(self, material_number: str) -> Optional[str]:
+    def search_erf_by_term(self, erf_search_term: str) -> Optional[str]:
         """
-        Search for ERF by material number.
+        Search for ERF by a given search term (material or RPM number).
         
         Args:
-            material_number: Material/part number
+            erf_search_term: The term to search for in the ERF input.
             
         Returns:
             ERF number if found, None otherwise
         """
         try:
-            self.logger.info(f"Searching ERF for material: {material_number}")
+            self.logger.info(f"Searching ERF for term: {erf_search_term}")
             
             wait = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
             
@@ -163,8 +163,8 @@ class ERFWorkflow:
                 EC.element_to_be_clickable((By.ID, "aaaa.RpmDashboardView.ERFNumInp"))
             )
             erf_input.clear()
-            erf_input.send_keys(material_number)
-            self.logger.info(f"Entered material number: {material_number}")
+            erf_input.send_keys(erf_search_term)
+            self.logger.info(f"Entered search term: {erf_search_term}")
             
             # Click search button
             search_button = wait.until(
@@ -183,10 +183,10 @@ class ERFWorkflow:
                 one_link.click()
                 self.logger.info("Found and clicked result link")
                 
-                return material_number  # Return as ERF number
+                return erf_search_term  # Return as ERF number
                 
             except Exception:
-                self.logger.warning("No results found for material")
+                self.logger.warning(f"No results found for term '{erf_search_term}'")
                 return None
             
         except Exception as e:
