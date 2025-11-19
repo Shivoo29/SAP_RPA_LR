@@ -257,12 +257,15 @@ class MD04Handler:
         mrp_area: str = None
     ) -> Optional[Dict[str, str]]:
         """
-        OPTIMIZED multi-plant search with smart early termination.
+        OPTIMIZED multi-plant search with smart early termination and 3-tier priority system.
 
         Logic:
         1. Check plants one by one
-        2. If MatRes found → STOP immediately, extract data, return
-        3. If STPord found BEFORE MatRes → extract RPM immediately, return with RPM data
+        2. Single table scan looks for MatRes, OrdRes, and STPord
+        3. Priority handling:
+           - PRIORITY 1: MatRes found → STOP immediately, extract data, return
+           - PRIORITY 2: OrdRes found → STOP immediately, extract data, return
+           - PRIORITY 3: STPord found → extract RPM immediately, return with RPM data
         4. No wasted time checking remaining plants once we have what we need
 
         Args:
@@ -318,9 +321,26 @@ class MD04Handler:
                         self.logger.warning(f"Failed to open MatRes details in plant {plant}")
                         continue
 
-                # PRIORITY 2: STPord found and no MatRes - Extract RPM immediately
+                # PRIORITY 2: OrdRes found and no MatRes - Extract data immediately
+                elif scan_result['has_ordres']:
+                    self.logger.info(f"✓✓ OrdRes found in plant {plant} - Extracting data immediately!")
+                    ordres_data = self.extract_ordres_from_current_screen(
+                        material_number,
+                        plant,
+                        scan_result['ordres_row_index']
+                    )
+
+                    if ordres_data:
+                        self.logger.info(f"✓ OrdRes data extracted - STOPPING search here!")
+                        ordres_data['plants_checked'] = i + 1
+                        return ordres_data
+                    else:
+                        self.logger.warning(f"OrdRes found but data extraction failed in plant {plant}")
+                        continue
+
+                # PRIORITY 3: STPord found (no MatRes or OrdRes) - Extract RPM immediately
                 elif scan_result['has_stpord']:
-                    self.logger.info(f"✓✓ STPord found in plant {plant} - Extracting RPM immediately!")
+                    self.logger.info(f"✓ STPord found in plant {plant} - Extracting RPM immediately!")
                     rpm_number = self.extract_rpm_from_current_screen(
                         material_number,
                         plant,
@@ -342,13 +362,13 @@ class MD04Handler:
                         continue
 
                 else:
-                    self.logger.info(f"Neither MatRes nor STPord found in plant {plant}")
+                    self.logger.info(f"No MatRes, OrdRes, or STPord found in plant {plant}")
 
             except Exception as e:
                 self.logger.error(f"Error processing plant {plant}: {e}", exc_info=True)
                 continue
 
-        self.logger.warning(f"All {len(plant_list)} plants checked - no MatRes or STPord found")
+        self.logger.warning(f"All {len(plant_list)} plants checked - no MatRes, OrdRes, or STPord found")
         return None
 
     def process_material_multiple_plants(
@@ -509,6 +529,92 @@ class MD04Handler:
 
         except Exception as e:
             self.logger.error(f"Error extracting RPM from current screen: {e}", exc_info=True)
+            return None
+
+    def extract_ordres_from_current_screen(self, material_number: str, plant: str, ordres_row_index: int) -> Optional[Dict[str, str]]:
+        """
+        OPTIMIZED: Extract OrdRes (Order Reservation) data from the CURRENT screen without re-navigating.
+        We already know the OrdRes row index from the table scan.
+
+        Args:
+            material_number: Material number
+            plant: Plant number
+            ordres_row_index: Row index where OrdRes was found
+
+        Returns:
+            Dictionary with extracted data if successful, None otherwise
+        """
+        self.logger.info(f"Extracting OrdRes data from current screen for material {material_number} at row {ordres_row_index}")
+
+        try:
+            # We're already on the MD04 results screen with OrdRes visible
+            table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')  # Same table as STPord
+            table = self.session.findById(table_id)
+
+            # Navigate to OrdRes details
+            table.getCell(ordres_row_index, 0).setFocus()
+            time.sleep(0.5)
+            self.session.findById("wnd[0]").sendVKey(2)  # F2 to enter details
+            time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+
+            # Press item display button if popup appears
+            try:
+                display_button = self.session.findById(self.config.get_field_id('ORDRES', 'item_display_button'))
+                display_button.press()
+                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+                self.logger.info("Pressed item display button")
+            except:
+                self.logger.debug("Item display button not found or not needed")
+
+            # Press SHOW button on grid shell
+            try:
+                grid_shell = self.session.findById(self.config.get_field_id('ORDRES', 'grid_shell'))
+                grid_shell.pressToolbarButton("SHOW")
+                time.sleep(self.config.WAIT_TIME_AFTER_ACTION)
+                self.logger.info("Pressed SHOW toolbar button")
+            except Exception as e:
+                self.logger.warning(f"Could not press SHOW button: {e}")
+
+            # Extract data from OrdRes screen
+            extracted_data = {}
+
+            # Extract Cost Center
+            try:
+                cost_center_field = self.session.findById(self.config.get_field_id('ORDRES', 'cost_center_field'))
+                extracted_data['cost_center'] = cost_center_field.text.strip()
+                self.logger.info(f"Extracted Cost Center: {extracted_data['cost_center']}")
+            except Exception as e:
+                self.logger.warning(f"Could not extract cost center: {e}")
+                extracted_data['cost_center'] = ""
+
+            # Extract Part Description
+            try:
+                desc_field = self.session.findById(self.config.get_field_id('ORDRES', 'part_description_field'))
+                extracted_data['part_description'] = desc_field.text.strip()
+                self.logger.info(f"Extracted Part Description: {extracted_data['part_description']}")
+            except Exception as e:
+                self.logger.warning(f"Could not extract part description: {e}")
+                extracted_data['part_description'] = ""
+
+            # Extract Order Number
+            try:
+                order_field = self.session.findById(self.config.get_field_id('ORDRES', 'order_field'))
+                extracted_data['order'] = order_field.text.strip()
+                self.logger.info(f"Extracted Order: {extracted_data['order']}")
+            except Exception as e:
+                self.logger.warning(f"Could not extract order: {e}")
+                extracted_data['order'] = ""
+
+            # Add metadata
+            extracted_data['material'] = material_number
+            extracted_data['plant'] = plant
+            extracted_data['source'] = 'OrdRes'
+
+            self.logger.info(f"✓ Successfully extracted OrdRes data for {material_number}")
+            return extracted_data
+
+        except Exception as e:
+            self.logger.error(f"Error extracting OrdRes from current screen: {e}", exc_info=True)
             return None
 
     def find_and_extract_rpm_number(self, material_number: str, plant: str) -> Optional[str]:

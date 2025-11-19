@@ -240,15 +240,27 @@ class FieldManager:
 
     def scan_md04_table_for_elements(self) -> dict:
         """
-        Scans the MD04 results table ONCE for both MatRes and STPord elements.
-        This is more efficient than scanning twice.
+        Scans the MD04 results table ONCE for MatRes, OrdRes, and STPord elements.
+        This is more efficient than scanning multiple times.
+
+        Priority order:
+        1. MatRes (Material Reservation) - highest priority
+        2. OrdRes (Order Reservation) - second priority
+        3. STPord (Stock Transfer Purchase Order) - third priority
 
         Returns:
-            Dictionary with keys 'matres_element', 'has_stpord', 'stpord_row_index'
+            Dictionary with keys:
+            - 'matres_element': MatRes cell element if found
+            - 'has_ordres': True if OrdRes found
+            - 'ordres_row_index': Row index of OrdRes
+            - 'has_stpord': True if STPord found
+            - 'stpord_row_index': Row index of STPord
         """
-        self.logger.info("Scanning MD04 results table for MatRes and STPord in single pass...")
+        self.logger.info("Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...")
         result = {
             'matres_element': None,
+            'has_ordres': False,
+            'ordres_row_index': -1,
             'has_stpord': False,
             'stpord_row_index': -1
         }
@@ -271,9 +283,15 @@ class FieldManager:
                         if cell_text == 'MatRes':
                             self.logger.info(f"✓ MatRes found at row {row_idx}, col {col_idx}")
                             result['matres_element'] = cell
-                            # Don't return yet - continue to see if STPord exists too
+                            # Continue scanning to log all available options
 
-                        # Check for STPord - PRIORITY 2
+                        # Check for OrdRes - PRIORITY 2
+                        elif cell_text == 'OrdRes' and not result['has_ordres']:
+                            self.logger.info(f"✓ OrdRes found at row {row_idx}, col {col_idx}")
+                            result['has_ordres'] = True
+                            result['ordres_row_index'] = row_idx
+
+                        # Check for STPord - PRIORITY 3
                         elif cell_text == 'STPord' and not result['has_stpord']:
                             self.logger.info(f"✓ STPord found at row {row_idx}, col {col_idx}")
                             result['has_stpord'] = True
@@ -282,13 +300,15 @@ class FieldManager:
                     except Exception:
                         continue
 
-            # Log results
+            # Log results with priority indication
             if result['matres_element']:
-                self.logger.info("Scan complete: MatRes found (will use this)")
+                self.logger.info("Scan complete: MatRes found (PRIORITY 1 - will use this)")
+            elif result['has_ordres']:
+                self.logger.info("Scan complete: OrdRes found (PRIORITY 2 - will use this)")
             elif result['has_stpord']:
-                self.logger.info("Scan complete: Only STPord found (will extract RPM)")
+                self.logger.info("Scan complete: STPord found (PRIORITY 3 - will extract RPM)")
             else:
-                self.logger.warning("Scan complete: Neither MatRes nor STPord found")
+                self.logger.warning("Scan complete: No MatRes, OrdRes, or STPord found")
 
             return result
 

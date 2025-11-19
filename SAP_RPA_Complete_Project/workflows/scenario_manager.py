@@ -111,6 +111,15 @@ class ScenarioManager:
                     result.plant_found = md04_result.get('plant', '')
                     self.stats['scenario_1_success'] += 1
 
+                # OrdRes found directly
+                elif source == 'OrdRes':
+                    self.logger.info("✓ SCENARIO 1 SUCCESS: OrdRes found!")
+                    result.scenario = ScenarioType.MD04_MATRES_FOUND  # Same category as MatRes
+                    result.success = True
+                    result.data = md04_result
+                    result.plant_found = md04_result.get('plant', '')
+                    self.stats['scenario_1_success'] += 1
+
                 # STPord found and RPM extracted - now go to ERF
                 elif source == 'STPord' and md04_result.get('needs_erf_lookup') and enable_erf_fallback:
                     rpm_number = md04_result.get('rpm_number')
