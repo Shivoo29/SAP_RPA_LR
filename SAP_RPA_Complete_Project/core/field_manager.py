@@ -218,7 +218,7 @@ class FieldManager:
             # This ID is from the new config, assuming it's the same table for both searches
             table_id = "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ"
             table = self.session.findById(table_id)
-            
+
             # Iterate through all rows and all columns to find 'MatRes'
             for row_idx in range(table.rows.count):
                 for col_idx in range(table.columns.count):
@@ -230,13 +230,71 @@ class FieldManager:
                     except Exception:
                         # This cell might not have a 'text' property, continue to the next
                         continue
-            
+
             self.logger.warning("MatRes element not found in the results table.")
             return None
 
         except Exception as e:
             self.logger.error(f"Error finding MatRes in table: {e}", exc_info=True)
             return None
+
+    def scan_md04_table_for_elements(self) -> dict:
+        """
+        Scans the MD04 results table ONCE for both MatRes and STPord elements.
+        This is more efficient than scanning twice.
+
+        Returns:
+            Dictionary with keys 'matres_element', 'has_stpord', 'stpord_row_index'
+        """
+        self.logger.info("Scanning MD04 results table for MatRes and STPord in single pass...")
+        result = {
+            'matres_element': None,
+            'has_stpord': False,
+            'stpord_row_index': -1
+        }
+
+        try:
+            table_id = "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ"
+            table = self.session.findById(table_id)
+
+            # Single pass through the table
+            for row_idx in range(table.rows.count):
+                for col_idx in range(table.columns.count):
+                    try:
+                        cell = table.getCell(row_idx, col_idx)
+                        if not hasattr(cell, 'text'):
+                            continue
+
+                        cell_text = cell.text.strip()
+
+                        # Check for MatRes - PRIORITY 1
+                        if cell_text == 'MatRes':
+                            self.logger.info(f"✓ MatRes found at row {row_idx}, col {col_idx}")
+                            result['matres_element'] = cell
+                            # Don't return yet - continue to see if STPord exists too
+
+                        # Check for STPord - PRIORITY 2
+                        elif cell_text == 'STPord' and not result['has_stpord']:
+                            self.logger.info(f"✓ STPord found at row {row_idx}, col {col_idx}")
+                            result['has_stpord'] = True
+                            result['stpord_row_index'] = row_idx
+
+                    except Exception:
+                        continue
+
+            # Log results
+            if result['matres_element']:
+                self.logger.info("Scan complete: MatRes found (will use this)")
+            elif result['has_stpord']:
+                self.logger.info("Scan complete: Only STPord found (will extract RPM)")
+            else:
+                self.logger.warning("Scan complete: Neither MatRes nor STPord found")
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error scanning MD04 table: {e}", exc_info=True)
+            return result
     
     def click_element(self, element_or_id) -> bool:
         """

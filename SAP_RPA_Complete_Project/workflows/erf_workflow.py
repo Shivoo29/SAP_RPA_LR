@@ -19,6 +19,7 @@ from selenium.common.exceptions import TimeoutException
 
 from config import Config
 from data.data_models import ERFData
+from utils import execute_vbs_script, parse_vbs_output_to_dict
 
 
 class ERFWorkflow:
@@ -242,40 +243,23 @@ class ERFWorkflow:
     def execute_vbs_script_1(self) -> Optional[Dict]:
         """
         Execute VBS Script 1 for additional ERF data extraction.
-        
+        Uses shared utility function to avoid code duplication.
+
         Returns:
             Extracted data if successful, None otherwise
         """
-        try:
-            vbs_script_path = self.config.VBS_ERF_SCRIPT_1
-            
-            if not vbs_script_path.exists():
-                self.logger.warning(f"VBS script not found: {vbs_script_path}")
-                return None
-            
-            self.logger.info("Executing VBS Script 1...")
-            
-            import subprocess
-            
-            result = subprocess.run(
-                ['cscript', '//nologo', str(vbs_script_path)],
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            
-            if result.returncode == 0:
-                output = result.stdout.strip()
-                self.logger.info(f"VBS Script 1 output: {output}")
-                
-                # TODO: Parse VBS output into structured data
-                return {'vbs_1_output': output}
-            else:
-                self.logger.error(f"VBS Script 1 failed: {result.stderr}")
-                return None
-                
-        except Exception as e:
-            self.logger.error(f"Error executing VBS Script 1: {e}")
+        vbs_script_path = self.config.VBS_ERF_SCRIPT_1
+        self.logger.info("Executing VBS Script 1 for ERF data...")
+
+        result = execute_vbs_script(vbs_script_path, timeout=30)
+
+        if result and result['success']:
+            # Parse the output into structured data
+            parsed_data = parse_vbs_output_to_dict(result['output'])
+            self.logger.info(f"VBS Script 1 extracted {len(parsed_data)} fields")
+            return parsed_data
+        else:
+            self.logger.warning("VBS Script 1 execution failed or returned no data")
             return None
     
     def execute_erf_workflow(self, material_number: str, erf_search_term: str) -> Optional[Dict]:

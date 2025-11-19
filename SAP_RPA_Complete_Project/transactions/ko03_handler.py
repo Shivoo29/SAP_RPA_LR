@@ -10,6 +10,7 @@ from typing import Optional, Dict
 
 from core.field_manager import FieldManager
 from config import Config
+from utils import execute_vbs_script, parse_vbs_output_to_dict
 
 
 class KO03Handler:
@@ -64,26 +65,13 @@ class KO03Handler:
     def execute_query(self) -> bool:
         """
         Execute the KO03 query by pressing Enter.
-        
+        Uses shared SAP connector method to avoid duplication.
+
         Returns:
             True if successful
         """
         self.logger.info("Executing KO03 query...")
-        
-        try:
-            self.sap_connector.press_enter(wait_time=self.config.WAIT_TIME_AFTER_QUERY)
-            
-            # Check for errors
-            error_msg = self.sap_connector.check_for_sap_errors()
-            if error_msg:
-                self.logger.warning(f"SAP error after query: {error_msg}")
-                return False
-            
-            return True
-            
-        except Exception as e:
-            self.logger.error(f"Failed to execute query: {e}")
-            return False
+        return self.sap_connector.execute_sap_query(wait_time=self.config.WAIT_TIME_AFTER_QUERY)
     
     def extract_order_details(self) -> Dict[str, str]:
         """
@@ -156,39 +144,26 @@ class KO03Handler:
     def extract_using_vbs(self, vbs_script_path: str) -> Optional[Dict[str, str]]:
         """
         Execute VBS script to extract data from KO03.
-        
+        Uses shared utility function to avoid code duplication.
+
         Args:
             vbs_script_path: Path to VBS script
-            
+
         Returns:
             Extracted data if successful, None otherwise
         """
-        self.logger.info(f"Executing VBS script: {vbs_script_path}")
-        
-        try:
-            import subprocess
-            
-            # Execute VBS script
-            result = subprocess.run(
-                ['cscript', '//nologo', str(vbs_script_path)],
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            
-            if result.returncode == 0:
-                # Parse VBS output
-                output = result.stdout.strip()
-                self.logger.info(f"VBS script output: {output}")
-                
-                # TODO: Parse output into structured data
-                # This depends on what your VBS script outputs
-                
-                return {'vbs_output': output}
-            else:
-                self.logger.error(f"VBS script failed: {result.stderr}")
-                return None
-                
-        except Exception as e:
-            self.logger.error(f"Error executing VBS script: {e}")
+        from pathlib import Path
+
+        self.logger.info(f"Executing VBS script for KO03 data extraction...")
+
+        vbs_path = Path(vbs_script_path) if isinstance(vbs_script_path, str) else vbs_script_path
+        result = execute_vbs_script(vbs_path, timeout=30)
+
+        if result and result['success']:
+            # Parse the output into structured data
+            parsed_data = parse_vbs_output_to_dict(result['output'])
+            self.logger.info(f"VBS script extracted {len(parsed_data)} fields")
+            return parsed_data
+        else:
+            self.logger.warning("VBS script execution failed or returned no data")
             return None

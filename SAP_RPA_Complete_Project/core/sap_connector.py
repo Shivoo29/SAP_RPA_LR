@@ -237,7 +237,7 @@ class SAPConnector:
     def press_f7(self, wait_time: int = 2):
         """
         Press F7 key (Maximize) in SAP.
-        
+
         Args:
             wait_time: Time to wait after pressing F7
         """
@@ -246,6 +246,32 @@ class SAPConnector:
             time.sleep(wait_time)
         except Exception as e:
             self.logger.error(f"Failed to press F7: {e}")
+
+    def execute_sap_query(self, wait_time: int = 3) -> bool:
+        """
+        Execute a SAP query by pressing Enter and checking for errors.
+        This is a shared method to avoid duplication across transaction handlers.
+
+        Args:
+            wait_time: Time to wait after pressing Enter (default: 3)
+
+        Returns:
+            True if successful, False if errors were detected
+        """
+        try:
+            self.press_enter(wait_time=wait_time)
+
+            # Check for SAP errors
+            error_msg = self.check_for_sap_errors()
+            if error_msg:
+                self.logger.warning(f"SAP error after query: {error_msg}")
+                return False
+
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Failed to execute SAP query: {e}")
+            return False
     
     def check_for_sap_errors(self) -> Optional[str]:
         """
