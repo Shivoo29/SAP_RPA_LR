@@ -120,6 +120,24 @@ class ScenarioManager:
                     result.plant_found = md04_result.get('plant', '')
                     self.stats['scenario_1_success'] += 1
 
+                # DepReq found directly
+                elif source == 'DepReq':
+                    self.logger.info("✓ SCENARIO 1 SUCCESS: DepReq found!")
+                    result.scenario = ScenarioType.MD04_MATRES_FOUND  # Same category as MatRes/OrdRes
+                    result.success = True
+                    result.data = md04_result
+                    result.plant_found = md04_result.get('plant', '')
+                    self.stats['scenario_1_success'] += 1
+
+                # 1A Demand detected - Skip normal workflow
+                elif md04_result.get('is_1a_demand'):
+                    self.logger.info("✓ SCENARIO 1 SUCCESS: 1A Demand detected!")
+                    result.scenario = ScenarioType.MD04_MATRES_FOUND  # Count as successful extraction
+                    result.success = True
+                    result.data = md04_result
+                    result.plant_found = md04_result.get('plant', '')
+                    self.stats['scenario_1_success'] += 1
+
                 # STPord found and RPM extracted - now go to ERF
                 elif source == 'STPord' and md04_result.get('needs_erf_lookup') and enable_erf_fallback:
                     rpm_number = md04_result.get('rpm_number')
