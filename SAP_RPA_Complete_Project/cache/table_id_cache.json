@@ -3,9 +3,9 @@
   "discovered_table_ids": [
     {
       "table_id": "/app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0750/tblSAPMM61RTC_EZ",
-      "success_count": 4,
+      "success_count": 6,
       "first_discovered": "2025-11-22T16:35:52.854816",
-      "last_used": "2025-11-22T16:38:30.075808",
+      "last_used": "2025-11-22T16:50:25.735156",
       "context": {
         "plants_worked": [
           "1000"
@@ -15,12 +15,30 @@
           "857-B97453-003",
           "857-C07072-001"
         ]
+      },
+      "failure_count": 6,
+      "last_failed": "2025-11-22T16:53:54.962180"
+    },
+    {
+      "table_id": "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
+      "success_count": 2,
+      "first_discovered": "2025-11-22T16:50:53.140588",
+      "last_used": "2025-11-22T16:53:28.556577",
+      "source": "config",
+      "context": {
+        "plants_worked": [
+          "1000"
+        ],
+        "materials_worked": [
+          "716-B00710-002",
+          "722-C09941-001"
+        ]
       }
     }
   ],
   "statistics": {
     "total_discoveries": 1,
-    "total_uses": 4,
-    "last_updated": "2025-11-22T16:38:30.076398"
+    "total_uses": 8,
+    "last_updated": "2025-11-22T16:53:54.962210"
   }
 }
