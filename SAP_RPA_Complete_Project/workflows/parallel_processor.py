@@ -70,23 +70,15 @@ def worker_process(
     scenario_manager = None
 
     try:
-        # Each worker creates its own SAP connection with separate session
-        # Worker 0 uses existing session 0, workers 1-4 create new sessions
+        # Each worker creates its own NEW SAP session
+        # This way each worker has a dedicated session that doesn't interfere with others
         sap_connector = SAPConnector()
-        if worker_id == 0:
-            # Worker 0 uses the existing session
-            if not sap_connector.connect(session_index=0):
-                logger.error(f"Worker {worker_id} failed to connect to SAP")
-                pythoncom.CoUninitialize()
-                return
-        else:
-            # Workers 1-4 create new SAP sessions
-            if not sap_connector.connect(session_index=worker_id, create_new=True):
-                logger.error(f"Worker {worker_id} failed to connect to SAP")
-                pythoncom.CoUninitialize()
-                return
+        if not sap_connector.connect(create_new=True):
+            logger.error(f"Worker {worker_id} failed to create SAP session")
+            pythoncom.CoUninitialize()
+            return
 
-        logger.info(f"✓ Worker {worker_id} connected to SAP with dedicated session")
+        logger.info(f"✓ Worker {worker_id} created and connected to new SAP session")
 
         excel_manager = ExcelManager()
         scenario_manager = ScenarioManager(sap_connector, excel_manager)
