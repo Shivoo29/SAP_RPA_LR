@@ -55,9 +55,11 @@ class SAPConnector:
 
             # Get or Create Session
             if create_new:
-                # Create a new session
+                # Create a new session FROM THE CONNECTION (not from a session!)
                 self.logger.info("Creating new SAP session...")
-                self.session = self.connection.Children(0).CreateSession()
+                self.session = self.connection.CreateSession()
+                if not self.session:
+                    raise Exception("CreateSession() returned None - SAP might not allow new sessions")
                 self.logger.info(f"✓ Created new SAP session")
             elif session_index < self.connection.Children.Count:
                 # Use existing session at specified index
@@ -70,9 +72,11 @@ class SAPConnector:
                 else:
                     raise Exception("No active SAP session found.")
             else:
-                # Session index requested but doesn't exist - create new session
+                # Session index requested but doesn't exist - create new session FROM THE CONNECTION
                 self.logger.info(f"Session {session_index} doesn't exist, creating new session...")
-                self.session = self.connection.Children(0).CreateSession()
+                self.session = self.connection.CreateSession()
+                if not self.session:
+                    raise Exception("CreateSession() returned None - SAP might not allow new sessions")
                 self.logger.info(f"✓ Created new SAP session for worker {session_index}")
 
             # Verify connection
