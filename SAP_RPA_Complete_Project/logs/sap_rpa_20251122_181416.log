@@ -1,0 +1,55 @@
+2025-11-22 18:14:16,643 - __main__ - INFO - ============================================================
+2025-11-22 18:14:16,644 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 18:14:16,645 - __main__ - INFO - ============================================================
+2025-11-22 18:14:16,646 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 18:14:16,647 - __main__ - INFO - Starting GUI application...
+2025-11-22 18:14:23,630 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 18:14:25,515 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 18:14:25,668 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 18:14:25,676 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 18:14:31,128 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 18:14:31,146 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:14:31,146 - workflows.scenario_manager - INFO - Processing material: 853-219445-001
+2025-11-22 18:14:31,147 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:14:31,147 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 18:14:31,148 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 853-219445-001: ['1000', '2000', '1020', '1900']
+2025-11-22 18:14:31,148 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 18:14:31,164 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:14:35,885 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 18:14:38,947 - transactions.md04_handler - INFO - Entering material number: 853-219445-001
+2025-11-22 18:14:40,043 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 18:14:41,287 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 18:14:42,510 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 18:14:46,382 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 18:14:46,382 - core.field_manager - INFO - Trying 2 cached table ID(s)...
+2025-11-22 18:14:46,442 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 18:14:46,839 - core.field_manager - INFO - ✓ DepReq found at row 2, col 2
+2025-11-22 18:14:46,918 - core.field_manager - INFO - Found 1A demand indicator: '1A-VELO-CPM13' at row 2, col 5
+2025-11-22 18:14:48,150 - core.field_manager - INFO - ✓ Scan complete: DepReq found (PRIORITY 2.5)
+2025-11-22 18:14:48,152 - core.field_manager - INFO - ⚠ TIER 1 failed - trying known alternative table IDs...
+2025-11-22 18:14:48,153 - core.field_manager - INFO - Trying 6 known table ID pattern(s)...
+2025-11-22 18:14:48,194 - core.field_manager - INFO - ✓ TIER 2 SUCCESS: Found working table ID
+2025-11-22 18:14:48,470 - core.field_manager - INFO - ✓ DepReq found at row 2, col 2
+2025-11-22 18:14:48,527 - core.field_manager - INFO - Found 1A demand indicator: '1A-VELO-CPM13' at row 2, col 5
+2025-11-22 18:14:49,640 - core.field_manager - INFO - ✓ Scan complete: DepReq found (PRIORITY 2.5)
+2025-11-22 18:14:49,642 - core.field_manager - WARNING - ⚠ TIER 2 failed - starting dynamic table discovery...
+2025-11-22 18:14:49,642 - core.field_manager - INFO - 🔎 Scanning screen for table controls...
+2025-11-22 18:14:54,353 - core.field_manager - INFO - Found 0 potential table control(s) via enumeration
+2025-11-22 18:14:54,355 - core.field_manager - INFO - Enumeration failed, trying pattern-based discovery...
+2025-11-22 18:14:54,372 - core.field_manager - INFO - Found 0 potential table(s) via patterns
+2025-11-22 18:14:54,374 - core.field_manager - ERROR - ✗ ALL TIERS FAILED: Could not find MD04 results table
+2025-11-22 18:14:54,374 - core.field_manager - ERROR - This might indicate: (1) No data in MD04, (2) Screen layout error, (3) Different SAP version
+2025-11-22 18:14:54,375 - transactions.md04_handler - INFO - ⚠⚠⚠ 1A DEMAND detected (DepReq) in plant 1000 - Skipping normal extraction!
+2025-11-22 18:14:54,375 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 18:14:54,376 - workflows.scenario_manager - ERROR - ✗ Failed: 853-219445-001 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 18:14:54,485 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:14:54,486 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 18:14:54,486 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:14:54,486 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 18:14:54,487 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 18:14:54,487 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 18:14:54,487 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 18:14:54,488 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-22 18:14:54,488 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-22 18:14:54,488 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:15:17,640 - __main__ - INFO - Application interrupted by user
