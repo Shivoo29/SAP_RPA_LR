@@ -343,7 +343,8 @@ class MD04Handler:
                     ordres_data = self.extract_ordres_from_current_screen(
                         material_number,
                         plant,
-                        scan_result['ordres_row_index']
+                        scan_result['ordres_row_index'],
+                        table_id=scan_result.get('table_id_used')  # Pass the discovered table ID
                     )
 
                     if ordres_data:
@@ -360,7 +361,8 @@ class MD04Handler:
                     rpm_number = self.extract_rpm_from_current_screen(
                         material_number,
                         plant,
-                        scan_result['stpord_row_index']
+                        scan_result['stpord_row_index'],
+                        table_id=scan_result.get('table_id_used')  # Pass the discovered table ID
                     )
 
                     if rpm_number:
@@ -478,7 +480,7 @@ class MD04Handler:
         self.logger.info(f"Finished all plants. Returning STPord plant: {first_stpord_plant}")
         return None, first_stpord_plant
 
-    def extract_rpm_from_current_screen(self, material_number: str, plant: str, stpord_row_index: int) -> Optional[str]:
+    def extract_rpm_from_current_screen(self, material_number: str, plant: str, stpord_row_index: int, table_id: Optional[str] = None) -> Optional[str]:
         """
         OPTIMIZED: Extract RPM from the CURRENT screen without re-navigating.
         We already know the STPord row index from the table scan.
@@ -487,6 +489,7 @@ class MD04Handler:
             material_number: Material number
             plant: Plant number
             stpord_row_index: Row index where STPord was found
+            table_id: Optional discovered table ID to use (fallback to config if not provided)
 
         Returns:
             RPM number if found, None otherwise
@@ -494,8 +497,13 @@ class MD04Handler:
         self.logger.info(f"Extracting RPM from current screen for material {material_number} at row {stpord_row_index}")
 
         try:
-            # We're already on the MD04 results screen with STPord visible
-            table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+            # Use discovered table ID if provided, otherwise fall back to config
+            if not table_id:
+                table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+                self.logger.debug("Using table ID from config (no discovered ID provided)")
+            else:
+                self.logger.debug(f"Using discovered table ID: {table_id[:60]}...")
+
             table = self.session.findById(table_id)
 
             # Navigate to STPord details
@@ -551,7 +559,7 @@ class MD04Handler:
             self.logger.error(f"Error extracting RPM from current screen: {e}", exc_info=True)
             return None
 
-    def extract_ordres_from_current_screen(self, material_number: str, plant: str, ordres_row_index: int) -> Optional[Dict[str, str]]:
+    def extract_ordres_from_current_screen(self, material_number: str, plant: str, ordres_row_index: int, table_id: Optional[str] = None) -> Optional[Dict[str, str]]:
         """
         OPTIMIZED: Extract OrdRes (Order Reservation) data from the CURRENT screen without re-navigating.
         We already know the OrdRes row index from the table scan.
@@ -560,6 +568,7 @@ class MD04Handler:
             material_number: Material number
             plant: Plant number
             ordres_row_index: Row index where OrdRes was found
+            table_id: Optional discovered table ID to use (fallback to config if not provided)
 
         Returns:
             Dictionary with extracted data if successful, None otherwise
@@ -567,8 +576,13 @@ class MD04Handler:
         self.logger.info(f"Extracting OrdRes data from current screen for material {material_number} at row {ordres_row_index}")
 
         try:
-            # We're already on the MD04 results screen with OrdRes visible
-            table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')  # Same table as STPord
+            # Use discovered table ID if provided, otherwise fall back to config
+            if not table_id:
+                table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+                self.logger.debug("Using table ID from config (no discovered ID provided)")
+            else:
+                self.logger.debug(f"Using discovered table ID: {table_id[:60]}...")
+
             table = self.session.findById(table_id)
 
             # Navigate to OrdRes details
