@@ -1,0 +1,85 @@
+2025-11-22 17:47:18,214 - __main__ - INFO - ============================================================
+2025-11-22 17:47:18,215 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 17:47:18,215 - __main__ - INFO - ============================================================
+2025-11-22 17:47:18,216 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 17:47:18,217 - __main__ - INFO - Starting GUI application...
+2025-11-22 17:47:58,736 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 17:48:00,316 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 17:48:00,403 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 17:48:00,410 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 17:48:06,388 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 17:48:06,397 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:48:06,398 - workflows.scenario_manager - INFO - Processing material: 716-B00710-002
+2025-11-22 17:48:06,398 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:48:06,398 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 17:48:06,399 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 716-B00710-002: ['1000', '2000', '1020', '1900']
+2025-11-22 17:48:06,399 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 17:48:06,414 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 17:48:11,232 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 17:48:14,301 - transactions.md04_handler - INFO - Entering material number: 716-B00710-002
+2025-11-22 17:48:15,421 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 17:48:16,652 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 17:48:17,901 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 17:48:21,743 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 17:48:21,745 - core.field_manager - INFO - Trying 2 cached table ID(s)...
+2025-11-22 17:48:21,806 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 17:48:22,037 - core.field_manager - INFO - ✓ STPord found at row 1, col 2
+2025-11-22 17:48:23,361 - core.field_manager - INFO - ✓ Scan complete: STPord found (PRIORITY 3)
+2025-11-22 17:48:23,364 - core.table_id_cache - INFO - ✓ Table ID success recorded (count: 6)
+2025-11-22 17:48:23,368 - transactions.md04_handler - INFO - ✓ STPord found in plant 1000 - Extracting RPM immediately!
+2025-11-22 17:48:23,370 - transactions.md04_handler - INFO - Extracting RPM from current screen for material 716-B00710-002 at row 1
+2025-11-22 17:48:31,611 - transactions.md04_handler - INFO - Requirements table is already visible
+2025-11-22 17:48:31,671 - transactions.md04_handler - INFO - Scanning requirements table: 8 rows, 37 columns
+2025-11-22 17:48:31,956 - transactions.md04_handler - INFO - ✓ Found ERF/Reqmt No.: 'ERF0641929' at row 0, col 18
+2025-11-22 17:48:31,956 - transactions.md04_handler - INFO - ✓ Successfully extracted RPM/ERF number: 641929
+2025-11-22 17:48:31,958 - transactions.md04_handler - INFO - ✓ RPM extracted: 641929 - STOPPING search here!
+2025-11-22 17:48:31,959 - workflows.scenario_manager - INFO - ✓ RPM number extracted: 641929. Proceeding to ERF Dashboard...
+2025-11-22 17:48:31,959 - workflows.erf_workflow - INFO - Starting ERF workflow for material '716-B00710-002' using search term '641929'
+2025-11-22 17:48:31,959 - workflows.erf_workflow - INFO - Setting up Edge WebDriver...
+2025-11-22 17:48:34,014 - workflows.erf_workflow - INFO - WebDriver setup successful
+2025-11-22 17:48:34,032 - workflows.erf_workflow - INFO - Navigating to ERF Dashboard...
+2025-11-22 17:49:13,527 - workflows.erf_workflow - INFO - Clicked ERF Dashboard tab
+2025-11-22 17:49:13,560 - workflows.erf_workflow - INFO - Switching to ERF iframe...
+2025-11-22 17:49:18,659 - workflows.erf_workflow - INFO - Switched to iframe 1
+2025-11-22 17:49:21,816 - workflows.erf_workflow - INFO - Switched to nested iframe
+2025-11-22 17:49:21,818 - workflows.erf_workflow - INFO - Searching ERF for term: 641929
+2025-11-22 17:49:32,717 - workflows.erf_workflow - INFO - Selected 'ALL' from plant dropdown
+2025-11-22 17:49:33,692 - workflows.erf_workflow - INFO - Entered search term: 641929
+2025-11-22 17:49:34,950 - workflows.erf_workflow - INFO - Clicked search button
+2025-11-22 17:49:37,820 - workflows.erf_workflow - INFO - Found and clicked result link
+2025-11-22 17:49:37,821 - workflows.erf_workflow - INFO - Extracting ERF data...
+2025-11-22 17:49:40,241 - workflows.erf_workflow - INFO - Clicked Update/View ERF button
+2025-11-22 17:49:40,243 - workflows.erf_workflow - INFO - Waiting for page to load (document ready)...
+2025-11-22 17:49:43,278 - workflows.erf_workflow - INFO - Trying locator: id=aaaa.CreateOrderView.ShortDescInp
+2025-11-22 17:49:43,325 - workflows.erf_workflow - INFO - ✓ Found element using id
+2025-11-22 17:49:43,358 - workflows.erf_workflow - INFO - Short Order Description: EXHAUST END POINT,pgx lab epl120,delta misc
+2025-11-22 17:49:43,393 - workflows.erf_workflow - INFO - Internal Order: 227421
+2025-11-22 17:49:43,429 - workflows.erf_workflow - INFO - Cost Center: 27225
+2025-11-22 17:49:43,433 - workflows.erf_workflow - INFO - ✓ ERF data extraction completed successfully
+2025-11-22 17:49:43,436 - workflows.erf_workflow - INFO - Executing VBS Script 1 for ERF data...
+2025-11-22 17:49:43,440 - utils - WARNING - VBS script not found: C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\vbs_scripts\erf_dashboard_1.vbs
+2025-11-22 17:49:43,441 - workflows.erf_workflow - WARNING - VBS Script 1 execution failed or returned no data
+2025-11-22 17:49:43,442 - workflows.erf_workflow - INFO - ERF workflow completed successfully
+2025-11-22 17:49:47,089 - workflows.erf_workflow - INFO - WebDriver cleaned up
+2025-11-22 17:49:47,090 - workflows.scenario_manager - INFO - ✓ SCENARIO 2 SUCCESS: Data extracted from ERF Dashboard!
+2025-11-22 17:49:47,090 - workflows.scenario_manager - INFO - SCENARIO 3: Going to KO03 with order number...
+2025-11-22 17:49:47,091 - transactions.ko03_handler - INFO - Processing order: 227421
+2025-11-22 17:49:47,121 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nKO03'...
+2025-11-22 17:49:50,993 - core.sap_connector - INFO - ✓ Successfully navigated to KO03
+2025-11-22 17:49:50,998 - transactions.ko03_handler - INFO - Entering order number: 227421
+2025-11-22 17:49:52,095 - transactions.ko03_handler - INFO - Executing KO03 query...
+2025-11-22 17:49:56,536 - transactions.ko03_handler - INFO - Extracting order details from KO03...
+2025-11-22 17:49:56,555 - transactions.ko03_handler - INFO - Successfully extracted data for order 227421
+2025-11-22 17:49:56,557 - workflows.scenario_manager - INFO - ✓ SCENARIO 3 SUCCESS: Data extracted from KO03!
+2025-11-22 17:49:56,558 - workflows.scenario_manager - INFO - ✓ Success: 716-B00710-002 - Scenario: ERF_to_KO03
+2025-11-22 17:49:56,668 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:49:56,669 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 17:49:56,669 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:49:56,669 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 17:49:56,670 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 17:49:56,670 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 1
+2025-11-22 17:49:56,671 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 1
+2025-11-22 17:49:56,671 - workflows.scenario_manager - INFO - Failures: 0
+2025-11-22 17:49:56,672 - workflows.scenario_manager - INFO - Success Rate: 100.0%
+2025-11-22 17:49:56,673 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:08:05,562 - __main__ - INFO - Application interrupted by user

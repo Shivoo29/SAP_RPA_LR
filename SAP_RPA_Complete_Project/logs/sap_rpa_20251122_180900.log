@@ -1,0 +1,88 @@
+2025-11-22 18:09:00,047 - __main__ - INFO - ============================================================
+2025-11-22 18:09:00,048 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 18:09:00,049 - __main__ - INFO - ============================================================
+2025-11-22 18:09:00,051 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 18:09:00,052 - __main__ - INFO - Starting GUI application...
+2025-11-22 18:09:13,849 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 18:09:15,626 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User 
+2025-11-22 18:09:15,733 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 18:09:15,738 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 18:09:22,335 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 18:09:22,345 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:22,346 - workflows.scenario_manager - INFO - Processing material: 853-219445-001
+2025-11-22 18:09:22,346 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:22,347 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 18:09:22,347 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 853-219445-001: ['1000', '2000', '1020', '1900']
+2025-11-22 18:09:22,347 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 18:09:22,364 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:09:26,686 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:09:29,388 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:09:29,390 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1000. Skipping.
+2025-11-22 18:09:29,391 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 18:09:29,399 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:09:33,418 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:09:36,126 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:09:36,128 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 2000. Skipping.
+2025-11-22 18:09:36,129 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 18:09:36,140 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:09:40,076 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:09:42,853 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:09:42,855 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1020. Skipping.
+2025-11-22 18:09:42,855 - transactions.md04_handler - INFO - Checking plant 1900 (4/4)...
+2025-11-22 18:09:42,862 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:09:46,885 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:09:49,810 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:09:49,812 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1900. Skipping.
+2025-11-22 18:09:49,813 - transactions.md04_handler - WARNING - All 4 plants checked - no MatRes, OrdRes, DepReq, or STPord found
+2025-11-22 18:09:49,813 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 18:09:49,814 - workflows.scenario_manager - ERROR - ✗ Failed: 853-219445-001 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 18:09:49,930 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:49,930 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 18:09:49,931 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:49,931 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 18:09:49,932 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 18:09:49,932 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 18:09:49,932 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 18:09:49,933 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-22 18:09:49,933 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-22 18:09:49,933 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:59,598 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 18:09:59,629 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:59,630 - workflows.scenario_manager - INFO - Processing material: 853-219445-001
+2025-11-22 18:09:59,630 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:09:59,630 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 18:09:59,631 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 853-219445-001: ['1000', '2000', '1020', '1900']
+2025-11-22 18:09:59,631 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 18:09:59,645 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:10:03,776 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:10:06,563 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:10:06,565 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1000. Skipping.
+2025-11-22 18:10:06,566 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 18:10:06,575 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:10:10,526 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:10:13,190 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:10:13,193 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 2000. Skipping.
+2025-11-22 18:10:13,194 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 18:10:13,205 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:10:17,095 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:10:19,952 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:10:19,954 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1020. Skipping.
+2025-11-22 18:10:19,955 - transactions.md04_handler - INFO - Checking plant 1900 (4/4)...
+2025-11-22 18:10:19,962 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 18:10:24,010 - core.sap_connector - WARNING - Navigation to MD04 resulted in a different screen (S000). Sending one more Enter to proceed.
+2025-11-22 18:10:26,665 - core.sap_connector - ERROR - ✗ Failed to navigate to MD04. Final screen is S000.
+2025-11-22 18:10:26,667 - transactions.md04_handler - ERROR - Navigation to MD04 failed for plant 1900. Skipping.
+2025-11-22 18:10:26,668 - transactions.md04_handler - WARNING - All 4 plants checked - no MatRes, OrdRes, DepReq, or STPord found
+2025-11-22 18:10:26,669 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 18:10:26,669 - workflows.scenario_manager - ERROR - ✗ Failed: 853-219445-001 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 18:10:26,775 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:10:26,775 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 18:10:26,776 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:10:26,776 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 18:10:26,777 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 18:10:26,777 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 18:10:26,778 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 18:10:26,778 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-22 18:10:26,778 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-22 18:10:26,779 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 18:10:40,176 - __main__ - INFO - Application interrupted by user
