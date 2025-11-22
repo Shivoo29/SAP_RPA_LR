@@ -70,23 +70,17 @@ def worker_process(
     scenario_manager = None
 
     try:
-        # Each worker creates its own SAP connection with separate session
-        # Worker 0 uses existing session 0, workers 1-4 create new sessions
+        # Each worker connects to its own existing SAP session
+        # Worker 0 uses session 0, Worker 1 uses session 1, Worker 2 uses session 2, etc.
+        # User must manually open sessions (Ctrl+N) BEFORE running parallel mode
         sap_connector = SAPConnector()
-        if worker_id == 0:
-            # Worker 0 uses the existing session
-            if not sap_connector.connect(session_index=0):
-                logger.error(f"Worker {worker_id} failed to connect to SAP")
-                pythoncom.CoUninitialize()
-                return
-        else:
-            # Workers 1-4 create new SAP sessions
-            if not sap_connector.connect(session_index=worker_id, create_new=True):
-                logger.error(f"Worker {worker_id} failed to connect to SAP")
-                pythoncom.CoUninitialize()
-                return
+        if not sap_connector.connect(session_index=worker_id):
+            logger.error(f"Worker {worker_id} failed to connect to SAP session {worker_id}")
+            logger.error(f"Make sure you have opened at least {worker_id + 1} SAP sessions manually!")
+            pythoncom.CoUninitialize()
+            return
 
-        logger.info(f"✓ Worker {worker_id} connected to SAP with dedicated session")
+        logger.info(f"✓ Worker {worker_id} connected to SAP session {worker_id}")
 
         excel_manager = ExcelManager()
         scenario_manager = ScenarioManager(sap_connector, excel_manager)

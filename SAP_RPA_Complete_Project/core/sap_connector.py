@@ -54,30 +54,20 @@ class SAPConnector:
                 raise Exception("No SAP connections available.")
 
             # Get or Create Session
-            if create_new:
-                # Create a new session FROM THE CONNECTION (not from a session!)
-                self.logger.info("Creating new SAP session...")
-                self.session = self.connection.CreateSession()
-                if not self.session:
-                    raise Exception("CreateSession() returned None - SAP might not allow new sessions")
-                self.logger.info(f"✓ Created new SAP session")
-            elif session_index < self.connection.Children.Count:
+            # Check if requested session already exists
+            if session_index < self.connection.Children.Count:
                 # Use existing session at specified index
                 self.session = self.connection.Children(session_index)
                 self.logger.info(f"✓ Using existing session {session_index}")
-            elif session_index == 0:
-                # Fallback: use first session if index 0 is requested but doesn't exist
-                if self.connection.Children.Count > 0:
-                    self.session = self.connection.Children(0)
-                else:
-                    raise Exception("No active SAP session found.")
             else:
-                # Session index requested but doesn't exist - create new session FROM THE CONNECTION
-                self.logger.info(f"Session {session_index} doesn't exist, creating new session...")
-                self.session = self.connection.CreateSession()
-                if not self.session:
-                    raise Exception("CreateSession() returned None - SAP might not allow new sessions")
-                self.logger.info(f"✓ Created new SAP session for worker {session_index}")
+                # Session doesn't exist - user needs to open sessions manually
+                available_sessions = self.connection.Children.Count
+                raise Exception(
+                    f"Session {session_index} not found! "
+                    f"Only {available_sessions} session(s) available. "
+                    f"Please open {session_index + 1} SAP sessions manually (press Ctrl+N {session_index} times) "
+                    f"before running parallel processing."
+                )
 
             # Verify connection
             session_info = self.session.Info
