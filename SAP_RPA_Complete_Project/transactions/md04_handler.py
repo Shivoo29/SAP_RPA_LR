@@ -533,26 +533,78 @@ class MD04Handler:
                 except:
                     self.logger.warning("Could not find expand button")
 
-            # Read RPM number from the table
+            # Read RPM number from the table - SCAN ALL COLUMNS AND ROWS
             req_table = self.session.findById(req_table_id)
-            base_cell_id = f"{req_table_id}/txtMEPO1211-BEDNR[18,"
 
-            for i in range(req_table.rows.count):
-                try:
-                    cell_id = f"{base_cell_id}{i}]"
-                    rpm_full_text = self.field_manager.get_field_value(cell_id)
+            # Get table dimensions
+            row_count = req_table.rows.count if hasattr(req_table.rows, 'count') else 0
+            col_count = req_table.columns.count if hasattr(req_table, 'columns') else 20  # Default to 20 if can't determine
 
-                    if rpm_full_text and rpm_full_text.upper().startswith("RPM"):
-                        self.logger.info(f"Found raw RPM text: '{rpm_full_text}' in row {i}")
-                        match = re.search(r'\d+', rpm_full_text)
-                        if match:
-                            rpm_number = match.group(0).lstrip('0')
-                            self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
-                            return rpm_number
-                except:
-                    continue
+            self.logger.info(f"Scanning requirements table: {row_count} rows, {col_count} columns")
 
+            # Scan ALL cells for RPM
+            rpm_found = False
+            for row_idx in range(row_count):
+                for col_idx in range(col_count):
+                    try:
+                        # Try different cell access methods
+                        cell = None
+                        cell_text = ""
+
+                        # Method 1: getCell (most common)
+                        try:
+                            cell = req_table.getCell(row_idx, col_idx)
+                            if hasattr(cell, 'text'):
+                                cell_text = cell.text.strip()
+                        except:
+                            pass
+
+                        # Method 2: Direct field ID (for specific columns like BEDNR - Requirement Number)
+                        if not cell_text:
+                            try:
+                                cell_id = f"{req_table_id}/txtMEPO1211-BEDNR[{col_idx},{row_idx}]"
+                                cell_text = self.field_manager.get_field_value(cell_id)
+                                if cell_text:
+                                    cell_text = cell_text.strip()
+                            except:
+                                pass
+
+                        # Check if this cell contains RPM
+                        if cell_text and rpm_full_text := cell_text:
+                            if rpm_full_text.upper().startswith("RPM"):
+                                self.logger.info(f"✓ Found RPM text: '{rpm_full_text}' at row {row_idx}, col {col_idx}")
+                                match = re.search(r'\d+', rpm_full_text)
+                                if match:
+                                    rpm_number = match.group(0).lstrip('0')
+                                    self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
+                                    rpm_found = True
+                                    return rpm_number
+
+                            # Log non-empty cells for debugging
+                            if cell_text and len(cell_text) > 0:
+                                self.logger.debug(f"  Cell [{row_idx},{col_idx}]: '{cell_text[:30]}'")
+
+                    except Exception as cell_error:
+                        # Silent fail for individual cells
+                        pass
+
+            # If we get here, no RPM was found
             self.logger.warning("Requirements table found but no RPM number detected")
+            self.logger.warning(f"Scanned {row_count} rows x {col_count} columns - no RPM found")
+
+            # Log table structure for debugging
+            self.logger.info("Sample of table contents:")
+            for row_idx in range(min(3, row_count)):  # Show first 3 rows
+                row_data = []
+                for col_idx in range(min(5, col_count)):  # Show first 5 columns
+                    try:
+                        cell = req_table.getCell(row_idx, col_idx)
+                        if hasattr(cell, 'text'):
+                            row_data.append(cell.text.strip()[:15])
+                    except:
+                        row_data.append("N/A")
+                self.logger.info(f"  Row {row_idx}: {row_data}")
+
             return None
 
         except Exception as e:
