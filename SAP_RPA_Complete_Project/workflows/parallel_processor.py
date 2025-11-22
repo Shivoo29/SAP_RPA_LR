@@ -40,8 +40,31 @@ def worker_process(
     import pythoncom
     pythoncom.CoInitialize()
 
+    # CRITICAL: Setup logging for this worker process
+    import logging
+    from pathlib import Path
+    from datetime import datetime
+
+    # Configure logging for worker process
+    log_dir = Path(__file__).parent.parent / 'logs'
+    log_dir.mkdir(exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = log_dir / f"worker_{worker_id}_{timestamp}.log"
+
+    # Setup basic logging configuration
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler(log_file),
+            logging.StreamHandler()  # Also print to console
+        ],
+        force=True  # Override any existing configuration
+    )
+
     logger = logging.getLogger(f"Worker-{worker_id}")
     logger.info(f"🚀 Worker {worker_id} started (COM initialized)")
+    logger.info(f"Worker {worker_id} logging to: {log_file}")
 
     sap_connector = None
     scenario_manager = None
