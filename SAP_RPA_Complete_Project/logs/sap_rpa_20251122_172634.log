@@ -1,0 +1,93 @@
+2025-11-22 17:26:34,150 - __main__ - INFO - ============================================================
+2025-11-22 17:26:34,151 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 17:26:34,151 - __main__ - INFO - ============================================================
+2025-11-22 17:26:34,152 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 17:26:34,152 - __main__ - INFO - Starting GUI application...
+2025-11-22 17:26:40,231 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 17:26:41,921 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 17:26:42,028 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 17:26:42,032 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 17:26:59,044 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 17:26:59,059 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:26:59,059 - workflows.scenario_manager - INFO - Processing material: 716-B00710-002
+2025-11-22 17:26:59,060 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:26:59,060 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 17:26:59,060 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 716-B00710-002: ['1000', '2000', '1020', '1900']
+2025-11-22 17:26:59,061 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 17:26:59,077 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 17:27:04,015 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 17:27:07,072 - transactions.md04_handler - INFO - Entering material number: 716-B00710-002
+2025-11-22 17:27:08,172 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 17:27:09,405 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 17:27:10,624 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 17:27:14,453 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 17:27:14,454 - core.field_manager - INFO - Trying 2 cached table ID(s)...
+2025-11-22 17:27:14,529 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 17:27:14,824 - core.field_manager - INFO - ✓ STPord found at row 1, col 2
+2025-11-22 17:27:16,407 - core.field_manager - INFO - ✓ Scan complete: STPord found (PRIORITY 3)
+2025-11-22 17:27:16,409 - core.table_id_cache - INFO - ✓ Table ID success recorded (count: 4)
+2025-11-22 17:27:16,412 - transactions.md04_handler - INFO - ✓ STPord found in plant 1000 - Extracting RPM immediately!
+2025-11-22 17:27:16,413 - transactions.md04_handler - INFO - Extracting RPM from current screen for material 716-B00710-002 at row 1
+2025-11-22 17:27:24,615 - transactions.md04_handler - INFO - Requirements table is already visible
+2025-11-22 17:27:24,689 - transactions.md04_handler - INFO - Scanning requirements table: 8 rows, 37 columns
+2025-11-22 17:27:32,653 - transactions.md04_handler - WARNING - Requirements table found but no RPM number detected
+2025-11-22 17:27:32,653 - transactions.md04_handler - WARNING - Scanned 8 rows x 37 columns - no RPM found
+2025-11-22 17:27:32,654 - transactions.md04_handler - INFO - Full table contents (showing ALL columns):
+2025-11-22 17:27:33,293 - transactions.md04_handler - INFO -   Row 0: ['[1]:10', '[2]:F', '[4]:716-B00710-002', '[5]:WDO,OPTICAL,MPS100', '[6]:1.000', '[7]:EA', '[8]:D', '[9]:11/24/2025', '[10]:80.00', '[11]:USD', '[12]:1', '[13]:EA', '[14]:Purch. Non-Replensh.', '[15]:Manufacturing Liverm', '[16]:CA10 Eng Etch', '[18]:ERF0641929', '[19]:STEVESC1', '[21]:5302646850', '[34]:0']
+2025-11-22 17:27:33,835 - transactions.md04_handler - INFO -   Row 1: ['[1]:20', '[2]:F', '[5]:MISC FEE', '[6]:1.000', '[7]:EA', '[8]:D', '[9]:11/24/2025', '[10]:250.00', '[11]:USD', '[12]:1', '[13]:EA', '[14]:Engineering Projects', '[15]:Manufacturing Liverm', '[16]:CA10 Eng Etch', '[18]:ERF0641929', '[19]:STEVESC1', '[34]:0']
+2025-11-22 17:27:34,594 - transactions.md04_handler - INFO - Attempting to read column headers...
+2025-11-22 17:27:36,223 - transactions.md04_handler - INFO -   Column headers: ['[0]:Status', '[1]:Itm', '[2]:A', '[3]:I', '[4]:Material', '[5]:Short Text', '[6]:PO Quantity', '[7]:OUn', '[8]:C', '[9]:Deliv. Date', '[10]:Net Price', '[11]:Currency', '[12]:Per', '[13]:OPU', '[14]:Matl Group', '[15]:Plnt', '[16]:Stor. Location', '[17]:Batch', '[18]:Reqmt No.', '[19]:Requisitioner', '[20]:IM Material', '[21]:Info rec.', '[22]:Returns Item', '[23]:Free', '[24]:Texts', '[25]:Purch.Req.', '[26]:Requisn. item', '[27]:Outline agreement', '[28]:Contr. Item', '[29]:RFQ', '[30]:Item', '[31]:Purchasing Doc.', '[32]:Item', '[33]:Iss. Stor. Loc.', '[34]:Higher-Level Item', '[35]:Subitem Category', '[36]:Fixed Date']
+2025-11-22 17:27:36,227 - transactions.md04_handler - WARNING - STPord found but RPM extraction failed in plant 1000
+2025-11-22 17:27:36,227 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 17:27:36,236 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 17:27:40,529 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 17:27:43,613 - transactions.md04_handler - INFO - Entering material number: 716-B00710-002
+2025-11-22 17:27:44,722 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-22 17:27:45,967 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 17:27:47,186 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 17:27:50,977 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 17:27:50,977 - core.field_manager - INFO - Trying 2 cached table ID(s)...
+2025-11-22 17:27:51,034 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 17:27:51,884 - core.field_manager - WARNING - Scan complete: No MatRes, OrdRes, or STPord found
+2025-11-22 17:27:51,886 - core.field_manager - INFO - ⚠ TIER 1 failed - trying known alternative table IDs...
+2025-11-22 17:27:51,887 - core.field_manager - INFO - Trying 6 known table ID pattern(s)...
+2025-11-22 17:27:51,954 - core.field_manager - INFO - ✓ TIER 2 SUCCESS: Found working table ID
+2025-11-22 17:27:52,897 - core.field_manager - WARNING - Scan complete: No MatRes, OrdRes, or STPord found
+2025-11-22 17:27:52,900 - core.field_manager - WARNING - ⚠ TIER 2 failed - starting dynamic table discovery...
+2025-11-22 17:27:52,901 - core.field_manager - INFO - 🔎 Scanning screen for table controls...
+2025-11-22 17:28:00,438 - core.field_manager - INFO - Found 0 potential table control(s) via enumeration
+2025-11-22 17:28:00,439 - core.field_manager - INFO - Enumeration failed, trying pattern-based discovery...
+2025-11-22 17:28:00,458 - core.field_manager - INFO - Found 0 potential table(s) via patterns
+2025-11-22 17:28:00,460 - core.field_manager - ERROR - ✗ ALL TIERS FAILED: Could not find MD04 results table
+2025-11-22 17:28:00,460 - core.field_manager - ERROR - This might indicate: (1) No data in MD04, (2) Screen layout error, (3) Different SAP version
+2025-11-22 17:28:00,461 - transactions.md04_handler - INFO - No MatRes, OrdRes, or STPord found in plant 2000
+2025-11-22 17:28:00,539 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 17:28:00,551 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 17:28:04,928 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 17:28:07,983 - transactions.md04_handler - INFO - Entering material number: 716-B00710-002
+2025-11-22 17:28:09,086 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-22 17:28:10,303 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 17:28:11,558 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 17:28:15,168 - transactions.md04_handler - INFO - MD04 returned no data for plant 1020
+2025-11-22 17:28:15,169 - transactions.md04_handler - INFO - Checking plant 1900 (4/4)...
+2025-11-22 17:28:15,181 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 17:28:19,438 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 17:28:22,503 - transactions.md04_handler - INFO - Entering material number: 716-B00710-002
+2025-11-22 17:28:23,602 - transactions.md04_handler - INFO - Setting plant: 1900
+2025-11-22 17:28:24,859 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 17:28:26,071 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 17:28:29,590 - transactions.md04_handler - INFO - MD04 returned no data for plant 1900
+2025-11-22 17:28:29,591 - transactions.md04_handler - WARNING - All 4 plants checked - no MatRes, OrdRes, or STPord found
+2025-11-22 17:28:29,591 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 17:28:29,592 - workflows.scenario_manager - ERROR - ✗ Failed: 716-B00710-002 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 17:28:29,695 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:28:29,696 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 17:28:29,697 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:28:29,697 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 17:28:29,698 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 17:28:29,698 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 17:28:29,698 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 17:28:29,699 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-22 17:28:29,699 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-22 17:28:29,699 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 17:29:06,860 - __main__ - INFO - Application interrupted by user

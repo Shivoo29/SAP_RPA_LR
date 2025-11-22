@@ -16,14 +16,14 @@
           "857-C07072-001"
         ]
       },
-      "failure_count": 8,
-      "last_failed": "2025-11-22T17:19:26.016110"
+      "failure_count": 10,
+      "last_failed": "2025-11-22T17:27:50.981141"
     },
     {
       "table_id": "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
-      "success_count": 3,
+      "success_count": 4,
       "first_discovered": "2025-11-22T16:50:53.140588",
-      "last_used": "2025-11-22T17:18:50.980154",
+      "last_used": "2025-11-22T17:27:16.409087",
       "source": "config",
       "context": {
         "plants_worked": [
@@ -38,7 +38,7 @@
   ],
   "statistics": {
     "total_discoveries": 1,
-    "total_uses": 9,
-    "last_updated": "2025-11-22T17:19:26.016144"
+    "total_uses": 10,
+    "last_updated": "2025-11-22T17:27:50.981171"
   }
 }
