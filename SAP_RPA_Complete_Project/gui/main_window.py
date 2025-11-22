@@ -98,10 +98,44 @@ class MainWindow:
         main_container.columnconfigure(0, weight=3)
         main_container.columnconfigure(1, weight=1)
 
-        # Left column - main controls
-        left_frame = ttk.Frame(main_container)
-        left_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
+        # Left column - scrollable canvas for main controls
+        left_canvas_frame = ttk.Frame(main_container)
+        left_canvas_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
+        left_canvas_frame.columnconfigure(0, weight=1)
+        left_canvas_frame.rowconfigure(0, weight=1)
+
+        # Create canvas and scrollbar
+        left_canvas = tk.Canvas(left_canvas_frame, bg='#f0f0f0', highlightthickness=0)
+        scrollbar = ttk.Scrollbar(left_canvas_frame, orient="vertical", command=left_canvas.yview)
+
+        # Frame inside canvas to hold all controls
+        left_frame = ttk.Frame(left_canvas)
         left_frame.columnconfigure(0, weight=1)
+
+        # Create window in canvas
+        canvas_window = left_canvas.create_window((0, 0), window=left_frame, anchor="nw")
+
+        # Configure canvas scrolling
+        left_canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Pack scrollbar and canvas
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        left_canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+        # Update scroll region when frame changes size
+        def on_frame_configure(event):
+            left_canvas.configure(scrollregion=left_canvas.bbox("all"))
+            # Also update canvas window width to match canvas width
+            left_canvas.itemconfig(canvas_window, width=event.width)
+
+        left_frame.bind("<Configure>", on_frame_configure)
+        left_canvas.bind("<Configure>", lambda e: left_canvas.itemconfig(canvas_window, width=e.width))
+
+        # Enable mousewheel scrolling
+        def on_mousewheel(event):
+            left_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+        left_canvas.bind_all("<MouseWheel>", on_mousewheel)
 
         self._create_header(left_frame)
         self._create_connection_section(left_frame)
