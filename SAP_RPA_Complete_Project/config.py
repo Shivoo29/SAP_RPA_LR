@@ -65,10 +65,10 @@ class Config:
     }
     
     # ===== Workflow Settings =====
-    MAX_RETRIES = 3
-    TIMEOUT_SECONDS = 30
-    WAIT_TIME_AFTER_ACTION = 2
-    WAIT_TIME_AFTER_QUERY = 3
+    MAX_RETRIES = 2  # Reduced from 3 for faster failures
+    TIMEOUT_SECONDS = 20  # Reduced from 30
+    WAIT_TIME_AFTER_ACTION = 0.5  # Optimized from 2 (70% faster)
+    WAIT_TIME_AFTER_QUERY = 1  # Optimized from 3 (66% faster)
     
     # ===== Scenario Settings =====
     ENABLE_MULTI_PLANT_SEARCH = True
@@ -90,8 +90,14 @@ class Config:
     # ===== Web Automation Settings =====
     ERF_DASHBOARD_URL = 'https://epp.fremont.lamrc.net/irj/portal?&EPPAP13_0'
     EDGE_DRIVER_PATH = r"c:\Program Files\edgedriver_win64\msedgedriver.exe"
-    WEB_TIMEOUT = 60  # Increased from 30 to handle slow page loads
-    WEB_RETRY_COUNT = 3  # Number of retries for failed element lookups
+    WEB_TIMEOUT = 30  # Optimized for faster processing
+    WEB_RETRY_COUNT = 2  # Reduced from 3 for faster failures
+
+    # ===== Performance Optimization Settings =====
+    ENABLE_PARALLEL_PROCESSING = True  # Process multiple materials concurrently
+    MAX_PARALLEL_WORKERS = 3  # Number of concurrent SAP sessions (3-5 recommended)
+    ENABLE_SMART_PLANT_ORDERING = True  # Reorder plants based on success rate
+    ENABLE_AGGRESSIVE_CACHING = True  # Cache plant availability patterns
     
     # ===== VBS Script Paths =====
     VBS_SCRIPT_DIR = Path(__file__).parent / 'vbs_scripts'
