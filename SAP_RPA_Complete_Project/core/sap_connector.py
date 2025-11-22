@@ -54,20 +54,20 @@ class SAPConnector:
                 raise Exception("No SAP connections available.")
 
             # Get or Create Session
-            # Check if requested session already exists
-            if session_index < self.connection.Children.Count:
+            if create_new:
+                # Create a new session - each worker gets its own session
+                self.logger.info("Creating new SAP session...")
+                self.session = self.connection.CreateSession()
+                if not self.session:
+                    raise Exception("CreateSession() returned None")
+                self.logger.info(f"✓ Created new SAP session")
+            elif session_index < self.connection.Children.Count:
                 # Use existing session at specified index
                 self.session = self.connection.Children(session_index)
                 self.logger.info(f"✓ Using existing session {session_index}")
             else:
-                # Session doesn't exist - user needs to open sessions manually
-                available_sessions = self.connection.Children.Count
-                raise Exception(
-                    f"Session {session_index} not found! "
-                    f"Only {available_sessions} session(s) available. "
-                    f"Please open {session_index + 1} SAP sessions manually (press Ctrl+N {session_index} times) "
-                    f"before running parallel processing."
-                )
+                # Session doesn't exist
+                raise Exception(f"Session {session_index} not found!")
 
             # Verify connection
             session_info = self.session.Info
