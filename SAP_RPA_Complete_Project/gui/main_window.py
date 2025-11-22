@@ -3,6 +3,7 @@ Main GUI Window
 ===============
 Main graphical user interface for SAP RPA automation.
 Refactored to use a root.after() loop for stable, single-threaded COM access.
+Enhanced with modern styling and better progress indicators.
 """
 
 import tkinter as tk
@@ -10,6 +11,7 @@ from tkinter import ttk, scrolledtext, filedialog, messagebox
 import logging
 from pathlib import Path
 from datetime import datetime
+import time
 
 from core.sap_connector import SAPConnector
 from workflows.scenario_manager import ScenarioManager
@@ -40,7 +42,15 @@ class MainWindow:
         self.materials_queue = []
         self.current_material_index = 0
         self.current_results = []
-        
+
+        # Timer tracking
+        self.start_time = None
+        self.elapsed_time = 0
+
+        # Live statistics
+        self.live_success_count = 0
+        self.live_failure_count = 0
+
         # Setup GUI
         self.setup_gui()
     
@@ -48,34 +58,66 @@ class MainWindow:
         """Setup the main GUI window."""
         self.root = tk.Tk()
         self.root.title("SAP RPA - Multi-Scenario Automation System")
-        self.root.geometry("1200x900")
-        
+        self.root.geometry("1400x950")
+
+        # Apply modern theme
+        style = ttk.Style()
+        available_themes = style.theme_names()
+        if 'clam' in available_themes:
+            style.theme_use('clam')
+        elif 'alt' in available_themes:
+            style.theme_use('alt')
+
+        # Configure custom styles
+        style.configure('Header.TLabel', font=('Arial', 18, 'bold'), foreground='#2c3e50')
+        style.configure('Subheader.TLabel', font=('Arial', 11), foreground='#7f8c8d')
+        style.configure('Success.TLabel', font=('Arial', 10, 'bold'), foreground='#27ae60')
+        style.configure('Error.TLabel', font=('Arial', 10, 'bold'), foreground='#e74c3c')
+        style.configure('Info.TLabel', font=('Arial', 10, 'bold'), foreground='#3498db')
+        style.configure('Big.TButton', font=('Arial', 11, 'bold'), padding=10)
+
         try:
             self.root.state('zoomed')
         except tk.TclError:
             pass # Fails on some platforms
-        
-        main_container = ttk.Frame(self.root, padding="10")
+
+        main_container = ttk.Frame(self.root, padding="15")
         main_container.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        
+
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
-        main_container.columnconfigure(0, weight=1)
-        
-        self._create_header(main_container)
-        self._create_connection_section(main_container)
-        self._create_input_section(main_container)
-        self._create_config_section(main_container)
-        self._create_controls_section(main_container)
-        self._create_progress_section(main_container)
-        self._create_results_section(main_container)
-        self._create_log_section(main_container)
+        main_container.columnconfigure(0, weight=3)
+        main_container.columnconfigure(1, weight=1)
+
+        # Left column - main controls
+        left_frame = ttk.Frame(main_container)
+        left_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=(0, 10))
+        left_frame.columnconfigure(0, weight=1)
+
+        self._create_header(left_frame)
+        self._create_connection_section(left_frame)
+        self._create_input_section(left_frame)
+        self._create_config_section(left_frame)
+        self._create_controls_section(left_frame)
+        self._create_progress_section(left_frame)
+        self._create_results_section(left_frame)
+        self._create_log_section(left_frame)
+
+        # Right column - statistics panel
+        self._create_statistics_panel(main_container)
+
+        # Configure row weights for proper scaling
+        for i in range(8):
+            left_frame.rowconfigure(i, weight=0)
+        left_frame.rowconfigure(6, weight=2)  # Results section
+        left_frame.rowconfigure(7, weight=1)  # Log section
+        main_container.rowconfigure(0, weight=1)
     
     def _create_header(self, parent):
         header_frame = ttk.Frame(parent)
-        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
-        ttk.Label(header_frame, text="SAP RPA - Multi-Scenario Automation", font=("Arial", 18, "bold")).pack()
-        ttk.Label(header_frame, text="MD04 → ERF Dashboard → KO03 Workflow", font=("Arial", 11), foreground="gray").pack()
+        header_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
+        ttk.Label(header_frame, text="SAP RPA - Multi-Scenario Automation", style='Header.TLabel').pack()
+        ttk.Label(header_frame, text="MD04 → ERF Dashboard → KO03 Workflow", style='Subheader.TLabel').pack(pady=(2, 0))
 
     def _create_connection_section(self, parent):
         conn_frame = ttk.LabelFrame(parent, text="SAP Connection", padding="10")
@@ -151,12 +193,30 @@ class MainWindow:
     def _create_progress_section(self, parent):
         progress_frame = ttk.LabelFrame(parent, text="Progress", padding="10")
         progress_frame.grid(row=5, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+
+        # Main progress info
+        status_frame = ttk.Frame(progress_frame)
+        status_frame.pack(fill=tk.X, pady=(0, 5))
+
         self.progress_var = tk.StringVar(value="Ready to start...")
-        ttk.Label(progress_frame, textvariable=self.progress_var).pack(anchor=tk.W)
-        self.progress_bar = ttk.Progressbar(progress_frame, mode='determinate')
-        self.progress_bar.pack(fill=tk.X, pady=(5, 0))
+        ttk.Label(status_frame, textvariable=self.progress_var, font=("Arial", 10)).pack(side=tk.LEFT)
+
+        self.elapsed_time_var = tk.StringVar(value="00:00")
+        ttk.Label(status_frame, textvariable=self.elapsed_time_var, font=("Arial", 10, "bold"), foreground="#3498db").pack(side=tk.RIGHT)
+
+        # Progress bar
+        self.progress_bar = ttk.Progressbar(progress_frame, mode='determinate', length=400)
+        self.progress_bar.pack(fill=tk.X, pady=(5, 5))
+
+        # Current material and scenario
+        detail_frame = ttk.Frame(progress_frame)
+        detail_frame.pack(fill=tk.X, pady=(5, 0))
+
         self.current_material_var = tk.StringVar(value="")
-        ttk.Label(progress_frame, textvariable=self.current_material_var, font=("Arial", 9, "bold"), foreground="blue").pack(anchor=tk.W, pady=(5, 0))
+        ttk.Label(detail_frame, textvariable=self.current_material_var, font=("Arial", 9, "bold"), foreground="#2980b9").pack(anchor=tk.W)
+
+        self.current_scenario_var = tk.StringVar(value="")
+        ttk.Label(detail_frame, textvariable=self.current_scenario_var, font=("Arial", 8), foreground="#7f8c8d").pack(anchor=tk.W, pady=(2, 0))
 
     def _create_results_section(self, parent):
         results_frame = ttk.LabelFrame(parent, text="Results", padding="10")
@@ -182,6 +242,66 @@ class MainWindow:
         parent.rowconfigure(7, weight=1)
         self.log_text = scrolledtext.ScrolledText(log_frame, height=8, width=100, font=("Consolas", 9), state='disabled')
         self.log_text.pack(fill=tk.BOTH, expand=True)
+
+    def _create_statistics_panel(self, parent):
+        """Create right-side statistics panel."""
+        stats_frame = ttk.LabelFrame(parent, text="Live Statistics", padding="15")
+        stats_frame.grid(row=0, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+        # Title
+        ttk.Label(stats_frame, text="Session Statistics", font=("Arial", 12, "bold"), foreground="#2c3e50").pack(pady=(0, 15))
+
+        # Statistics display
+        stats_container = ttk.Frame(stats_frame)
+        stats_container.pack(fill=tk.BOTH, expand=True)
+
+        # Total Processed
+        self._create_stat_row(stats_container, "Total Processed:", "0", "total_processed", row=0, color="#34495e")
+
+        # Success Count
+        self._create_stat_row(stats_container, "✓ Successful:", "0", "success_count", row=1, color="#27ae60")
+
+        # Failure Count
+        self._create_stat_row(stats_container, "✗ Failed:", "0", "failure_count", row=2, color="#e74c3c")
+
+        # Success Rate
+        self._create_stat_row(stats_container, "Success Rate:", "0%", "success_rate", row=3, color="#3498db")
+
+        # Separator
+        ttk.Separator(stats_container, orient='horizontal').grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=15)
+
+        # Scenario breakdown
+        ttk.Label(stats_container, text="Scenario Breakdown:", font=("Arial", 10, "bold")).grid(row=5, column=0, columnspan=2, sticky=tk.W, pady=(0, 10))
+
+        self._create_stat_row(stats_container, "MD04 (MatRes/OrdRes/DepReq):", "0", "scenario_1", row=6, color="#16a085")
+        self._create_stat_row(stats_container, "ERF Dashboard:", "0", "scenario_2", row=7, color="#2980b9")
+        self._create_stat_row(stats_container, "ERF → KO03:", "0", "scenario_3", row=8, color="#8e44ad")
+
+        # Separator
+        ttk.Separator(stats_container, orient='horizontal').grid(row=9, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=15)
+
+        # Current session info
+        ttk.Label(stats_container, text="Session Info:", font=("Arial", 10, "bold")).grid(row=10, column=0, columnspan=2, sticky=tk.W, pady=(0, 10))
+
+        self.session_start_var = tk.StringVar(value="Not started")
+        ttk.Label(stats_container, text="Started:", font=("Arial", 9)).grid(row=11, column=0, sticky=tk.W)
+        ttk.Label(stats_container, textvariable=self.session_start_var, font=("Arial", 9, "bold"), foreground="#7f8c8d").grid(row=11, column=1, sticky=tk.E)
+
+        self.session_duration_var = tk.StringVar(value="00:00:00")
+        ttk.Label(stats_container, text="Duration:", font=("Arial", 9)).grid(row=12, column=0, sticky=tk.W, pady=(5, 0))
+        ttk.Label(stats_container, textvariable=self.session_duration_var, font=("Arial", 9, "bold"), foreground="#3498db").grid(row=12, column=1, sticky=tk.E, pady=(5, 0))
+
+        # Average time per material
+        self.avg_time_var = tk.StringVar(value="0.0s")
+        ttk.Label(stats_container, text="Avg. Time/Material:", font=("Arial", 9)).grid(row=13, column=0, sticky=tk.W, pady=(5, 0))
+        ttk.Label(stats_container, textvariable=self.avg_time_var, font=("Arial", 9, "bold"), foreground="#16a085").grid(row=13, column=1, sticky=tk.E, pady=(5, 0))
+
+    def _create_stat_row(self, parent, label_text, initial_value, var_name, row, color="#000000"):
+        """Helper to create a statistic row."""
+        ttk.Label(parent, text=label_text, font=("Arial", 10)).grid(row=row, column=0, sticky=tk.W, pady=5)
+        var = tk.StringVar(value=initial_value)
+        setattr(self, f"{var_name}_var", var)
+        ttk.Label(parent, textvariable=var, font=("Arial", 12, "bold"), foreground=color).grid(row=row, column=1, sticky=tk.E, pady=5)
 
     def log_message(self, message: str, level: str = "INFO"):
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -247,14 +367,22 @@ class MainWindow:
         self.current_results = []
         self.current_material_index = 0
         self.scenario_manager.reset_statistics()
-        
+
+        # Reset statistics
+        self.live_success_count = 0
+        self.live_failure_count = 0
+        self.start_time = time.time()
+        self.session_start_var.set(datetime.now().strftime("%H:%M:%S"))
+        self._reset_statistics()
+
         self.is_processing = True
         self.start_btn.config(state="disabled")
         self.stop_btn.config(state="normal")
         self.export_btn.config(state="disabled")
-        
+
         self.log_message(f"Starting automation for {len(self.materials_queue)} materials...")
         self.process_next_material()
+        self._update_timer()
 
     def process_next_material(self):
         if not self.is_processing or self.current_material_index >= len(self.materials_queue):
@@ -275,7 +403,14 @@ class MainWindow:
         
         self.current_results.append(result)
         self.add_result_to_tree(result)
-        
+
+        # Update live statistics
+        if result.success:
+            self.live_success_count += 1
+        else:
+            self.live_failure_count += 1
+        self._update_statistics()
+
         self.current_material_index += 1
         self.root.after(100, self.process_next_material)
 
@@ -296,7 +431,8 @@ class MainWindow:
     def update_progress(self, current, total, material):
         self.progress_bar.config(maximum=total, value=current)
         self.progress_var.set(f"Processing {current}/{total}...")
-        self.current_material_var.set(f"Current: {material}")
+        self.current_material_var.set(f"📦 Material: {material}")
+        self.current_scenario_var.set("🔄 Attempting MD04 → ERF → KO03 workflow...")
 
     def automation_finished(self):
         self.is_processing = False
@@ -330,6 +466,62 @@ class MainWindow:
         except Exception as e:
             self.log_message(f"Export failed: {e}", "ERROR")
             messagebox.showerror("Export Error", f"Failed to export results:\n{e}")
+
+    def _update_timer(self):
+        """Update the elapsed time display."""
+        if self.is_processing and self.start_time:
+            elapsed = time.time() - self.start_time
+            hours = int(elapsed // 3600)
+            minutes = int((elapsed % 3600) // 60)
+            seconds = int(elapsed % 60)
+
+            self.elapsed_time_var.set(f"{minutes:02d}:{seconds:02d}")
+            self.session_duration_var.set(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
+
+            # Schedule next update
+            self.root.after(1000, self._update_timer)
+
+    def _reset_statistics(self):
+        """Reset all statistics displays."""
+        self.total_processed_var.set("0")
+        self.success_count_var.set("0")
+        self.failure_count_var.set("0")
+        self.success_rate_var.set("0%")
+        self.scenario_1_var.set("0")
+        self.scenario_2_var.set("0")
+        self.scenario_3_var.set("0")
+        self.session_duration_var.set("00:00:00")
+        self.avg_time_var.set("0.0s")
+
+    def _update_statistics(self):
+        """Update live statistics display."""
+        stats = self.scenario_manager.get_statistics()
+
+        total = stats['total_processed']
+        success_total = stats['scenario_1_success'] + stats['scenario_2_success'] + stats['scenario_3_success']
+        failures = stats['failures']
+
+        self.total_processed_var.set(str(total))
+        self.success_count_var.set(str(success_total))
+        self.failure_count_var.set(str(failures))
+
+        if total > 0:
+            success_rate = (success_total / total) * 100
+            self.success_rate_var.set(f"{success_rate:.1f}%")
+
+            # Calculate average time
+            if self.start_time:
+                elapsed = time.time() - self.start_time
+                avg_time = elapsed / total
+                self.avg_time_var.set(f"{avg_time:.1f}s")
+        else:
+            self.success_rate_var.set("0%")
+            self.avg_time_var.set("0.0s")
+
+        # Scenario breakdown
+        self.scenario_1_var.set(str(stats['scenario_1_success']))
+        self.scenario_2_var.set(str(stats['scenario_2_success']))
+        self.scenario_3_var.set(str(stats['scenario_3_success']))
 
     def run(self):
         self.log_message("SAP RPA Application Started")
