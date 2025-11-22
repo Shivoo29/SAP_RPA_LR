@@ -43,13 +43,21 @@ def worker_process(
     scenario_manager = None
 
     try:
-        # Each worker creates its own SAP connection
+        # Each worker creates its own SAP connection with separate session
+        # Worker 0 uses existing session 0, workers 1-4 create new sessions
         sap_connector = SAPConnector()
-        if not sap_connector.connect():
-            logger.error(f"Worker {worker_id} failed to connect to SAP")
-            return
+        if worker_id == 0:
+            # Worker 0 uses the existing session
+            if not sap_connector.connect(session_index=0):
+                logger.error(f"Worker {worker_id} failed to connect to SAP")
+                return
+        else:
+            # Workers 1-4 create new SAP sessions
+            if not sap_connector.connect(session_index=worker_id, create_new=True):
+                logger.error(f"Worker {worker_id} failed to connect to SAP")
+                return
 
-        logger.info(f"✓ Worker {worker_id} connected to SAP")
+        logger.info(f"✓ Worker {worker_id} connected to SAP with dedicated session")
 
         excel_manager = ExcelManager()
         scenario_manager = ScenarioManager(sap_connector, excel_manager)

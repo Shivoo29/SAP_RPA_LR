@@ -23,49 +23,69 @@ class SAPConnector:
         self.session = None
         self.is_connected = False
         
-    def connect(self) -> bool:
+    def connect(self, session_index: int = 0, create_new: bool = False) -> bool:
         """
         Connect to SAP GUI and establish session.
-        
+
+        Args:
+            session_index: Index of session to use (0-5). Used for parallel processing.
+            create_new: If True, creates a new session instead of using existing one
+
         Returns:
             True if connection successful, False otherwise
         """
         try:
-            self.logger.info("Connecting to SAP GUI...")
-            
+            self.logger.info(f"Connecting to SAP GUI (session_index={session_index}, create_new={create_new})...")
+
             # Get SAP GUI Automation object
             self.sap_gui_auto = win32com.client.GetObject("SAPGUI")
             if not self.sap_gui_auto:
                 raise Exception("SAP GUI not found. Please start SAP Logon.")
-            
+
             # Get Application object
             self.application = self.sap_gui_auto.GetScriptingEngine
             if not self.application:
                 raise Exception("SAP GUI Scripting not enabled.")
-            
+
             # Get Connection
             if self.application.Children.Count > 0:
                 self.connection = self.application.Children(0)
             else:
                 raise Exception("No SAP connections available.")
-            
-            # Get Session
-            if self.connection.Children.Count > 0:
-                self.session = self.connection.Children(0)
+
+            # Get or Create Session
+            if create_new:
+                # Create a new session
+                self.logger.info("Creating new SAP session...")
+                self.session = self.connection.Children(0).CreateSession()
+                self.logger.info(f"✓ Created new SAP session")
+            elif session_index < self.connection.Children.Count:
+                # Use existing session at specified index
+                self.session = self.connection.Children(session_index)
+                self.logger.info(f"✓ Using existing session {session_index}")
+            elif session_index == 0:
+                # Fallback: use first session if index 0 is requested but doesn't exist
+                if self.connection.Children.Count > 0:
+                    self.session = self.connection.Children(0)
+                else:
+                    raise Exception("No active SAP session found.")
             else:
-                raise Exception("No active SAP session found.")
-            
+                # Session index requested but doesn't exist - create new session
+                self.logger.info(f"Session {session_index} doesn't exist, creating new session...")
+                self.session = self.connection.Children(0).CreateSession()
+                self.logger.info(f"✓ Created new SAP session for worker {session_index}")
+
             # Verify connection
             session_info = self.session.Info
             system_name = session_info.SystemName
             client = session_info.Client
             user = session_info.User
-            
+
             self.is_connected = True
             self.logger.info(f"Connected to SAP: {system_name} Client {client} User {user}")
-            
+
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to connect to SAP: {e}")
             self.is_connected = False
