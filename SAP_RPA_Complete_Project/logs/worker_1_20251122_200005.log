@@ -1,0 +1,6 @@
+2025-11-22 20:00:05,464 - Worker-1 - INFO - Worker 1 logging to: C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\logs\worker_1_20251122_200005.log
+2025-11-22 20:00:05,465 - core.sap_connector - INFO - Connecting to SAP GUI (session_index=1, create_new=True)...
+2025-11-22 20:00:06,876 - core.sap_connector - INFO - Creating new SAP session...
+2025-11-22 20:00:06,880 - core.sap_connector - ERROR - Failed to connect to SAP: <unknown>.CreateSession
+2025-11-22 20:00:06,880 - Worker-1 - ERROR - Worker 1 failed to connect to SAP
+2025-11-22 20:00:06,884 - Worker-1 - INFO - Worker 1 stopped (COM uninitialized)
