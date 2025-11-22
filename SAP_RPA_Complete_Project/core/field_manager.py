@@ -282,8 +282,12 @@ class FieldManager:
             'matres_element': None,
             'has_ordres': False,
             'ordres_row_index': -1,
+            'has_depreq': False,
+            'depreq_row_index': -1,
             'has_stpord': False,
             'stpord_row_index': -1,
+            'is_1a_demand': False,
+            'mrp_element_type': None,
             'table_id_used': None
         }
 
@@ -295,7 +299,7 @@ class FieldManager:
             result = self._scan_table(table_id)
             result['table_id_used'] = table_id
 
-            if result['matres_element'] or result['has_ordres'] or result['has_stpord']:
+            if result['matres_element'] or result['has_ordres'] or result['has_depreq'] or result['has_stpord'] or result.get('is_1a_demand'):
                 # Record success in cache
                 self.cache_manager.record_success(table_id, plant, material)
                 return result
@@ -309,7 +313,7 @@ class FieldManager:
             result = self._scan_table(table_id)
             result['table_id_used'] = table_id
 
-            if result['matres_element'] or result['has_ordres'] or result['has_stpord']:
+            if result['matres_element'] or result['has_ordres'] or result['has_depreq'] or result['has_stpord'] or result.get('is_1a_demand'):
                 # Record success and cache this discovery
                 self.cache_manager.record_success(table_id, plant, material)
                 return result
@@ -323,7 +327,7 @@ class FieldManager:
             result = self._scan_table(table_id)
             result['table_id_used'] = table_id
 
-            if result['matres_element'] or result['has_ordres'] or result['has_stpord']:
+            if result['matres_element'] or result['has_ordres'] or result['has_depreq'] or result['has_stpord'] or result.get('is_1a_demand'):
                 # Record this new discovery
                 self.cache_manager.record_success(table_id, plant, material)
                 self.logger.info(f"💾 New table ID cached for future use")
