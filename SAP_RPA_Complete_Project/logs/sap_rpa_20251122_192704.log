@@ -1,0 +1,15 @@
+2025-11-22 19:27:04,026 - __main__ - INFO - ============================================================
+2025-11-22 19:27:04,026 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 19:27:04,026 - __main__ - INFO - ============================================================
+2025-11-22 19:27:04,026 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 19:27:04,027 - __main__ - INFO - Starting GUI application...
+2025-11-22 19:27:10,694 - core.sap_connector - INFO - Connecting to SAP GUI (session_index=0, create_new=False)...
+2025-11-22 19:27:12,121 - core.sap_connector - INFO - ✓ Using existing session 0
+2025-11-22 19:27:12,132 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 19:27:12,185 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 19:27:12,187 - core.table_id_cache - INFO - ✓ Loaded table ID cache with 2 known table IDs
+2025-11-22 19:27:30,206 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 19:27:30,284 - workflows.parallel_processor - INFO - Parallel processor initialized with 3 workers
+2025-11-22 19:27:30,286 - workflows.parallel_processor - INFO - 🚀 Starting parallel processing of 23 materials with 3 workers
+2025-11-22 19:27:36,422 - workflows.parallel_processor - INFO - ✓ Started 3 worker processes
+2025-11-22 19:28:43,661 - __main__ - INFO - Application interrupted by user
