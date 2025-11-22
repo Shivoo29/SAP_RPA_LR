@@ -616,6 +616,35 @@ class FieldManager:
             self.logger.debug(f"Table validation failed: {e}")
             return False
 
+    def _check_row_for_1a_demand(self, table, row_idx: int, col_count: int) -> bool:
+        """
+        Check if a row contains "1A-" pattern in MRP element data column.
+
+        Args:
+            table: SAP table object
+            row_idx: Row index to check
+            col_count: Number of columns in table
+
+        Returns:
+            True if "1A-" pattern found in row
+        """
+        try:
+            # Scan all columns in the row for "1A-" pattern
+            for col_idx in range(col_count):
+                try:
+                    cell = table.getCell(row_idx, col_idx)
+                    if hasattr(cell, 'text'):
+                        cell_text = cell.text.strip()
+                        if cell_text.startswith('1A-'):
+                            self.logger.info(f"Found 1A demand indicator: '{cell_text}' at row {row_idx}, col {col_idx}")
+                            return True
+                except:
+                    continue
+            return False
+        except Exception as e:
+            self.logger.debug(f"Error checking row for 1A demand: {e}")
+            return False
+
     def _scan_table(self, table_id: str) -> dict:
         """
         Scan a table for MatRes, OrdRes, DepReq, and STPord elements.
@@ -633,7 +662,9 @@ class FieldManager:
             'has_depreq': False,
             'depreq_row_index': -1,
             'has_stpord': False,
-            'stpord_row_index': -1
+            'stpord_row_index': -1,
+            'is_1a_demand': False,
+            'mrp_element_type': None
         }
 
         try:
@@ -659,24 +690,40 @@ class FieldManager:
                         if cell_text == 'MatRes':
                             self.logger.info(f"✓ MatRes found at row {row_idx}, col {col_idx}")
                             result['matres_element'] = cell
+                            # Check if this row has 1A demand
+                            if self._check_row_for_1a_demand(table, row_idx, col_count):
+                                result['is_1a_demand'] = True
+                                result['mrp_element_type'] = 'MatRes'
 
                         # Check for OrdRes - PRIORITY 2
                         elif cell_text == 'OrdRes' and not result['has_ordres']:
                             self.logger.info(f"✓ OrdRes found at row {row_idx}, col {col_idx}")
                             result['has_ordres'] = True
                             result['ordres_row_index'] = row_idx
+                            # Check if this row has 1A demand
+                            if self._check_row_for_1a_demand(table, row_idx, col_count):
+                                result['is_1a_demand'] = True
+                                result['mrp_element_type'] = 'OrdRes'
 
                         # Check for DepReq - PRIORITY 2.5 (same workflow as OrdRes)
                         elif cell_text == 'DepReq' and not result['has_depreq']:
                             self.logger.info(f"✓ DepReq found at row {row_idx}, col {col_idx}")
                             result['has_depreq'] = True
                             result['depreq_row_index'] = row_idx
+                            # Check if this row has 1A demand
+                            if self._check_row_for_1a_demand(table, row_idx, col_count):
+                                result['is_1a_demand'] = True
+                                result['mrp_element_type'] = 'DepReq'
 
                         # Check for STPord - PRIORITY 3
                         elif cell_text == 'STPord' and not result['has_stpord']:
                             self.logger.info(f"✓ STPord found at row {row_idx}, col {col_idx}")
                             result['has_stpord'] = True
                             result['stpord_row_index'] = row_idx
+                            # Check if this row has 1A demand
+                            if self._check_row_for_1a_demand(table, row_idx, col_count):
+                                result['is_1a_demand'] = True
+                                result['mrp_element_type'] = 'STPord'
 
                     except Exception:
                         continue

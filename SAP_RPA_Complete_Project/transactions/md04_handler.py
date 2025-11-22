@@ -323,6 +323,22 @@ class MD04Handler:
                 if scan_result.get('table_id_used'):
                     self.logger.debug(f"Used table ID: {scan_result['table_id_used'][:60]}...")
 
+                # PRIORITY 0: Check for 1A demand - Skip normal extraction
+                if scan_result.get('is_1a_demand'):
+                    mrp_type = scan_result.get('mrp_element_type', 'Unknown')
+                    self.logger.info(f"⚠⚠⚠ 1A DEMAND detected ({mrp_type}) in plant {plant} - Skipping normal extraction!")
+                    return {
+                        'material': material_number,
+                        'plant': plant,
+                        'source': mrp_type,
+                        'demand_type': '1A Demand',
+                        'cost_center': '1A Demand',
+                        'part_description': '1A Demand',
+                        'order': '1A Demand',
+                        'plants_checked': i + 1,
+                        'is_1a_demand': True
+                    }
+
                 # PRIORITY 1: MatRes found - STOP IMMEDIATELY
                 if scan_result['matres_element']:
                     self.logger.info(f"✓✓✓ MatRes found in plant {plant} - STOPPING search here!")
