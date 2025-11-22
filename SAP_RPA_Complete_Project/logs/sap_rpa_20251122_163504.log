@@ -1,0 +1,178 @@
+2025-11-22 16:35:04,641 - __main__ - INFO - ============================================================
+2025-11-22 16:35:04,642 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 16:35:04,642 - __main__ - INFO - ============================================================
+2025-11-22 16:35:04,643 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 16:35:04,644 - __main__ - INFO - Starting GUI application...
+2025-11-22 16:35:10,022 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 16:35:11,870 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 16:35:11,934 - core.table_id_cache - INFO - No existing cache file - starting fresh
+2025-11-22 16:35:11,936 - core.table_id_cache - INFO - No existing cache file - starting fresh
+2025-11-22 16:35:23,575 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 16:35:23,593 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:35:23,594 - workflows.scenario_manager - INFO - Processing material: 857-B96338-001
+2025-11-22 16:35:23,594 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:35:23,595 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 16:35:23,595 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 857-B96338-001: ['1000', '2000', '1020', '1900']
+2025-11-22 16:35:23,596 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 16:35:23,610 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:35:28,237 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:35:31,333 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 16:35:32,502 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 16:35:33,740 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:35:34,932 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:35:38,779 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 16:35:38,779 - core.field_manager - INFO - ⚠ TIER 1 failed - trying known alternative table IDs...
+2025-11-22 16:35:38,780 - core.field_manager - INFO - Trying 6 known table ID pattern(s)...
+2025-11-22 16:35:38,789 - core.field_manager - WARNING - ⚠ TIER 2 failed - starting dynamic table discovery...
+2025-11-22 16:35:38,790 - core.field_manager - INFO - 🔎 Scanning screen for table controls...
+2025-11-22 16:35:50,335 - core.field_manager - INFO - Found 1 potential table control(s) via enumeration
+2025-11-22 16:35:50,388 - core.field_manager - INFO - ✓ Discovered valid MD04 table: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0750/tblSAPMM61RTC_EZ
+2025-11-22 16:35:50,390 - core.field_manager - INFO - ✓ TIER 3 SUCCESS: Discovered new table ID dynamically!
+2025-11-22 16:35:50,820 - core.field_manager - INFO - ✓ MatRes found at row 2, col 2
+2025-11-22 16:35:51,152 - core.field_manager - INFO - ✓ MatRes found at row 4, col 2
+2025-11-22 16:35:51,477 - core.field_manager - INFO - ✓ MatRes found at row 6, col 2
+2025-11-22 16:35:52,853 - core.field_manager - INFO - ✓ Scan complete: MatRes found (PRIORITY 1)
+2025-11-22 16:35:52,854 - core.table_id_cache - INFO - ✓ New table ID discovered and cached: /app/con[0]/ses[0]/wnd[0]/usr/subINCLUDE1XX:SAPMM6...
+2025-11-22 16:35:52,858 - core.field_manager - INFO - 💾 New table ID cached for future use
+2025-11-22 16:35:52,859 - transactions.md04_handler - INFO - ✓✓✓ MatRes found in plant 1000 - STOPPING search here!
+2025-11-22 16:35:52,859 - transactions.md04_handler - INFO - Opening MatRes details...
+2025-11-22 16:35:58,657 - transactions.md04_handler - INFO - Extracting data from MD04...
+2025-11-22 16:35:58,732 - workflows.scenario_manager - INFO - ✓ SCENARIO 1 SUCCESS: MatRes found!
+2025-11-22 16:35:58,733 - workflows.scenario_manager - INFO - ✓ Success: 857-B96338-001 - Scenario: MD04_MatRes_Found
+2025-11-22 16:35:58,837 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:35:58,838 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 16:35:58,838 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:35:58,839 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 16:35:58,839 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 1
+2025-11-22 16:35:58,840 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 16:35:58,840 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 16:35:58,841 - workflows.scenario_manager - INFO - Failures: 0
+2025-11-22 16:35:58,841 - workflows.scenario_manager - INFO - Success Rate: 100.0%
+2025-11-22 16:35:58,841 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:36:06,490 - data.excel_manager - INFO - Writing output file: output\SAP_Export_20251122_163606.xlsx
+2025-11-22 16:36:06,844 - data.excel_manager - INFO - Successfully created output file: output\SAP_Export_20251122_163606.xlsx
+2025-11-22 16:36:46,802 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 16:36:46,824 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:36:46,825 - workflows.scenario_manager - INFO - Processing material: 857-B96338-001
+2025-11-22 16:36:46,827 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:36:46,831 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 16:36:46,836 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 857-B96338-001: ['1000', '2000', '1020', '1900']
+2025-11-22 16:36:46,837 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 16:36:46,850 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:36:51,593 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:36:54,670 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 16:36:55,784 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 16:36:57,023 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:36:58,261 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:37:02,205 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 16:37:02,205 - core.field_manager - INFO - Trying 1 cached table ID(s)...
+2025-11-22 16:37:02,267 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 16:37:02,722 - core.field_manager - INFO - ✓ MatRes found at row 2, col 2
+2025-11-22 16:37:03,104 - core.field_manager - INFO - ✓ MatRes found at row 4, col 2
+2025-11-22 16:37:03,536 - core.field_manager - INFO - ✓ MatRes found at row 6, col 2
+2025-11-22 16:37:05,131 - core.field_manager - INFO - ✓ Scan complete: MatRes found (PRIORITY 1)
+2025-11-22 16:37:05,134 - core.table_id_cache - INFO - ✓ Table ID success recorded (count: 2)
+2025-11-22 16:37:05,138 - transactions.md04_handler - INFO - ✓✓✓ MatRes found in plant 1000 - STOPPING search here!
+2025-11-22 16:37:05,142 - transactions.md04_handler - INFO - Opening MatRes details...
+2025-11-22 16:37:11,103 - transactions.md04_handler - INFO - Extracting data from MD04...
+2025-11-22 16:37:11,168 - workflows.scenario_manager - INFO - ✓ SCENARIO 1 SUCCESS: MatRes found!
+2025-11-22 16:37:11,169 - workflows.scenario_manager - INFO - ✓ Success: 857-B96338-001 - Scenario: MD04_MatRes_Found
+2025-11-22 16:37:11,281 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:37:11,282 - workflows.scenario_manager - INFO - Processing material: 857-B97453-003
+2025-11-22 16:37:11,282 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:37:11,283 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 16:37:11,283 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 857-B97453-003: ['1000', '2000', '1020', '1900']
+2025-11-22 16:37:11,284 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 16:37:11,293 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:37:16,941 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:37:20,005 - transactions.md04_handler - INFO - Entering material number: 857-B97453-003
+2025-11-22 16:37:21,114 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 16:37:22,336 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:37:23,544 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:37:27,419 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 16:37:27,419 - core.field_manager - INFO - Trying 1 cached table ID(s)...
+2025-11-22 16:37:27,472 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 16:37:27,921 - core.field_manager - INFO - ✓ OrdRes found at row 3, col 2
+2025-11-22 16:37:29,933 - core.field_manager - INFO - ✓ Scan complete: OrdRes found (PRIORITY 2)
+2025-11-22 16:37:29,959 - core.table_id_cache - INFO - ✓ Table ID success recorded (count: 3)
+2025-11-22 16:37:29,968 - transactions.md04_handler - INFO - ✓✓ OrdRes found in plant 1000 - Extracting data immediately!
+2025-11-22 16:37:29,973 - transactions.md04_handler - INFO - Extracting OrdRes data from current screen for material 857-B97453-003 at row 3
+2025-11-22 16:37:29,983 - transactions.md04_handler - ERROR - Error extracting OrdRes from current screen: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\transactions\md04_handler.py", line 572, in extract_ordres_from_current_screen
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 16:37:30,042 - transactions.md04_handler - WARNING - OrdRes found but data extraction failed in plant 1000
+2025-11-22 16:37:30,074 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 16:37:30,102 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:37:34,454 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:37:37,512 - transactions.md04_handler - INFO - Entering material number: 857-B97453-003
+2025-11-22 16:37:38,592 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-22 16:37:39,809 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:37:41,020 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:37:44,611 - transactions.md04_handler - INFO - MD04 returned no data for plant 2000
+2025-11-22 16:37:44,612 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 16:37:44,623 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:37:48,861 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:37:51,931 - transactions.md04_handler - INFO - Entering material number: 857-B97453-003
+2025-11-22 16:37:53,036 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-22 16:37:54,225 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:37:55,432 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:37:58,995 - transactions.md04_handler - INFO - MD04 returned no data for plant 1020
+2025-11-22 16:37:58,996 - transactions.md04_handler - INFO - Checking plant 1900 (4/4)...
+2025-11-22 16:37:59,004 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:38:03,218 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:38:06,277 - transactions.md04_handler - INFO - Entering material number: 857-B97453-003
+2025-11-22 16:38:07,353 - transactions.md04_handler - INFO - Setting plant: 1900
+2025-11-22 16:38:08,559 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:38:09,766 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:38:13,298 - transactions.md04_handler - INFO - MD04 returned no data for plant 1900
+2025-11-22 16:38:13,299 - transactions.md04_handler - WARNING - All 4 plants checked - no MatRes, OrdRes, or STPord found
+2025-11-22 16:38:13,299 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 16:38:13,300 - workflows.scenario_manager - ERROR - ✗ Failed: 857-B97453-003 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 16:38:13,402 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:38:13,402 - workflows.scenario_manager - INFO - Processing material: 857-C07072-001
+2025-11-22 16:38:13,402 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 16:38:13,403 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 16:38:13,403 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 857-C07072-001: ['1000', '2000', '1020', '1900']
+2025-11-22 16:38:13,403 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 16:38:13,411 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:38:17,633 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:38:20,691 - transactions.md04_handler - INFO - Entering material number: 857-C07072-001
+2025-11-22 16:38:21,780 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 16:38:22,994 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:38:24,200 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:38:27,978 - core.field_manager - INFO - 🔍 Starting robust MD04 table scan (3-tier detection)...
+2025-11-22 16:38:27,979 - core.field_manager - INFO - Trying 1 cached table ID(s)...
+2025-11-22 16:38:28,034 - core.field_manager - INFO - ✓ TIER 1 SUCCESS: Using cached table ID
+2025-11-22 16:38:28,934 - core.field_manager - INFO - ✓ OrdRes found at row 6, col 2
+2025-11-22 16:38:30,073 - core.field_manager - INFO - ✓ Scan complete: OrdRes found (PRIORITY 2)
+2025-11-22 16:38:30,075 - core.table_id_cache - INFO - ✓ Table ID success recorded (count: 4)
+2025-11-22 16:38:30,078 - transactions.md04_handler - INFO - ✓✓ OrdRes found in plant 1000 - Extracting data immediately!
+2025-11-22 16:38:30,079 - transactions.md04_handler - INFO - Extracting OrdRes data from current screen for material 857-C07072-001 at row 6
+2025-11-22 16:38:30,081 - transactions.md04_handler - ERROR - Error extracting OrdRes from current screen: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\transactions\md04_handler.py", line 572, in extract_ordres_from_current_screen
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 16:38:30,082 - transactions.md04_handler - WARNING - OrdRes found but data extraction failed in plant 1000
+2025-11-22 16:38:30,082 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 16:38:30,089 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:38:34,219 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:38:37,277 - transactions.md04_handler - INFO - Entering material number: 857-C07072-001
+2025-11-22 16:38:38,358 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-22 16:38:39,581 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:38:40,771 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:38:44,383 - transactions.md04_handler - INFO - MD04 returned no data for plant 2000
+2025-11-22 16:38:44,383 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 16:38:44,393 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 16:38:48,781 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 16:38:51,829 - transactions.md04_handler - INFO - Entering material number: 857-C07072-001
+2025-11-22 16:38:52,929 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-22 16:38:54,138 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 16:38:55,490 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 16:38:56,342 - workflows.scenario_manager - ERROR - ✗ Failed: 857-C07072-001 - Error: 
+2025-11-22 16:39:07,163 - core.sap_connector - INFO - Disconnecting from SAP...
+2025-11-22 16:39:07,171 - core.sap_connector - INFO - Disconnected from SAP
