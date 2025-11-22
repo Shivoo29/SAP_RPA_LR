@@ -369,6 +369,7 @@ class FieldManager:
         """
         # Import config here to avoid circular dependency
         from config import Config
+        import re
 
         known_ids = Config.MD04_TABLE_IDS if hasattr(Config, 'MD04_TABLE_IDS') else []
 
@@ -384,16 +385,27 @@ class FieldManager:
         self.logger.info(f"Trying {len(known_ids)} known table ID pattern(s)...")
 
         for table_id in known_ids:
-            try:
-                table = self.session.findById(table_id)
-                if self._is_valid_md04_table(table):
-                    self.logger.debug(f"✓ Known table ID valid: {table_id[:50]}...")
-                    # Add to cache for future use
-                    self.cache_manager.add_known_table_id(table_id, source="config")
-                    return table_id
-            except Exception as e:
-                self.logger.debug(f"Known ID failed: {str(e)[:50]}...")
-                continue
+            # Try both original and cell-stripped versions
+            ids_to_try = [table_id]
+
+            # Strip cell position if present (e.g., [3,2] or /cell[3,2])
+            stripped_id = re.sub(r'\[?\d+,\d+\]?$', '', table_id)
+            stripped_id = re.sub(r'/cell\[\d+,\d+\]$', '', stripped_id)
+            if stripped_id != table_id:
+                ids_to_try.append(stripped_id)
+                self.logger.debug(f"Detected cell position in ID, trying stripped: {stripped_id[:50]}...")
+
+            for try_id in ids_to_try:
+                try:
+                    table = self.session.findById(try_id)
+                    if self._is_valid_md04_table(table):
+                        self.logger.debug(f"✓ Known table ID valid: {try_id[:50]}...")
+                        # Add to cache for future use
+                        self.cache_manager.add_known_table_id(try_id, source="config")
+                        return try_id
+                except Exception as e:
+                    self.logger.debug(f"ID failed: {str(e)[:50]}...")
+                    continue
 
         return None
 
