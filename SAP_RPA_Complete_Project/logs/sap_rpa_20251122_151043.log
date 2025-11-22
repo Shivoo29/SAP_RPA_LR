@@ -1,0 +1,87 @@
+2025-11-22 15:10:43,426 - __main__ - INFO - ============================================================
+2025-11-22 15:10:43,426 - __main__ - INFO - SAP RPA - Multi-Scenario Automation System
+2025-11-22 15:10:43,427 - __main__ - INFO - ============================================================
+2025-11-22 15:10:43,427 - __main__ - INFO - Configuration loaded successfully
+2025-11-22 15:10:43,427 - __main__ - INFO - Starting GUI application...
+2025-11-22 15:10:47,870 - core.sap_connector - INFO - Connecting to SAP GUI...
+2025-11-22 15:10:49,766 - core.sap_connector - INFO - Connected to SAP: PRD Client 250 User JHASH
+2025-11-22 15:10:57,952 - workflows.scenario_manager - INFO - Statistics reset
+2025-11-22 15:10:57,963 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 15:10:57,963 - workflows.scenario_manager - INFO - Processing material: 857-B96338-001
+2025-11-22 15:10:57,964 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 15:10:57,964 - workflows.scenario_manager - INFO - SCENARIO 1: Attempting MD04 with optimized multi-plant search...
+2025-11-22 15:10:57,964 - transactions.md04_handler - INFO - 🚀 OPTIMIZED multi-plant search for 857-B96338-001: ['1000', '2000', '1020', '1900']
+2025-11-22 15:10:57,964 - transactions.md04_handler - INFO - Checking plant 1000 (1/4)...
+2025-11-22 15:10:57,978 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 15:11:02,260 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 15:11:05,297 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 15:11:06,358 - transactions.md04_handler - INFO - Setting plant: 1000
+2025-11-22 15:11:07,487 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 15:11:08,603 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 15:11:12,321 - core.field_manager - INFO - Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...
+2025-11-22 15:11:12,322 - core.field_manager - ERROR - Error scanning MD04 table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 270, in scan_md04_table_for_elements
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 15:11:12,324 - transactions.md04_handler - INFO - No MatRes, OrdRes, or STPord found in plant 1000
+2025-11-22 15:11:12,324 - transactions.md04_handler - INFO - Checking plant 2000 (2/4)...
+2025-11-22 15:11:12,337 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 15:11:16,336 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 15:11:19,369 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 15:11:20,438 - transactions.md04_handler - INFO - Setting plant: 2000
+2025-11-22 15:11:21,634 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 15:11:22,851 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 15:11:26,393 - core.field_manager - INFO - Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...
+2025-11-22 15:11:26,401 - core.field_manager - ERROR - Error scanning MD04 table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 270, in scan_md04_table_for_elements
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 15:11:26,402 - transactions.md04_handler - INFO - No MatRes, OrdRes, or STPord found in plant 2000
+2025-11-22 15:11:26,403 - transactions.md04_handler - INFO - Checking plant 1020 (3/4)...
+2025-11-22 15:11:26,426 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 15:11:30,503 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 15:11:33,553 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 15:11:34,656 - transactions.md04_handler - INFO - Setting plant: 1020
+2025-11-22 15:11:35,939 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 15:11:37,239 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 15:11:40,682 - core.field_manager - INFO - Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...
+2025-11-22 15:11:40,683 - core.field_manager - ERROR - Error scanning MD04 table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 270, in scan_md04_table_for_elements
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 15:11:40,684 - transactions.md04_handler - INFO - No MatRes, OrdRes, or STPord found in plant 1020
+2025-11-22 15:11:40,684 - transactions.md04_handler - INFO - Checking plant 1900 (4/4)...
+2025-11-22 15:11:40,689 - core.sap_connector - INFO - Navigating to transaction using robust method: '/nMD04'...
+2025-11-22 15:11:44,691 - core.sap_connector - INFO - ✓ Successfully navigated to MD04
+2025-11-22 15:11:47,720 - transactions.md04_handler - INFO - Entering material number: 857-B96338-001
+2025-11-22 15:11:48,789 - transactions.md04_handler - INFO - Setting plant: 1900
+2025-11-22 15:11:49,925 - transactions.md04_handler - INFO - Setting MRP area: 1000
+2025-11-22 15:11:51,150 - transactions.md04_handler - INFO - Executing MD04 query...
+2025-11-22 15:11:54,609 - core.field_manager - INFO - Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...
+2025-11-22 15:11:54,611 - core.field_manager - ERROR - Error scanning MD04 table: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+Traceback (most recent call last):
+  File "C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\core\field_manager.py", line 270, in scan_md04_table_for_elements
+    table = self.session.findById(table_id)
+  File "<COMObject <unknown>>", line 2, in findById
+pywintypes.com_error: (-2147352567, 'Exception occurred.', (619, 'SAP Frontend Server', 'The control could not be found by id.', 'C:\\Program Files (x86)\\SAP\\FrontEnd\\SAPGUI\\sapfront.HLP', 393215, 0), None)
+2025-11-22 15:11:54,612 - transactions.md04_handler - INFO - No MatRes, OrdRes, or STPord found in plant 1900
+2025-11-22 15:11:54,612 - transactions.md04_handler - WARNING - All 4 plants checked - no MatRes, OrdRes, or STPord found
+2025-11-22 15:11:54,613 - workflows.scenario_manager - ERROR - ✗ ALL SCENARIOS FAILED: Could not extract data
+2025-11-22 15:11:54,613 - workflows.scenario_manager - ERROR - ✗ Failed: 857-B96338-001 - Error: MatRes not found in any plant, ERF fallback also failed
+2025-11-22 15:11:54,724 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 15:11:54,725 - workflows.scenario_manager - INFO - PROCESSING STATISTICS
+2025-11-22 15:11:54,725 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 15:11:54,726 - workflows.scenario_manager - INFO - Total Processed: 1
+2025-11-22 15:11:54,727 - workflows.scenario_manager - INFO - Scenario 1 (MatRes Found): 0
+2025-11-22 15:11:54,727 - workflows.scenario_manager - INFO - Scenario 2 (ERF Dashboard): 0
+2025-11-22 15:11:54,728 - workflows.scenario_manager - INFO - Scenario 3 (ERF→KO03): 0
+2025-11-22 15:11:54,729 - workflows.scenario_manager - INFO - Failures: 1
+2025-11-22 15:11:54,729 - workflows.scenario_manager - INFO - Success Rate: 0.0%
+2025-11-22 15:11:54,729 - workflows.scenario_manager - INFO - ============================================================
+2025-11-22 15:12:03,991 - __main__ - INFO - Application interrupted by user
