@@ -36,8 +36,12 @@ def worker_process(
         config_dict: Configuration dictionary
         stop_event: Event to signal stop
     """
+    # CRITICAL: Initialize COM for this process (required for SAP GUI automation)
+    import pythoncom
+    pythoncom.CoInitialize()
+
     logger = logging.getLogger(f"Worker-{worker_id}")
-    logger.info(f"🚀 Worker {worker_id} started")
+    logger.info(f"🚀 Worker {worker_id} started (COM initialized)")
 
     sap_connector = None
     scenario_manager = None
@@ -50,11 +54,13 @@ def worker_process(
             # Worker 0 uses the existing session
             if not sap_connector.connect(session_index=0):
                 logger.error(f"Worker {worker_id} failed to connect to SAP")
+                pythoncom.CoUninitialize()
                 return
         else:
             # Workers 1-4 create new SAP sessions
             if not sap_connector.connect(session_index=worker_id, create_new=True):
                 logger.error(f"Worker {worker_id} failed to connect to SAP")
+                pythoncom.CoUninitialize()
                 return
 
         logger.info(f"✓ Worker {worker_id} connected to SAP with dedicated session")
@@ -109,7 +115,7 @@ def worker_process(
         logger.error(f"Worker {worker_id} fatal error: {e}", exc_info=True)
 
     finally:
-        # Cleanup
+        # Cleanup SAP connection
         if sap_connector and sap_connector.is_connected:
             try:
                 sap_connector.disconnect()
@@ -117,7 +123,12 @@ def worker_process(
             except:
                 pass
 
-        logger.info(f"Worker {worker_id} stopped")
+        # CRITICAL: Uninitialize COM for this process
+        try:
+            pythoncom.CoUninitialize()
+            logger.info(f"Worker {worker_id} stopped (COM uninitialized)")
+        except:
+            logger.info(f"Worker {worker_id} stopped")
 
 
 class ParallelProcessor:
