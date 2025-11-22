@@ -55,21 +55,9 @@ class SAPConnector:
 
             # Get or Create Session
             if create_new:
-                # Create a new session - each worker gets its own session
-                self.logger.info("Creating new SAP session...")
-                self.logger.info(f"Connection object type: {type(self.connection)}")
-                self.logger.info(f"Connection has CreateSession: {hasattr(self.connection, 'CreateSession')}")
-
-                # Try to get the first session and use IT to create new sessions
-                first_session = self.connection.Children(0)
-                self.logger.info(f"First session type: {type(first_session)}")
-                self.logger.info(f"First session has CreateSession: {hasattr(first_session, 'CreateSession')}")
-
-                # Create session from the first session object
-                self.session = first_session.CreateSession()
-                if not self.session:
-                    raise Exception("CreateSession() returned None")
-                self.logger.info(f"✓ Created new SAP session")
+                # NOTE: Parallel processing with multiprocessing is disabled due to COM limitations
+                # CreateSession() doesn't work reliably across process boundaries
+                raise Exception("Parallel processing is currently disabled. Use sequential mode instead.")
             elif session_index < self.connection.Children.Count:
                 # Use existing session at specified index
                 self.session = self.connection.Children(session_index)

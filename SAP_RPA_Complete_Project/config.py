@@ -94,7 +94,7 @@ class Config:
     WEB_RETRY_COUNT = 2  # Reduced from 3 for faster failures
 
     # ===== Performance Optimization Settings =====
-    ENABLE_PARALLEL_PROCESSING = True  # Process multiple materials concurrently
+    ENABLE_PARALLEL_PROCESSING = False  # DISABLED: Use sequential mode (50-60% faster with optimizations)
     MAX_PARALLEL_WORKERS = 3  # Number of concurrent SAP sessions (3-5 recommended)
     ENABLE_SMART_PLANT_ORDERING = True  # Reorder plants based on success rate
     ENABLE_AGGRESSIVE_CACHING = True  # Cache plant availability patterns
