@@ -276,7 +276,7 @@ class SAPConnector:
     def check_for_sap_errors(self) -> Optional[str]:
         """
         Check for SAP error messages.
-        
+
         Returns:
             Error message if found, None otherwise
         """
@@ -286,19 +286,19 @@ class SAPConnector:
                 status_bar = self.session.findById("wnd[0]/sbar")
                 if status_bar and hasattr(status_bar, 'text'):
                     status_text = status_bar.text.strip()
-                    if status_text and any(keyword in status_text.lower() 
+                    if status_text and any(keyword in status_text.lower()
                                           for keyword in ['error', 'not found', 'does not exist']):
                         return status_text
             except:
                 pass
-            
+
             # Check for error popup windows
             for window_id in ["wnd[1]", "wnd[2]"]:
                 try:
                     window = self.session.findById(window_id)
                     if window and hasattr(window, 'text'):
                         window_text = window.text
-                        if any(keyword in window_text.lower() 
+                        if any(keyword in window_text.lower()
                               for keyword in ['error', 'fehler', 'warning']):
                             # Try to close the error window
                             try:
@@ -308,11 +308,147 @@ class SAPConnector:
                             return window_text
                 except:
                     continue
-                    
+
         except Exception as e:
             self.logger.warning(f"Error checking for SAP errors: {e}")
-        
+
         return None
+
+    def get_status_bar_info(self) -> dict:
+        """
+        Get comprehensive status bar information.
+
+        Returns:
+            Dictionary with status bar details:
+            - 'text': Status bar message text
+            - 'type': Message type (error, warning, info, success, none)
+            - 'message_id': SAP message ID if available
+        """
+        result = {
+            'text': '',
+            'type': 'none',
+            'message_id': ''
+        }
+
+        try:
+            status_bar = self.session.findById("wnd[0]/sbar")
+            if not status_bar:
+                return result
+
+            # Get status bar text
+            if hasattr(status_bar, 'text'):
+                result['text'] = status_bar.text.strip()
+
+            # Get message type
+            if hasattr(status_bar, 'MessageType'):
+                msg_type = status_bar.MessageType
+                type_mapping = {
+                    'E': 'error',
+                    'W': 'warning',
+                    'I': 'info',
+                    'S': 'success',
+                    'A': 'abort'
+                }
+                result['type'] = type_mapping.get(msg_type, 'unknown')
+
+            # Get message ID
+            if hasattr(status_bar, 'MessageId'):
+                result['message_id'] = status_bar.MessageId
+
+            # Fallback: detect type from text if MessageType not available
+            if result['type'] == 'none' and result['text']:
+                text_lower = result['text'].lower()
+                if any(kw in text_lower for kw in ['error', 'fehler', 'not found', 'does not exist']):
+                    result['type'] = 'error'
+                elif any(kw in text_lower for kw in ['warning', 'warnung']):
+                    result['type'] = 'warning'
+                elif any(kw in text_lower for kw in ['success', 'erfolgreich']):
+                    result['type'] = 'success'
+                elif result['text']:
+                    result['type'] = 'info'
+
+        except Exception as e:
+            self.logger.debug(f"Error getting status bar info: {e}")
+
+        return result
+
+    def has_data_in_screen(self) -> bool:
+        """
+        Check if the current screen has data (not empty result).
+
+        Returns:
+            True if screen appears to have data, False if empty/error
+        """
+        try:
+            # Check status bar for "no data" messages
+            status_info = self.get_status_bar_info()
+
+            if status_info['type'] == 'error':
+                self.logger.debug(f"Screen has error: {status_info['text']}")
+                return False
+
+            text_lower = status_info['text'].lower()
+            no_data_keywords = [
+                'no data',
+                'keine daten',
+                'not found',
+                'nicht gefunden',
+                'does not exist',
+                'existiert nicht',
+                'no items',
+                'keine einträge'
+            ]
+
+            if any(kw in text_lower for kw in no_data_keywords):
+                self.logger.debug(f"Screen indicates no data: {status_info['text']}")
+                return False
+
+            # If we get here, assume data exists
+            return True
+
+        except Exception as e:
+            self.logger.debug(f"Error checking for screen data: {e}")
+            # Default to True to avoid false negatives
+            return True
+
+    def get_screen_info(self) -> dict:
+        """
+        Get information about the current SAP screen state.
+
+        Returns:
+            Dictionary with screen information:
+            - 'transaction': Current transaction code
+            - 'screen_number': Screen number
+            - 'program': Program name
+            - 'status_bar': Status bar info dict
+        """
+        info = {
+            'transaction': '',
+            'screen_number': '',
+            'program': '',
+            'status_bar': {}
+        }
+
+        try:
+            # Get transaction code
+            if hasattr(self.session.Info, 'Transaction'):
+                info['transaction'] = self.session.Info.Transaction
+
+            # Get screen number
+            if hasattr(self.session.Info, 'ScreenNumber'):
+                info['screen_number'] = str(self.session.Info.ScreenNumber)
+
+            # Get program name
+            if hasattr(self.session.Info, 'Program'):
+                info['program'] = self.session.Info.Program
+
+            # Get status bar info
+            info['status_bar'] = self.get_status_bar_info()
+
+        except Exception as e:
+            self.logger.debug(f"Error getting screen info: {e}")
+
+        return info
     
     def __enter__(self):
         """Context manager entry."""

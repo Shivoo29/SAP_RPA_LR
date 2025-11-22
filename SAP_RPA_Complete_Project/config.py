@@ -104,6 +104,29 @@ class Config:
         "expand_items_button": "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211",
         "rpm_number_field": "wnd[0]/usr/subSUB0:SAPLMEGUI:0015/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1211/tblSAPLMEGUITC_1211/txtMEPO1211-BEDNR[18,0]"
     }
+
+    # ===== MD04 Table ID Alternatives (for robust detection) =====
+    # These are known table IDs that may appear in different MD04 screen layouts
+    # The system will try these in order, and cache successful ones
+    MD04_TABLE_IDS = [
+        # Standard layout - Tab 1
+        "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
+
+        # Standard layout - Tab 2
+        "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_2/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
+
+        # Simplified path (some SAP configurations)
+        "wnd[0]/usr/tblSAPMM61RTC_EZ",
+
+        # Grid container layout (alternative rendering)
+        "wnd[0]/usr/cntlGRID1/shellcont/shell",
+
+        # Alternative include area
+        "wnd[0]/usr/subINCLUDE2XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ",
+
+        # Shell control variant
+        "wnd[0]/usr/shellcont/shell",
+    ]
     
     @classmethod
     def get_plant_list(cls, user_selection: List[str] = None) -> List[str]:
