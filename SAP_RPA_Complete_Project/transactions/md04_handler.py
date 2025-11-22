@@ -561,17 +561,40 @@ class MD04Handler:
                             except:
                                 pass
 
-                        # Check if this cell contains RPM
+                        # Check if this cell contains RPM/ERF - prioritize column 18 (Reqmt No.)
                         if cell_text:
                             rpm_full_text = cell_text
-                            if rpm_full_text.upper().startswith("RPM"):
+
+                            # Check for ERF prefix (SAP Requirement Number format: ERF0641929)
+                            if rpm_full_text.upper().startswith("ERF"):
+                                self.logger.info(f"✓ Found ERF/Reqmt No.: '{rpm_full_text}' at row {row_idx}, col {col_idx}")
+                                # Extract just the number part after ERF
+                                match = re.search(r'\d+', rpm_full_text)
+                                if match:
+                                    rpm_number = match.group(0).lstrip('0')
+                                    if rpm_number:  # Make sure not all zeros
+                                        self.logger.info(f"✓ Successfully extracted RPM/ERF number: {rpm_number}")
+                                        return rpm_number
+
+                            # Also check for RPM prefix (legacy format)
+                            elif rpm_full_text.upper().startswith("RPM"):
                                 self.logger.info(f"✓ Found RPM text: '{rpm_full_text}' at row {row_idx}, col {col_idx}")
                                 match = re.search(r'\d+', rpm_full_text)
                                 if match:
                                     rpm_number = match.group(0).lstrip('0')
-                                    self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
-                                    rpm_found = True
-                                    return rpm_number
+                                    if rpm_number:
+                                        self.logger.info(f"✓ Successfully extracted RPM number: {rpm_number}")
+                                        return rpm_number
+
+                            # For column 18 specifically, also try plain format (just in case)
+                            elif col_idx == 18 and re.match(r'^[A-Z]{3}\d+$', rpm_full_text.upper()):
+                                self.logger.info(f"✓ Found Reqmt No. format: '{rpm_full_text}' at row {row_idx}, col {col_idx}")
+                                match = re.search(r'\d+', rpm_full_text)
+                                if match:
+                                    rpm_number = match.group(0).lstrip('0')
+                                    if rpm_number:
+                                        self.logger.info(f"✓ Successfully extracted number: {rpm_number}")
+                                        return rpm_number
 
                             # Log non-empty cells for debugging
                             if cell_text and len(cell_text) > 0:
