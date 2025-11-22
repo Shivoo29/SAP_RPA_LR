@@ -1,0 +1,10 @@
+2025-11-22 20:19:44,837 - Worker-2 - INFO - Worker 2 logging to: C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\logs\worker_2_20251122_201944.log
+2025-11-22 20:19:44,837 - core.sap_connector - INFO - Connecting to SAP GUI (session_index=0, create_new=True)...
+2025-11-22 20:19:45,459 - core.sap_connector - INFO - Creating new SAP session...
+2025-11-22 20:19:45,460 - core.sap_connector - INFO - Connection object type: <class 'win32com.client.CDispatch'>
+2025-11-22 20:19:45,463 - core.sap_connector - INFO - Connection has CreateSession: False
+2025-11-22 20:19:45,475 - core.sap_connector - INFO - First session type: <class 'win32com.client.CDispatch'>
+2025-11-22 20:19:45,479 - core.sap_connector - INFO - First session has CreateSession: True
+2025-11-22 20:19:45,823 - core.sap_connector - ERROR - Failed to connect to SAP: CreateSession() returned None
+2025-11-22 20:19:45,832 - Worker-2 - ERROR - Worker 2 failed to create SAP session
+2025-11-22 20:19:45,838 - Worker-2 - INFO - Worker 2 stopped (COM uninitialized)
