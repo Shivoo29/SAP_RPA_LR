@@ -196,48 +196,128 @@ class ERFWorkflow:
     
     def extract_erf_data(self) -> Optional[ERFData]:
         """
-        Extract data from ERF Dashboard screen.
-        
+        Extract data from ERF Dashboard screen with retry logic and better error handling.
+
         Returns:
             ERFData object if successful, None otherwise
         """
         self.logger.info("Extracting ERF data...")
-        wait = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
         erf_data = ERFData()
 
-        try:
-            # Click "Update/View ERF" button and wait for a known element on the next page
-            update_button = wait.until(
-                EC.element_to_be_clickable((By.ID, "aaaa.HeaderView.UpdateBtn"))
-            )
-            update_button.click()
-            self.logger.info("Clicked Update/View ERF button")
+        retry_count = getattr(self.config, 'WEB_RETRY_COUNT', 3)
 
-            # Wait for the first input field to be visible as a confirmation the page has loaded
-            short_desc_element = wait.until(
-                EC.visibility_of_element_located((By.ID, "aaaa.CreateOrderView.ShortDescInp"))
-            )
-            
+        try:
+            # Click "Update/View ERF" button with retry logic
+            for attempt in range(retry_count):
+                try:
+                    wait = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
+                    update_button = wait.until(
+                        EC.element_to_be_clickable((By.ID, "aaaa.HeaderView.UpdateBtn"))
+                    )
+                    update_button.click()
+                    self.logger.info("Clicked Update/View ERF button")
+                    break
+                except TimeoutException:
+                    if attempt < retry_count - 1:
+                        self.logger.warning(f"Update button not found, retry {attempt + 1}/{retry_count}")
+                        time.sleep(2)
+                    else:
+                        raise
+
+            # Wait for page to fully load with multiple indicators
+            wait_long = WebDriverWait(self.driver, self.config.WEB_TIMEOUT)
+
+            # Strategy 1: Wait for document ready state
+            self.logger.info("Waiting for page to load (document ready)...")
+            wait_long.until(lambda driver: driver.execute_script("return document.readyState") == "complete")
+            time.sleep(3)  # Additional buffer for dynamic content
+
+            # Strategy 2: Wait for the key element with multiple fallbacks
+            short_desc_element = None
+            element_locators = [
+                (By.ID, "aaaa.CreateOrderView.ShortDescInp"),
+                (By.XPATH, "//input[contains(@id, 'ShortDescInp')]"),
+                (By.CSS_SELECTOR, "input[id*='ShortDescInp']")
+            ]
+
+            for locator_type, locator_value in element_locators:
+                try:
+                    self.logger.info(f"Trying locator: {locator_type}={locator_value}")
+                    short_desc_element = wait_long.until(
+                        EC.visibility_of_element_located((locator_type, locator_value))
+                    )
+                    self.logger.info(f"✓ Found element using {locator_type}")
+                    break
+                except TimeoutException:
+                    self.logger.warning(f"Locator failed: {locator_type}={locator_value}")
+                    continue
+
+            if not short_desc_element:
+                self.logger.error("All locator strategies failed for ShortDescInp")
+                return None
+
             # Extract data fields using the now-visible elements
-            erf_data.short_order_desc = short_desc_element.get_attribute("value")
+            erf_data.short_order_desc = short_desc_element.get_attribute("value") or ""
             self.logger.info(f"Short Order Description: {erf_data.short_order_desc}")
 
-            internal_order_element = self.driver.find_element(By.ID, "aaaa.CreateOrderView.InternalOrderInp")
-            erf_data.internal_order = internal_order_element.get_attribute("value")
-            erf_data.order_number = erf_data.internal_order
-            self.logger.info(f"Internal Order: {erf_data.internal_order}")
+            # Extract Internal Order with fallback locators
+            internal_order_element = None
+            internal_order_locators = [
+                (By.ID, "aaaa.CreateOrderView.InternalOrderInp"),
+                (By.XPATH, "//input[contains(@id, 'InternalOrderInp')]"),
+                (By.CSS_SELECTOR, "input[id*='InternalOrderInp']")
+            ]
 
-            cost_center_element = self.driver.find_element(By.ID, "aaaa.CreateOrderView.CostCenterInp")
-            erf_data.cost_center = cost_center_element.get_attribute("value")
-            self.logger.info(f"Cost Center: {erf_data.cost_center}")
-            
+            for locator_type, locator_value in internal_order_locators:
+                try:
+                    internal_order_element = self.driver.find_element(locator_type, locator_value)
+                    break
+                except:
+                    continue
+
+            if internal_order_element:
+                erf_data.internal_order = internal_order_element.get_attribute("value") or ""
+                erf_data.order_number = erf_data.internal_order
+                self.logger.info(f"Internal Order: {erf_data.internal_order}")
+            else:
+                self.logger.warning("Could not find Internal Order element")
+
+            # Extract Cost Center with fallback locators
+            cost_center_element = None
+            cost_center_locators = [
+                (By.ID, "aaaa.CreateOrderView.CostCenterInp"),
+                (By.XPATH, "//input[contains(@id, 'CostCenterInp')]"),
+                (By.CSS_SELECTOR, "input[id*='CostCenterInp']")
+            ]
+
+            for locator_type, locator_value in cost_center_locators:
+                try:
+                    cost_center_element = self.driver.find_element(locator_type, locator_value)
+                    break
+                except:
+                    continue
+
+            if cost_center_element:
+                erf_data.cost_center = cost_center_element.get_attribute("value") or ""
+                self.logger.info(f"Cost Center: {erf_data.cost_center}")
+            else:
+                self.logger.warning("Could not find Cost Center element")
+
+            self.logger.info("✓ ERF data extraction completed successfully")
             return erf_data
 
-        except TimeoutException:
-            self.logger.error("Error extracting ERF data: Timed out waiting for 'Update/View' page elements to load.")
+        except TimeoutException as e:
+            self.logger.error(f"Timeout error extracting ERF data: {e}")
+            self.logger.error("Page may be loading too slowly or element IDs have changed")
+            # Log current page source for debugging
+            try:
+                page_source_snippet = self.driver.page_source[:500]
+                self.logger.debug(f"Page source snippet: {page_source_snippet}")
+            except:
+                pass
             return None
         except Exception as e:
-            self.logger.error(f"An unexpected error occurred during ERF data extraction: {e}")
+            self.logger.error(f"Unexpected error during ERF data extraction: {e}", exc_info=True)
             return None
     
     def execute_vbs_script_1(self) -> Optional[Dict]:

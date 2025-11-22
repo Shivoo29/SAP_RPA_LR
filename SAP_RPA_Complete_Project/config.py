@@ -90,7 +90,8 @@ class Config:
     # ===== Web Automation Settings =====
     ERF_DASHBOARD_URL = 'https://epp.fremont.lamrc.net/irj/portal?&EPPAP13_0'
     EDGE_DRIVER_PATH = r"c:\Program Files\edgedriver_win64\msedgedriver.exe"
-    WEB_TIMEOUT = 30
+    WEB_TIMEOUT = 60  # Increased from 30 to handle slow page loads
+    WEB_RETRY_COUNT = 3  # Number of retries for failed element lookups
     
     # ===== VBS Script Paths =====
     VBS_SCRIPT_DIR = Path(__file__).parent / 'vbs_scripts'
