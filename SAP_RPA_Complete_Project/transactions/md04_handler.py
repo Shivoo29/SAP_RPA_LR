@@ -593,18 +593,39 @@ class MD04Handler:
             self.logger.warning("Requirements table found but no RPM number detected")
             self.logger.warning(f"Scanned {row_count} rows x {col_count} columns - no RPM found")
 
-            # Log table structure for debugging
-            self.logger.info("Sample of table contents:")
+            # Log table structure for debugging - show ALL columns to find "Reqmt No."
+            self.logger.info("Full table contents (showing ALL columns):")
             for row_idx in range(min(3, row_count)):  # Show first 3 rows
                 row_data = []
-                for col_idx in range(min(5, col_count)):  # Show first 5 columns
+                for col_idx in range(col_count):  # Show ALL columns
                     try:
                         cell = req_table.getCell(row_idx, col_idx)
                         if hasattr(cell, 'text'):
-                            row_data.append(cell.text.strip()[:15])
+                            cell_value = cell.text.strip()[:20]  # Truncate long values
+                            if cell_value:  # Only show non-empty cells
+                                row_data.append(f"[{col_idx}]:{cell_value}")
                     except:
-                        row_data.append("N/A")
-                self.logger.info(f"  Row {row_idx}: {row_data}")
+                        pass
+                if row_data:
+                    self.logger.info(f"  Row {row_idx}: {row_data}")
+
+            # Also try to log column headers
+            self.logger.info("Attempting to read column headers...")
+            if hasattr(req_table, 'columns'):
+                try:
+                    headers = []
+                    for col_idx in range(min(col_count, 40)):  # Limit to first 40 columns
+                        try:
+                            if col_idx < req_table.columns.count:
+                                col_obj = req_table.columns[col_idx]
+                                if hasattr(col_obj, 'title'):
+                                    headers.append(f"[{col_idx}]:{col_obj.title}")
+                        except:
+                            pass
+                    if headers:
+                        self.logger.info(f"  Column headers: {headers}")
+                except Exception as e:
+                    self.logger.debug(f"Could not read column headers: {e}")
 
             return None
 
