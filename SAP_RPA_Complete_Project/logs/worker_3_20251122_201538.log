@@ -1,0 +1,6 @@
+2025-11-22 20:15:38,411 - Worker-3 - INFO - Worker 3 logging to: C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\logs\worker_3_20251122_201538.log
+2025-11-22 20:15:38,411 - core.sap_connector - INFO - Connecting to SAP GUI (session_index=0, create_new=True)...
+2025-11-22 20:15:39,163 - core.sap_connector - INFO - Creating new SAP session...
+2025-11-22 20:15:39,165 - core.sap_connector - ERROR - Failed to connect to SAP: <unknown>.CreateSession
+2025-11-22 20:15:39,165 - Worker-3 - ERROR - Worker 3 failed to create SAP session
+2025-11-22 20:15:39,169 - Worker-3 - INFO - Worker 3 stopped (COM uninitialized)
