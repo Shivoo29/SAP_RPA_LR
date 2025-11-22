@@ -569,8 +569,8 @@ class MainWindow:
         # Count scenario breakdowns
         from data.data_models import ScenarioType
         scenario_1 = sum(1 for r in self.current_results if r.success and r.scenario == ScenarioType.MD04_MATRES_FOUND)
-        scenario_2 = sum(1 for r in self.current_results if r.success and r.scenario == ScenarioType.ERF_DIRECT_EXTRACTION)
-        scenario_3 = sum(1 for r in self.current_results if r.success and r.scenario == ScenarioType.ERF_WITH_KO03)
+        scenario_2 = sum(1 for r in self.current_results if r.success and r.scenario == ScenarioType.ERF_DASHBOARD)
+        scenario_3 = sum(1 for r in self.current_results if r.success and r.scenario == ScenarioType.ERF_TO_KO03)
 
         self.total_processed_var.set(str(total))
         self.success_count_var.set(str(successful))
