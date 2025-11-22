@@ -249,12 +249,13 @@ class FieldManager:
     def scan_md04_table_for_elements(self, plant: Optional[str] = None,
                                      material: Optional[str] = None) -> dict:
         """
-        Scans the MD04 results table ONCE for MatRes, OrdRes, and STPord elements.
+        Scans the MD04 results table ONCE for MatRes, OrdRes, DepReq, and STPord elements.
         Uses 3-tier detection strategy with caching.
 
         Priority order:
         1. MatRes (Material Reservation) - highest priority
         2. OrdRes (Order Reservation) - second priority
+        2.5 DepReq (Dependent Requirement) - same workflow as OrdRes
         3. STPord (Stock Transfer Purchase Order) - third priority
 
         Args:
@@ -266,6 +267,8 @@ class FieldManager:
             - 'matres_element': MatRes cell element if found
             - 'has_ordres': True if OrdRes found
             - 'ordres_row_index': Row index of OrdRes
+            - 'has_depreq': True if DepReq found
+            - 'depreq_row_index': Row index of DepReq
             - 'has_stpord': True if STPord found
             - 'stpord_row_index': Row index of STPord
             - 'table_id_used': The table ID that worked (for debugging)
@@ -615,7 +618,7 @@ class FieldManager:
 
     def _scan_table(self, table_id: str) -> dict:
         """
-        Scan a table for MatRes, OrdRes, and STPord elements.
+        Scan a table for MatRes, OrdRes, DepReq, and STPord elements.
 
         Args:
             table_id: ID of table to scan
@@ -627,6 +630,8 @@ class FieldManager:
             'matres_element': None,
             'has_ordres': False,
             'ordres_row_index': -1,
+            'has_depreq': False,
+            'depreq_row_index': -1,
             'has_stpord': False,
             'stpord_row_index': -1
         }
@@ -661,6 +666,12 @@ class FieldManager:
                             result['has_ordres'] = True
                             result['ordres_row_index'] = row_idx
 
+                        # Check for DepReq - PRIORITY 2.5 (same workflow as OrdRes)
+                        elif cell_text == 'DepReq' and not result['has_depreq']:
+                            self.logger.info(f"✓ DepReq found at row {row_idx}, col {col_idx}")
+                            result['has_depreq'] = True
+                            result['depreq_row_index'] = row_idx
+
                         # Check for STPord - PRIORITY 3
                         elif cell_text == 'STPord' and not result['has_stpord']:
                             self.logger.info(f"✓ STPord found at row {row_idx}, col {col_idx}")
@@ -675,10 +686,12 @@ class FieldManager:
                 self.logger.info("✓ Scan complete: MatRes found (PRIORITY 1)")
             elif result['has_ordres']:
                 self.logger.info("✓ Scan complete: OrdRes found (PRIORITY 2)")
+            elif result['has_depreq']:
+                self.logger.info("✓ Scan complete: DepReq found (PRIORITY 2.5)")
             elif result['has_stpord']:
                 self.logger.info("✓ Scan complete: STPord found (PRIORITY 3)")
             else:
-                self.logger.warning("Scan complete: No MatRes, OrdRes, or STPord found")
+                self.logger.warning("Scan complete: No MatRes, OrdRes, DepReq, or STPord found")
 
         except Exception as e:
             self.logger.error(f"Error during table scan: {e}", exc_info=True)
