@@ -399,7 +399,7 @@ class FieldManager:
 
     def _discover_md04_table(self) -> Optional[str]:
         """
-        Dynamically discover MD04 table by scanning screen elements.
+        Dynamically discover MD04 table by recursively scanning ALL screen elements.
 
         Returns:
             Discovered table ID if found, None otherwise
@@ -410,22 +410,11 @@ class FieldManager:
             # Get main window
             main_window = self.session.findById("wnd[0]")
 
-            # Try to find all table-like controls
+            # Strategy 1: Enumerate ALL children recursively
             candidate_ids = []
+            self._enumerate_all_tables(main_window, candidate_ids, max_depth=5)
 
-            # Strategy 1: Look for common table patterns in user area
-            patterns = [
-                "wnd[0]/usr/tbl",
-                "wnd[0]/usr/subINCLUDE",
-                "wnd[0]/usr/cntl",
-                "wnd[0]/shell",
-            ]
-
-            for pattern in patterns:
-                discovered = self._find_controls_by_pattern(main_window, pattern)
-                candidate_ids.extend(discovered)
-
-            self.logger.info(f"Found {len(candidate_ids)} potential table control(s)")
+            self.logger.info(f"Found {len(candidate_ids)} potential table control(s) via enumeration")
 
             # Validate each candidate
             for table_id in candidate_ids:
@@ -437,10 +426,85 @@ class FieldManager:
                 except Exception:
                     continue
 
+            # Strategy 2: Try common patterns as fallback
+            if not candidate_ids:
+                self.logger.info("Enumeration failed, trying pattern-based discovery...")
+                patterns = [
+                    "wnd[0]/usr/tbl",
+                    "wnd[0]/usr/subINCLUDE",
+                    "wnd[0]/usr/cntl",
+                    "wnd[0]/shell",
+                ]
+
+                for pattern in patterns:
+                    discovered = self._find_controls_by_pattern(main_window, pattern)
+                    candidate_ids.extend(discovered)
+
+                self.logger.info(f"Found {len(candidate_ids)} potential table(s) via patterns")
+
+                # Validate pattern-based candidates
+                for table_id in candidate_ids:
+                    try:
+                        table = self.session.findById(table_id)
+                        if self._is_valid_md04_table(table):
+                            self.logger.info(f"✓ Discovered valid MD04 table: {table_id}")
+                            return table_id
+                    except Exception:
+                        continue
+
         except Exception as e:
             self.logger.error(f"Error during table discovery: {e}")
 
         return None
+
+    def _enumerate_all_tables(self, element, table_list: List[str],
+                             current_depth: int = 0, max_depth: int = 5):
+        """
+        Recursively enumerate ALL SAP elements and find table controls.
+
+        Args:
+            element: Current SAP element
+            table_list: List to append discovered table IDs
+            current_depth: Current recursion depth
+            max_depth: Maximum recursion depth
+        """
+        if current_depth >= max_depth:
+            return
+
+        try:
+            # Get element ID
+            element_id = element.id if hasattr(element, 'id') else None
+
+            if not element_id:
+                return
+
+            # Check if this element is a table
+            element_type = element.Type if hasattr(element, 'Type') else ''
+
+            # Check for table-like types
+            if any(indicator in element_type.lower() for indicator in ['grid', 'table', 'tree']) or \
+               any(indicator in element_id.lower() for indicator in ['tbl', 'grid', 'tree']):
+                # Verify it has table properties
+                if hasattr(element, 'rows') or hasattr(element, 'RowCount'):
+                    if element_id not in table_list:
+                        table_list.append(element_id)
+                        self.logger.debug(f"Found table candidate: {element_id}")
+
+            # Recursively check children
+            if hasattr(element, 'Children'):
+                try:
+                    children_count = element.Children.Count
+                    for i in range(children_count):
+                        try:
+                            child = element.Children(i)
+                            self._enumerate_all_tables(child, table_list, current_depth + 1, max_depth)
+                        except Exception:
+                            continue
+                except Exception:
+                    pass
+
+        except Exception:
+            pass
 
     def _find_controls_by_pattern(self, parent, pattern: str) -> List[str]:
         """
