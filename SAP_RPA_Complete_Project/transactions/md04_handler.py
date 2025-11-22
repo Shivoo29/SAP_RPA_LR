@@ -343,7 +343,8 @@ class MD04Handler:
                     ordres_data = self.extract_ordres_from_current_screen(
                         material_number,
                         plant,
-                        scan_result['ordres_row_index']
+                        scan_result['ordres_row_index'],
+                        table_id=scan_result.get('table_id_used')  # Pass the discovered table ID
                     )
 
                     if ordres_data:
@@ -354,13 +355,33 @@ class MD04Handler:
                         self.logger.warning(f"OrdRes found but data extraction failed in plant {plant}")
                         continue
 
-                # PRIORITY 3: STPord found (no MatRes or OrdRes) - Extract RPM immediately
+                # PRIORITY 2.5: DepReq found (same workflow as OrdRes) - Extract data immediately
+                elif scan_result['has_depreq']:
+                    self.logger.info(f"✓✓ DepReq found in plant {plant} - Extracting data immediately!")
+                    depreq_data = self.extract_ordres_from_current_screen(
+                        material_number,
+                        plant,
+                        scan_result['depreq_row_index'],
+                        table_id=scan_result.get('table_id_used'),  # Pass the discovered table ID
+                        source='DepReq'  # Mark source as DepReq
+                    )
+
+                    if depreq_data:
+                        self.logger.info(f"✓ DepReq data extracted - STOPPING search here!")
+                        depreq_data['plants_checked'] = i + 1
+                        return depreq_data
+                    else:
+                        self.logger.warning(f"DepReq found but data extraction failed in plant {plant}")
+                        continue
+
+                # PRIORITY 3: STPord found (no MatRes, OrdRes, or DepReq) - Extract RPM immediately
                 elif scan_result['has_stpord']:
                     self.logger.info(f"✓ STPord found in plant {plant} - Extracting RPM immediately!")
                     rpm_number = self.extract_rpm_from_current_screen(
                         material_number,
                         plant,
-                        scan_result['stpord_row_index']
+                        scan_result['stpord_row_index'],
+                        table_id=scan_result.get('table_id_used')  # Pass the discovered table ID
                     )
 
                     if rpm_number:
@@ -378,7 +399,7 @@ class MD04Handler:
                         continue
 
                 else:
-                    self.logger.info(f"No MatRes, OrdRes, or STPord found in plant {plant}")
+                    self.logger.info(f"No MatRes, OrdRes, DepReq, or STPord found in plant {plant}")
                     # Log screen state when nothing found for diagnostics
                     screen_info = self.sap_connector.get_screen_info()
                     if screen_info['status_bar']['text']:
@@ -388,7 +409,7 @@ class MD04Handler:
                 self.logger.error(f"Error processing plant {plant}: {e}", exc_info=True)
                 continue
 
-        self.logger.warning(f"All {len(plant_list)} plants checked - no MatRes, OrdRes, or STPord found")
+        self.logger.warning(f"All {len(plant_list)} plants checked - no MatRes, OrdRes, DepReq, or STPord found")
         return None
 
     def process_material_multiple_plants(
@@ -478,7 +499,7 @@ class MD04Handler:
         self.logger.info(f"Finished all plants. Returning STPord plant: {first_stpord_plant}")
         return None, first_stpord_plant
 
-    def extract_rpm_from_current_screen(self, material_number: str, plant: str, stpord_row_index: int) -> Optional[str]:
+    def extract_rpm_from_current_screen(self, material_number: str, plant: str, stpord_row_index: int, table_id: Optional[str] = None) -> Optional[str]:
         """
         OPTIMIZED: Extract RPM from the CURRENT screen without re-navigating.
         We already know the STPord row index from the table scan.
@@ -487,6 +508,7 @@ class MD04Handler:
             material_number: Material number
             plant: Plant number
             stpord_row_index: Row index where STPord was found
+            table_id: Optional discovered table ID to use (fallback to config if not provided)
 
         Returns:
             RPM number if found, None otherwise
@@ -494,8 +516,13 @@ class MD04Handler:
         self.logger.info(f"Extracting RPM from current screen for material {material_number} at row {stpord_row_index}")
 
         try:
-            # We're already on the MD04 results screen with STPord visible
-            table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+            # Use discovered table ID if provided, otherwise fall back to config
+            if not table_id:
+                table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+                self.logger.debug("Using table ID from config (no discovered ID provided)")
+            else:
+                self.logger.debug(f"Using discovered table ID: {table_id[:60]}...")
+
             table = self.session.findById(table_id)
 
             # Navigate to STPord details
@@ -648,24 +675,31 @@ class MD04Handler:
             self.logger.error(f"Error extracting RPM from current screen: {e}", exc_info=True)
             return None
 
-    def extract_ordres_from_current_screen(self, material_number: str, plant: str, ordres_row_index: int) -> Optional[Dict[str, str]]:
+    def extract_ordres_from_current_screen(self, material_number: str, plant: str, ordres_row_index: int, table_id: Optional[str] = None, source: str = 'OrdRes') -> Optional[Dict[str, str]]:
         """
-        OPTIMIZED: Extract OrdRes (Order Reservation) data from the CURRENT screen without re-navigating.
-        We already know the OrdRes row index from the table scan.
+        OPTIMIZED: Extract OrdRes/DepReq (Order Reservation/Dependent Requirement) data from the CURRENT screen without re-navigating.
+        We already know the OrdRes/DepReq row index from the table scan.
 
         Args:
             material_number: Material number
             plant: Plant number
-            ordres_row_index: Row index where OrdRes was found
+            ordres_row_index: Row index where OrdRes/DepReq was found
+            table_id: Optional discovered table ID to use (fallback to config if not provided)
+            source: Source type - 'OrdRes' or 'DepReq' (defaults to 'OrdRes')
 
         Returns:
             Dictionary with extracted data if successful, None otherwise
         """
-        self.logger.info(f"Extracting OrdRes data from current screen for material {material_number} at row {ordres_row_index}")
+        self.logger.info(f"Extracting {source} data from current screen for material {material_number} at row {ordres_row_index}")
 
         try:
-            # We're already on the MD04 results screen with OrdRes visible
-            table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')  # Same table as STPord
+            # Use discovered table ID if provided, otherwise fall back to config
+            if not table_id:
+                table_id = self.config.get_field_id('MD04_RPM', 'item_list_table')
+                self.logger.debug("Using table ID from config (no discovered ID provided)")
+            else:
+                self.logger.debug(f"Using discovered table ID: {table_id[:60]}...")
+
             table = self.session.findById(table_id)
 
             # Navigate to OrdRes details
@@ -725,13 +759,13 @@ class MD04Handler:
             # Add metadata
             extracted_data['material'] = material_number
             extracted_data['plant'] = plant
-            extracted_data['source'] = 'OrdRes'
+            extracted_data['source'] = source  # Use the source parameter (OrdRes or DepReq)
 
-            self.logger.info(f"✓ Successfully extracted OrdRes data for {material_number}")
+            self.logger.info(f"✓ Successfully extracted {source} data for {material_number}")
             return extracted_data
 
         except Exception as e:
-            self.logger.error(f"Error extracting OrdRes from current screen: {e}", exc_info=True)
+            self.logger.error(f"Error extracting {source} from current screen: {e}", exc_info=True)
             return None
 
     def find_and_extract_rpm_number(self, material_number: str, plant: str) -> Optional[str]:
