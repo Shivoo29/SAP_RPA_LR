@@ -57,7 +57,16 @@ class SAPConnector:
             if create_new:
                 # Create a new session - each worker gets its own session
                 self.logger.info("Creating new SAP session...")
-                self.session = self.connection.CreateSession()
+                self.logger.info(f"Connection object type: {type(self.connection)}")
+                self.logger.info(f"Connection has CreateSession: {hasattr(self.connection, 'CreateSession')}")
+
+                # Try to get the first session and use IT to create new sessions
+                first_session = self.connection.Children(0)
+                self.logger.info(f"First session type: {type(first_session)}")
+                self.logger.info(f"First session has CreateSession: {hasattr(first_session, 'CreateSession')}")
+
+                # Create session from the first session object
+                self.session = first_session.CreateSession()
                 if not self.session:
                     raise Exception("CreateSession() returned None")
                 self.logger.info(f"✓ Created new SAP session")
