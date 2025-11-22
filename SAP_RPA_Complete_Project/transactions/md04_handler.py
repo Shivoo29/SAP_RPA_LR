@@ -570,7 +570,8 @@ class MD04Handler:
                                 pass
 
                         # Check if this cell contains RPM
-                        if cell_text and rpm_full_text := cell_text:
+                        if cell_text:
+                            rpm_full_text = cell_text
                             if rpm_full_text.upper().startswith("RPM"):
                                 self.logger.info(f"✓ Found RPM text: '{rpm_full_text}' at row {row_idx}, col {col_idx}")
                                 match = re.search(r'\d+', rpm_full_text)
