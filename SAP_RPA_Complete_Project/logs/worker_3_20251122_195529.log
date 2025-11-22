@@ -1,0 +1,6 @@
+2025-11-22 19:55:29,360 - Worker-3 - INFO - Worker 3 logging to: C:\Users\jhash\Documents\SAP_RPA_LR\SAP_RPA_Complete_Project\logs\worker_3_20251122_195529.log
+2025-11-22 19:55:29,361 - core.sap_connector - INFO - Connecting to SAP GUI (session_index=3, create_new=True)...
+2025-11-22 19:55:30,255 - core.sap_connector - INFO - Creating new SAP session...
+2025-11-22 19:55:30,730 - core.sap_connector - ERROR - Failed to connect to SAP: 'NoneType' object has no attribute 'Info'
+2025-11-22 19:55:30,731 - Worker-3 - ERROR - Worker 3 failed to connect to SAP
+2025-11-22 19:55:30,745 - Worker-3 - INFO - Worker 3 stopped (COM uninitialized)
