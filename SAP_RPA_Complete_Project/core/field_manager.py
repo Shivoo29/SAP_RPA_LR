@@ -218,7 +218,7 @@ class FieldManager:
             # This ID is from the new config, assuming it's the same table for both searches
             table_id = "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ"
             table = self.session.findById(table_id)
-            
+
             # Iterate through all rows and all columns to find 'MatRes'
             for row_idx in range(table.rows.count):
                 for col_idx in range(table.columns.count):
@@ -230,13 +230,91 @@ class FieldManager:
                     except Exception:
                         # This cell might not have a 'text' property, continue to the next
                         continue
-            
+
             self.logger.warning("MatRes element not found in the results table.")
             return None
 
         except Exception as e:
             self.logger.error(f"Error finding MatRes in table: {e}", exc_info=True)
             return None
+
+    def scan_md04_table_for_elements(self) -> dict:
+        """
+        Scans the MD04 results table ONCE for MatRes, OrdRes, and STPord elements.
+        This is more efficient than scanning multiple times.
+
+        Priority order:
+        1. MatRes (Material Reservation) - highest priority
+        2. OrdRes (Order Reservation) - second priority
+        3. STPord (Stock Transfer Purchase Order) - third priority
+
+        Returns:
+            Dictionary with keys:
+            - 'matres_element': MatRes cell element if found
+            - 'has_ordres': True if OrdRes found
+            - 'ordres_row_index': Row index of OrdRes
+            - 'has_stpord': True if STPord found
+            - 'stpord_row_index': Row index of STPord
+        """
+        self.logger.info("Scanning MD04 results table for MatRes, OrdRes, and STPord in single pass...")
+        result = {
+            'matres_element': None,
+            'has_ordres': False,
+            'ordres_row_index': -1,
+            'has_stpord': False,
+            'stpord_row_index': -1
+        }
+
+        try:
+            table_id = "wnd[0]/usr/subINCLUDE1XX:SAPMM61R:0780/tabsGL_TAB/tabpGL_1/ssubGL_SUBSCR:SAPMM61R:0750/tblSAPMM61RTC_EZ"
+            table = self.session.findById(table_id)
+
+            # Single pass through the table
+            for row_idx in range(table.rows.count):
+                for col_idx in range(table.columns.count):
+                    try:
+                        cell = table.getCell(row_idx, col_idx)
+                        if not hasattr(cell, 'text'):
+                            continue
+
+                        cell_text = cell.text.strip()
+
+                        # Check for MatRes - PRIORITY 1
+                        if cell_text == 'MatRes':
+                            self.logger.info(f"✓ MatRes found at row {row_idx}, col {col_idx}")
+                            result['matres_element'] = cell
+                            # Continue scanning to log all available options
+
+                        # Check for OrdRes - PRIORITY 2
+                        elif cell_text == 'OrdRes' and not result['has_ordres']:
+                            self.logger.info(f"✓ OrdRes found at row {row_idx}, col {col_idx}")
+                            result['has_ordres'] = True
+                            result['ordres_row_index'] = row_idx
+
+                        # Check for STPord - PRIORITY 3
+                        elif cell_text == 'STPord' and not result['has_stpord']:
+                            self.logger.info(f"✓ STPord found at row {row_idx}, col {col_idx}")
+                            result['has_stpord'] = True
+                            result['stpord_row_index'] = row_idx
+
+                    except Exception:
+                        continue
+
+            # Log results with priority indication
+            if result['matres_element']:
+                self.logger.info("Scan complete: MatRes found (PRIORITY 1 - will use this)")
+            elif result['has_ordres']:
+                self.logger.info("Scan complete: OrdRes found (PRIORITY 2 - will use this)")
+            elif result['has_stpord']:
+                self.logger.info("Scan complete: STPord found (PRIORITY 3 - will extract RPM)")
+            else:
+                self.logger.warning("Scan complete: No MatRes, OrdRes, or STPord found")
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error scanning MD04 table: {e}", exc_info=True)
+            return result
     
     def click_element(self, element_or_id) -> bool:
         """

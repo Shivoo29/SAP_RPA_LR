@@ -88,66 +88,79 @@ class ScenarioManager:
         result = ProcessingResult(material_number=material_number)
         
         try:
-            # ===== SCENARIO 1: Try MD04 with multiple plants =====
-            self.logger.info("SCENARIO 1: Attempting MD04 with multiple plants...")
-            
+            # ===== OPTIMIZED SCENARIO 1: MD04 with smart early termination =====
+            self.logger.info("SCENARIO 1: Attempting MD04 with optimized multi-plant search...")
+
             plant_list = selected_plants if selected_plants else self.config.AVAILABLE_PLANTS
-            
-            md04_data, stpord_plant = self.md04_handler.process_material_multiple_plants(
+
+            md04_result = self.md04_handler.process_material_multiple_plants_optimized(
                 material_number=material_number,
                 plant_list=plant_list,
                 mrp_area=mrp_area
             )
-            
-            if md04_data:
-                # Success! MatRes found
-                self.logger.info("✓ SCENARIO 1 SUCCESS: MatRes found!")
-                result.scenario = ScenarioType.MD04_MATRES_FOUND
-                result.success = True
-                result.data = md04_data
-                result.plant_found = md04_data.get('plant', '')
-                self.stats['scenario_1_success'] += 1
-                
-            # ===== SCENARIO 1.5: MatRes not found, but STPord was found → Extract RPM and go to ERF =====
-            elif enable_erf_fallback and stpord_plant:
-                self.logger.info(f"SCENARIO 1.5: MatRes not found, but STPord was found in plant {stpord_plant}. Extracting RPM number...")
-                
-                rpm_number = self.md04_handler.find_and_extract_rpm_number(
-                    material_number=material_number,
-                    plant=stpord_plant
-                )
 
-                if rpm_number:
-                    self.logger.info(f"Found RPM number: {rpm_number}. Proceeding to ERF Dashboard...")
-                    
+            if md04_result:
+                source = md04_result.get('source', 'Unknown')
+
+                # MatRes found directly
+                if source == 'MatRes':
+                    self.logger.info("✓ SCENARIO 1 SUCCESS: MatRes found!")
+                    result.scenario = ScenarioType.MD04_MATRES_FOUND
+                    result.success = True
+                    result.data = md04_result
+                    result.plant_found = md04_result.get('plant', '')
+                    self.stats['scenario_1_success'] += 1
+
+                # OrdRes found directly
+                elif source == 'OrdRes':
+                    self.logger.info("✓ SCENARIO 1 SUCCESS: OrdRes found!")
+                    result.scenario = ScenarioType.MD04_MATRES_FOUND  # Same category as MatRes
+                    result.success = True
+                    result.data = md04_result
+                    result.plant_found = md04_result.get('plant', '')
+                    self.stats['scenario_1_success'] += 1
+
+                # STPord found and RPM extracted - now go to ERF
+                elif source == 'STPord' and md04_result.get('needs_erf_lookup') and enable_erf_fallback:
+                    rpm_number = md04_result.get('rpm_number')
+                    plant = md04_result.get('plant')
+
+                    self.logger.info(f"✓ RPM number extracted: {rpm_number}. Proceeding to ERF Dashboard...")
+
                     erf_data = self.erf_workflow.execute_erf_workflow(
-                        material_number=material_number, 
+                        material_number=material_number,
                         erf_search_term=rpm_number
                     )
-                    
+
                     if erf_data:
                         self.logger.info("✓ SCENARIO 2 SUCCESS: Data extracted from ERF Dashboard!")
                         result.scenario = ScenarioType.ERF_DASHBOARD
                         result.success = True
                         result.data = erf_data
+                        result.data['rpm_number'] = rpm_number
+                        result.data['source_plant'] = plant
+                        result.plant_found = plant
                         self.stats['scenario_2_success'] += 1
-                        
+
                         # Check if we need to go to KO03
                         order_number = erf_data.get('order_number', '')
                         if order_number and enable_ko03_fallback:
                             # ===== SCENARIO 3: ERF → KO03 =====
                             self.logger.info("SCENARIO 3: Going to KO03 with order number...")
-                            
+
                             ko03_data = self.ko03_handler.process_order(order_number)
-                            
+
                             if ko03_data:
                                 self.logger.info("✓ SCENARIO 3 SUCCESS: Data extracted from KO03!")
                                 result.scenario = ScenarioType.ERF_TO_KO03
                                 result.data.update(ko03_data)
                                 self.stats['scenario_3_success'] += 1
-                else:
-                    self.logger.warning(f"STPord was found in {stpord_plant}, but failed to extract RPM number.")
-            
+                    else:
+                        self.logger.warning(f"RPM {rpm_number} extracted but ERF lookup failed")
+                        result.success = False
+                        result.error_message = f"RPM {rpm_number} found but ERF lookup failed"
+                        self.stats['failures'] += 1
+
             if not result.success:
                 # ===== ALL SCENARIOS FAILED =====
                 self.logger.error("✗ ALL SCENARIOS FAILED: Could not extract data")

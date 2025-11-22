@@ -41,6 +41,15 @@ class Config:
         "Recipient": "/app/con[0]/ses[0]/wnd[0]/usr/txtRESB-WEMPF",
         "Order": "/app/con[0]/ses[0]/wnd[0]/usr/subBLOCK:SAPLKACB:1002/ctxtCOBL-AUFNR"
     }
+
+    # ===== OrdRes (Order Reservation) Field IDs =====
+    ORDRES_FIELDS = {
+        "item_display_button": "wnd[1]/tbar[0]/btn[17]",  # Display button in popup
+        "grid_shell": "wnd[0]/usr/cntlGRID_1000/shellcont/shell/shellcont[1]/shell",
+        "cost_center_field": "wnd[0]/usr/subBLOCK:SAPLKACB:1002/txtTEXT_KOSTL",
+        "part_description_field": "wnd[0]/usr/subBLOCK:SAPLKACB:1002/txtTEXT_AUFNR",
+        "order_field": "wnd[0]/usr/subBLOCK:SAPLKACB:1002/ctxtCOBL-AUFNR"
+    }
     
     # ===== KO03 Transaction Field IDs =====
     KO03_FIELDS = {
@@ -128,6 +137,7 @@ class Config:
             'KO03': cls.KO03_FIELDS,
             'ZERF': cls.ZERF_FIELDS,
             'MD04_RPM': cls.MD04_RPM_EXTRACTION_FIELDS,
+            'ORDRES': cls.ORDRES_FIELDS,
         }
         
         fields = field_map.get(transaction.upper(), {})
