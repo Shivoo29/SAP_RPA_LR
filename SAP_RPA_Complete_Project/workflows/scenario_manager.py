@@ -18,6 +18,7 @@ from transactions.ko03_handler import KO03Handler
 from workflows.erf_workflow import ERFWorkflow
 from data.data_models import ProcessingResult, ScenarioType
 from config import Config
+from core.plant_cache import PlantCache
 
 
 class ScenarioManager:
@@ -35,12 +36,15 @@ class ScenarioManager:
         self.excel_manager = excel_manager
         self.logger = logging.getLogger(__name__)
         self.config = Config()
-        
+
+        # Initialize plant cache for smart ordering
+        self.plant_cache = PlantCache() if self.config.ENABLE_AGGRESSIVE_CACHING else None
+
         # Initialize handlers
-        self.md04_handler = MD04Handler(self.sap_connector)
+        self.md04_handler = MD04Handler(self.sap_connector, plant_cache=self.plant_cache)
         self.ko03_handler = KO03Handler(self.sap_connector)
         self.erf_workflow = ERFWorkflow(self.sap_connector)
-        
+
         # Statistics
         self.stats = self.get_initial_stats()
     

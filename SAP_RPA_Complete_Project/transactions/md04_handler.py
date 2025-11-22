@@ -17,18 +17,20 @@ from config import Config
 class MD04Handler:
     """Handles MD04 transaction operations."""
     
-    def __init__(self, sap_connector):
+    def __init__(self, sap_connector, plant_cache=None):
         """
         Initialize MD04 handler.
-        
+
         Args:
             sap_connector: SAP connector instance
+            plant_cache: Optional PlantCache for smart plant ordering
         """
         self.sap_connector = sap_connector
         self.session = sap_connector.session
         self.field_manager = FieldManager(self.session)
         self.logger = logging.getLogger(__name__)
         self.config = Config()
+        self.plant_cache = plant_cache
     
     def navigate_to_md04(self) -> bool:
         """
@@ -279,6 +281,10 @@ class MD04Handler:
         if plant_list is None:
             plant_list = self.config.AVAILABLE_PLANTS
 
+        # Apply smart plant ordering if cache is available
+        if self.plant_cache and self.config.ENABLE_SMART_PLANT_ORDERING:
+            plant_list = self.plant_cache.get_ordered_plants(material_number, plant_list)
+
         self.logger.info(f"🚀 OPTIMIZED multi-plant search for {material_number}: {plant_list}")
 
         for i, plant in enumerate(plant_list):
@@ -327,6 +333,9 @@ class MD04Handler:
                 if scan_result.get('is_1a_demand'):
                     mrp_type = scan_result.get('mrp_element_type', 'Unknown')
                     self.logger.info(f"⚠⚠⚠ 1A DEMAND detected ({mrp_type}) in plant {plant} - Skipping normal extraction!")
+                    # Record cache: 1A demand counts as success (found data)
+                    if self.plant_cache:
+                        self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                     return {
                         'material': material_number,
                         'plant': plant,
@@ -348,9 +357,15 @@ class MD04Handler:
                         data['material'] = material_number
                         data['source'] = 'MatRes'
                         data['plants_checked'] = i + 1
+                        # Record cache: MatRes found (success)
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         return data
                     else:
                         self.logger.warning(f"Failed to open MatRes details in plant {plant}")
+                        # Record cache: MatRes found but extraction failed (still counts as found)
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         continue
 
                 # PRIORITY 2: OrdRes found and no MatRes - Extract data immediately
@@ -366,9 +381,14 @@ class MD04Handler:
                     if ordres_data:
                         self.logger.info(f"✓ OrdRes data extracted - STOPPING search here!")
                         ordres_data['plants_checked'] = i + 1
+                        # Record cache: OrdRes found (success)
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         return ordres_data
                     else:
                         self.logger.warning(f"OrdRes found but data extraction failed in plant {plant}")
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         continue
 
                 # PRIORITY 2.5: DepReq found (same workflow as OrdRes) - Extract data immediately
@@ -385,9 +405,14 @@ class MD04Handler:
                     if depreq_data:
                         self.logger.info(f"✓ DepReq data extracted - STOPPING search here!")
                         depreq_data['plants_checked'] = i + 1
+                        # Record cache: DepReq found (success)
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         return depreq_data
                     else:
                         self.logger.warning(f"DepReq found but data extraction failed in plant {plant}")
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         continue
 
                 # PRIORITY 3: STPord found (no MatRes, OrdRes, or DepReq) - Extract RPM immediately
@@ -402,6 +427,9 @@ class MD04Handler:
 
                     if rpm_number:
                         self.logger.info(f"✓ RPM extracted: {rpm_number} - STOPPING search here!")
+                        # Record cache: STPord found (success)
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         return {
                             'material': material_number,
                             'plant': plant,
@@ -412,10 +440,15 @@ class MD04Handler:
                         }
                     else:
                         self.logger.warning(f"STPord found but RPM extraction failed in plant {plant}")
+                        if self.plant_cache:
+                            self.plant_cache.record_plant_check(material_number, plant, found_data=True)
                         continue
 
                 else:
                     self.logger.info(f"No MatRes, OrdRes, DepReq, or STPord found in plant {plant}")
+                    # Record cache: nothing found (failure)
+                    if self.plant_cache:
+                        self.plant_cache.record_plant_check(material_number, plant, found_data=False)
                     # Log screen state when nothing found for diagnostics
                     screen_info = self.sap_connector.get_screen_info()
                     if screen_info['status_bar']['text']:
