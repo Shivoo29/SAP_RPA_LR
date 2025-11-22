@@ -302,10 +302,26 @@ class MD04Handler:
 
                 if not self.execute_query():
                     self.logger.warning(f"Query execution failed for plant {plant}")
+                    # Check screen state for better error context
+                    screen_info = self.sap_connector.get_screen_info()
+                    self.logger.debug(f"Screen state after query: {screen_info['status_bar']}")
                     continue
 
-                # SINGLE TABLE SCAN for both MatRes and STPord
-                scan_result = self.field_manager.scan_md04_table_for_elements()
+                # Check if MD04 returned actual data
+                if not self.sap_connector.has_data_in_screen():
+                    self.logger.info(f"MD04 returned no data for plant {plant}")
+                    continue
+
+                # SINGLE TABLE SCAN for MatRes, OrdRes, and STPord
+                # Pass plant and material for cache context
+                scan_result = self.field_manager.scan_md04_table_for_elements(
+                    plant=plant,
+                    material=material_number
+                )
+
+                # Log which table ID was used (for debugging)
+                if scan_result.get('table_id_used'):
+                    self.logger.debug(f"Used table ID: {scan_result['table_id_used'][:60]}...")
 
                 # PRIORITY 1: MatRes found - STOP IMMEDIATELY
                 if scan_result['matres_element']:
@@ -363,6 +379,10 @@ class MD04Handler:
 
                 else:
                     self.logger.info(f"No MatRes, OrdRes, or STPord found in plant {plant}")
+                    # Log screen state when nothing found for diagnostics
+                    screen_info = self.sap_connector.get_screen_info()
+                    if screen_info['status_bar']['text']:
+                        self.logger.debug(f"Status bar message: {screen_info['status_bar']['text']}")
 
             except Exception as e:
                 self.logger.error(f"Error processing plant {plant}: {e}", exc_info=True)
