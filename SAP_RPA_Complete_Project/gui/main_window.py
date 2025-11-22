@@ -15,7 +15,6 @@ import time
 
 from core.sap_connector import SAPConnector
 from workflows.scenario_manager import ScenarioManager
-from workflows.parallel_processor import ParallelProcessor
 from data.excel_manager import ExcelManager
 from config import Config
 
@@ -37,8 +36,7 @@ class MainWindow:
         self.sap_connector = SAPConnector()
         self.excel_manager = ExcelManager()
         self.scenario_manager = None  # Initialized after SAP connection
-        self.parallel_processor = None  # Initialized for parallel mode
-        
+
         # State for the root.after() loop
         self.is_processing = False
         self.materials_queue = []
@@ -77,6 +75,15 @@ class MainWindow:
         style.configure('Error.TLabel', font=('Arial', 10, 'bold'), foreground='#e74c3c')
         style.configure('Info.TLabel', font=('Arial', 10, 'bold'), foreground='#3498db')
         style.configure('Big.TButton', font=('Arial', 11, 'bold'), padding=10)
+
+        # Futuristic progress bar style
+        style.configure('Futuristic.Horizontal.TProgressbar',
+                       troughcolor='#1a1a2e',
+                       background='#0f3460',
+                       darkcolor='#16213e',
+                       lightcolor='#533483',
+                       bordercolor='#0f3460',
+                       thickness=25)
 
         try:
             self.root.state('zoomed')
@@ -182,19 +189,6 @@ class MainWindow:
         self.enable_ko03_var = tk.BooleanVar(value=True)
         ttk.Checkbutton(options_inner, text="Enable KO03 Fallback", variable=self.enable_ko03_var).pack(side=tk.LEFT)
 
-        # Parallel processing options
-        parallel_frame = ttk.Frame(config_frame)
-        parallel_frame.pack(fill=tk.X, pady=(10, 0))
-        ttk.Label(parallel_frame, text="Performance Options:", font=("Arial", 10, "bold")).pack(anchor=tk.W)
-        parallel_inner = ttk.Frame(parallel_frame)
-        parallel_inner.pack(fill=tk.X, pady=(5, 0))
-        self.enable_parallel_var = tk.BooleanVar(value=self.config.ENABLE_PARALLEL_PROCESSING)
-        ttk.Checkbutton(parallel_inner, text="⚡ Enable Parallel Processing", variable=self.enable_parallel_var).pack(side=tk.LEFT, padx=(0, 20))
-        ttk.Label(parallel_inner, text="Workers:", font=("Arial", 9)).pack(side=tk.LEFT, padx=(10, 5))
-        self.num_workers_var = tk.StringVar(value=str(self.config.MAX_PARALLEL_WORKERS))
-        worker_spinbox = ttk.Spinbox(parallel_inner, from_=1, to=5, textvariable=self.num_workers_var, width=5)
-        worker_spinbox.pack(side=tk.LEFT)
-
     def _create_controls_section(self, parent):
         control_frame = ttk.Frame(parent)
         control_frame.grid(row=4, column=0, sticky=(tk.W, tk.E), pady=(10, 10))
@@ -206,36 +200,45 @@ class MainWindow:
         self.export_btn.pack(side=tk.RIGHT)
 
     def _create_progress_section(self, parent):
-        progress_frame = ttk.LabelFrame(parent, text="Progress", padding="10")
+        progress_frame = ttk.LabelFrame(parent, text="⚡ Progress Monitor", padding="15")
         progress_frame.grid(row=5, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
 
         # Main progress info
         status_frame = ttk.Frame(progress_frame)
-        status_frame.pack(fill=tk.X, pady=(0, 5))
+        status_frame.pack(fill=tk.X, pady=(0, 10))
 
-        self.progress_var = tk.StringVar(value="Ready to start...")
-        ttk.Label(status_frame, textvariable=self.progress_var, font=("Arial", 10)).pack(side=tk.LEFT)
+        self.progress_var = tk.StringVar(value="⏸ Ready to start...")
+        ttk.Label(status_frame, textvariable=self.progress_var, font=("Arial", 11, "bold"), foreground="#0f3460").pack(side=tk.LEFT)
 
-        self.elapsed_time_var = tk.StringVar(value="00:00")
-        ttk.Label(status_frame, textvariable=self.elapsed_time_var, font=("Arial", 10, "bold"), foreground="#3498db").pack(side=tk.RIGHT)
+        self.elapsed_time_var = tk.StringVar(value="⏱ 00:00")
+        ttk.Label(status_frame, textvariable=self.elapsed_time_var, font=("Arial", 11, "bold"), foreground="#16a085").pack(side=tk.RIGHT)
 
-        # Progress bar
-        self.progress_bar = ttk.Progressbar(progress_frame, mode='determinate', length=400)
-        self.progress_bar.pack(fill=tk.X, pady=(5, 5))
+        # Futuristic progress bar container with border effect
+        progress_container = tk.Frame(progress_frame, bg="#0f3460", highlightbackground="#533483", highlightthickness=2)
+        progress_container.pack(fill=tk.X, pady=(0, 10))
+
+        # Progress bar with futuristic style
+        self.progress_bar = ttk.Progressbar(
+            progress_container,
+            mode='determinate',
+            style='Futuristic.Horizontal.TProgressbar',
+            length=400
+        )
+        self.progress_bar.pack(fill=tk.X, padx=2, pady=2)
+
+        # Percentage display
+        self.progress_percent_var = tk.StringVar(value="0%")
+        ttk.Label(progress_frame, textvariable=self.progress_percent_var, font=("Arial", 10, "bold"), foreground="#533483").pack()
 
         # Current material and scenario
         detail_frame = ttk.Frame(progress_frame)
-        detail_frame.pack(fill=tk.X, pady=(5, 0))
+        detail_frame.pack(fill=tk.X, pady=(10, 0))
 
         self.current_material_var = tk.StringVar(value="")
-        ttk.Label(detail_frame, textvariable=self.current_material_var, font=("Arial", 9, "bold"), foreground="#2980b9").pack(anchor=tk.W)
+        ttk.Label(detail_frame, textvariable=self.current_material_var, font=("Arial", 10, "bold"), foreground="#0f3460").pack(anchor=tk.W)
 
         self.current_scenario_var = tk.StringVar(value="")
-        ttk.Label(detail_frame, textvariable=self.current_scenario_var, font=("Arial", 8), foreground="#7f8c8d").pack(anchor=tk.W, pady=(2, 0))
-
-        # Parallel processing status
-        self.parallel_status_var = tk.StringVar(value="")
-        ttk.Label(detail_frame, textvariable=self.parallel_status_var, font=("Arial", 8, "bold"), foreground="#16a085").pack(anchor=tk.W, pady=(2, 0))
+        ttk.Label(detail_frame, textvariable=self.current_scenario_var, font=("Arial", 9), foreground="#533483").pack(anchor=tk.W, pady=(3, 0))
 
     def _create_results_section(self, parent):
         results_frame = ttk.LabelFrame(parent, text="Results", padding="10")
@@ -399,16 +402,8 @@ class MainWindow:
         self.stop_btn.config(state="normal")
         self.export_btn.config(state="disabled")
 
-        # Check if parallel processing is enabled
-        if self.enable_parallel_var.get() and len(self.materials_queue) >= 2:
-            num_workers = int(self.num_workers_var.get())
-            self.log_message(f"Starting PARALLEL automation with {num_workers} workers for {len(self.materials_queue)} materials...")
-            self.parallel_status_var.set(f"⚡ Parallel Mode: {num_workers} workers active")
-            self.start_parallel_automation(selected_plants, num_workers)
-        else:
-            self.log_message(f"Starting automation for {len(self.materials_queue)} materials...")
-            self.parallel_status_var.set("")
-            self.process_next_material()
+        self.log_message(f"🚀 Starting automation for {len(self.materials_queue)} materials...")
+        self.process_next_material()
 
         self._update_timer()
 
@@ -458,95 +453,37 @@ class MainWindow:
 
     def update_progress(self, current, total, material):
         self.progress_bar.config(maximum=total, value=current)
-        self.progress_var.set(f"Processing {current}/{total}...")
-        self.current_material_var.set(f"📦 Material: {material}")
-        self.current_scenario_var.set("🔄 Attempting MD04 → ERF → KO03 workflow...")
-
-    def start_parallel_automation(self, selected_plants, num_workers):
-        """Start parallel processing of materials."""
-        # Initialize parallel processor
-        self.parallel_processor = ParallelProcessor(num_workers=num_workers)
-
-        # Process materials in parallel with progress callback
-        def progress_callback(result):
-            """Callback for each completed material in parallel mode."""
-            self.current_results.append(result)
-            self.root.after(0, lambda: self.add_result_to_tree(result))
-
-            # Update live statistics
-            if result.success:
-                self.live_success_count += 1
-            else:
-                self.live_failure_count += 1
-
-            self.root.after(0, self._update_statistics)
-
-            # Update progress
-            completed = len(self.current_results)
-            total = len(self.materials_queue)
-            self.root.after(0, lambda: self.update_parallel_progress(completed, total, result.material_number))
-
-        # Run parallel processing in background thread to keep GUI responsive
-        import threading
-        def run_parallel():
-            try:
-                results = self.parallel_processor.process_materials_parallel(
-                    materials=self.materials_queue,
-                    selected_plants=selected_plants,
-                    mrp_area=self.mrp_area_var.get(),
-                    enable_erf_fallback=self.enable_erf_var.get(),
-                    enable_ko03_fallback=self.enable_ko03_var.get(),
-                    progress_callback=progress_callback
-                )
-
-                # Schedule automation finished on main thread
-                self.root.after(0, self.automation_finished)
-
-            except Exception as e:
-                self.logger.error(f"Parallel processing error: {e}", exc_info=True)
-                self.root.after(0, lambda: self.log_message(f"Parallel processing error: {e}", "ERROR"))
-                self.root.after(0, self.automation_finished)
-
-        thread = threading.Thread(target=run_parallel, daemon=True)
-        thread.start()
-
-    def update_parallel_progress(self, current, total, material):
-        """Update progress for parallel processing."""
-        self.progress_bar.config(maximum=total, value=current)
-        self.progress_var.set(f"Processing {current}/{total}...")
-        self.current_material_var.set(f"📦 Latest: {material}")
-        self.current_scenario_var.set("⚡ Processing materials in parallel...")
+        percentage = int((current / total) * 100) if total > 0 else 0
+        self.progress_var.set(f"▶ Processing {current}/{total}")
+        self.progress_percent_var.set(f"{percentage}%")
+        self.current_material_var.set(f"📦 Current Material: {material}")
+        self.current_scenario_var.set("🔄 Running MD04 → ERF Dashboard → KO03 workflow...")
 
     def automation_finished(self):
         self.is_processing = False
         self.start_btn.config(state="normal")
         self.stop_btn.config(state="disabled")
         self.export_btn.config(state="normal")
-        self.parallel_status_var.set("")
 
         # Calculate statistics from results
         total = len(self.current_results)
         successful = sum(1 for r in self.current_results if r.success)
         failed = total - successful
 
-        self.log_message("Automation completed!", "SUCCESS")
+        # Update progress to 100%
+        self.progress_percent_var.set("100%")
+        self.progress_var.set(f"✅ Completed {total}/{total}")
+
+        self.log_message("✅ Automation completed!", "SUCCESS")
 
         messagebox.showinfo("Automation Complete", f"Processing completed!\n\nTotal: {total}\nSuccessful: {successful}\nFailed: {failed}")
 
     def stop_automation(self):
         if self.is_processing:
             self.is_processing = False
-            self.log_message("Automation stopped by user.", "WARNING")
-
-            # Stop parallel processor if it's running
-            if self.parallel_processor:
-                self.log_message("Stopping parallel workers...", "WARNING")
-                self.parallel_processor.stop_workers()
-                self.parallel_processor = None
-
+            self.log_message("⏹ Automation stopped by user.", "WARNING")
             self.start_btn.config(state="normal")
             self.stop_btn.config(state="disabled")
-            self.parallel_status_var.set("")
 
     def export_results(self):
         if not self.current_results:
@@ -570,7 +507,7 @@ class MainWindow:
             minutes = int((elapsed % 3600) // 60)
             seconds = int(elapsed % 60)
 
-            self.elapsed_time_var.set(f"{minutes:02d}:{seconds:02d}")
+            self.elapsed_time_var.set(f"⏱ {minutes:02d}:{seconds:02d}")
             self.session_duration_var.set(f"{hours:02d}:{minutes:02d}:{seconds:02d}")
 
             # Schedule next update
@@ -590,7 +527,7 @@ class MainWindow:
 
     def _update_statistics(self):
         """Update live statistics display."""
-        # Calculate statistics from current_results (works for both sequential and parallel modes)
+        # Calculate statistics from current_results
         total = len(self.current_results)
         successful = sum(1 for r in self.current_results if r.success)
         failures = total - successful
